@@ -1,146 +1,168 @@
 @extends('layouts.app')
 
+@section('title', 'Dashboard Organisateur')
+
 @section('content')
-<div class="admin-dashboard" style="display: flex; min-height: 80vh;">
+<div style="display: flex; min-height: calc(100vh - 80px); background: #000000;">
+    
     <!-- Sidebar -->
-    <div class="sidebar" style="width: 250px; background: #2c3e50; color: white; padding: 20px;">
-        <div class="admin-profile" style="text-align: center; margin-bottom: 30px; border-bottom: 1px solid #34495e; padding-bottom: 20px;">
-            <div style="width: 50px; height: 50px; background: #3498db; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center;">
-                <span style="font-weight: bold;">AA</span>
+    <div style="width: 280px; background: #111111; border-right: 1px solid #333333;">
+        <!-- Admin Profile -->
+        <div style="padding: 2rem; text-align: center; border-bottom: 1px solid #333333;">
+            <div style="width: 60px; height: 60px; background: #0ea5e9; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; color: #000000; font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 1.5rem;">
+                AA
             </div>
-            <div><strong>ADMIN ADMIN</strong></div>
-            <div style="font-size: 12px; color: #bdc3c7;">Admin</div>
+            <div style="font-family: 'Oswald', sans-serif; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem;">ADMIN ADMIN</div>
+            <div style="font-size: 0.8rem; color: #cccccc; text-transform: uppercase; letter-spacing: 1px;">Admin</div>
         </div>
         
-        <nav class="admin-nav">
-            <div style="margin-bottom: 20px;">
-                <div style="color: #bdc3c7; font-size: 12px; margin-bottom: 10px;">NAVIGATION</div>
-                <div style="background: #3498db; padding: 10px; border-radius: 4px; margin-bottom: 5px;">
-                    💻 Gestion de vos épreuves
+        <!-- Navigation -->
+        <div style="padding: 2rem;">
+            <div style="margin-bottom: 2rem;">
+                <div style="color: #666666; font-size: 0.8rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 1px; font-family: 'Oswald', sans-serif;">NAVIGATION</div>
+                <div style="background: #0ea5e9; color: #000000; padding: 1rem; font-family: 'Oswald', sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">
+                    ■ GESTION DE VOS ÉPREUVES
                 </div>
-                <div style="padding: 8px; color: #bdc3c7; font-size: 14px;">
-                    <div style="margin: 5px 0;">◦ Administration</div>
-                    <div style="margin: 5px 0;">◦ Import calendriers</div>
-                    <div style="margin: 5px 0;">◦ Annonces</div>
-                    <div style="margin: 5px 0;">◦ Gestion des catégories</div>
-                    <div style="margin: 5px 0;">◦ Gestion des bannières</div>
-                    <div style="margin: 5px 0;">◦ Gestion des fichiers</div>
-                    <div style="margin: 5px 0;">◦ <a href="{{ route('organizer.create') }}" style="color: #bdc3c7; text-decoration: none;">Création d'une épreuve</a></div>
-                    <div style="margin: 5px 0;">◦ Liste de vos épreuves</div>
-                    <div style="margin: 5px 0;">◦ Épreuves passées</div>
-                    <div style="margin: 5px 0;">◦ Épreuves > 1 an</div>
-                    <div style="margin: 5px 0;">◦ Épreuves en cours</div>
-                    <div style="margin: 5px 0;">◦ Épreuves à venir</div>
-                    <div style="margin: 5px 0;">◦ Traceurs GPS</div>
-                    <div style="margin: 5px 0;">◦ Pass FFTri</div>
+                <div style="color: #cccccc; font-size: 0.9rem; line-height: 2;">
+                    <div style="padding: 0.5rem 0; border-bottom: 1px solid #222222;">◦ Administration ({{ $events->count() }})</div>
+                    <div style="padding: 0.5rem 0; border-bottom: 1px solid #222222;">◦ Import calendriers</div>
+                    <div style="padding: 0.5rem 0; border-bottom: 1px solid #222222;">◦ Annonces</div>
+                    <div style="padding: 0.5rem 0; border-bottom: 1px solid #222222;">◦ Gestion des catégories</div>
+                    <div style="padding: 0.5rem 0; border-bottom: 1px solid #222222;">◦ Gestion des bannières</div>
+                    <div style="padding: 0.5rem 0; border-bottom: 1px solid #222222;">◦ Gestion des fichiers</div>
+                    <div style="padding: 0.5rem 0; border-bottom: 1px solid #222222; cursor: pointer;" onclick="window.location.href='{{ route('organizer.create') }}'">
+                        <span style="color: #0ea5e9;">◦ Création d'une épreuve</span>
+                    </div>
+                    <div style="padding: 0.5rem 0; border-bottom: 1px solid #222222;">◦ Liste de vos épreuves</div>
+                    <div style="padding: 0.5rem 0; border-bottom: 1px solid #222222;">◦ Épreuves passées</div>
+                    <div style="padding: 0.5rem 0; border-bottom: 1px solid #222222;">◦ Épreuves < 1 an</div>
+                    <div style="padding: 0.5rem 0; border-bottom: 1px solid #222222;">◦ Épreuves en cours</div>
+                    <div style="padding: 0.5rem 0; border-bottom: 1px solid #222222;">◦ Épreuves à venir</div>
                 </div>
             </div>
-        </nav>
+        </div>
     </div>
 
     <!-- Main Content -->
-    <div class="main-content" style="flex: 1; padding: 20px; background: #ecf0f1;">
+    <div style="flex: 1; background: #0c0c0c;">
         <!-- Header -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <div>
-                <h2 style="margin: 0; color: #2c3e50;">LISTE DE MES ÉPREUVES</h2>
-                <small style="color: #7f8c8d;">WIP</small>
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <span style="background: #95a5a6; color: white; padding: 5px 10px; border-radius: 3px; font-size: 12px;">Accueil</span>
-                <span style="background: #3498db; color: white; padding: 5px 10px; border-radius: 3px; font-size: 12px;">WIP</span>
-            </div>
-        </div>
-
-        <!-- Accés rapide ligne -->
-        <div style="display: flex; gap: 20px; margin-bottom: 20px;">
-            <!-- Accés rapide -->
-            <div style="flex: 2; background: #636e72; color: white; padding: 15px; border-radius: 5px;">
-                <h4 style="margin: 0 0 10px 0;">Accès rapide épreuves (ADMIN)</h4>
-                <select style="width: 100%; padding: 8px; border: none; border-radius: 3px;">
-                    <option>Choisir ...</option>
-                </select>
-            </div>
-            
-            <!-- Actions rapides -->
-            <div style="flex: 1; background: #636e72; color: white; padding: 15px; border-radius: 5px;">
-                <h4 style="margin: 0 0 10px 0;">Actions rapides (ADMIN)</h4>
-                <div style="display: flex; gap: 5px;">
-                    <button style="background: #3498db; color: white; border: none; padding: 8px; border-radius: 3px; font-size: 12px;">💰</button>
-                    <button style="background: #2ecc71; color: white; border: none; padding: 8px; border-radius: 3px; font-size: 12px;">💰</button>
-                    <button style="background: #e74c3c; color: white; border: none; padding: 8px; border-radius: 3px; font-size: 12px;">💰</button>
-                    <button style="background: #f39c12; color: white; border: none; padding: 8px; border-radius: 3px; font-size: 12px;">📊</button>
-                    <button style="background: #9b59b6; color: white; border: none; padding: 8px; border-radius: 3px; font-size: 12px;">✉️</button>
+        <div style="padding: 2rem; border-bottom: 1px solid #333333;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h2 style="font-family: 'Oswald', sans-serif; font-size: 1.8rem; font-weight: 700; color: #ffffff; margin: 0; text-transform: uppercase; letter-spacing: 2px;">
+                        LISTE DE MES ÉPREUVES
+                    </h2>
+                    <small style="color: #cccccc;">{{ $events->count() }} épreuves sélectionnées</small>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <span style="background: #666666; color: #ffffff; padding: 0.5rem 1rem; font-family: 'Oswald', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">Accueil</span>
+                    <span style="background: #0ea5e9; color: #000000; padding: 0.5rem 1rem; font-family: 'Oswald', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">Liste de mes épreuves</span>
                 </div>
             </div>
         </div>
 
-        <!-- Recherche participant -->
-        <div style="background: #636e72; color: white; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-            <h4 style="margin: 0 0 10px 0;">Recherche rapide d'un participant</h4>
-            <input type="text" placeholder="Entrer son nom et/ou prénom" style="width: 300px; padding: 8px; border: none; border-radius: 3px;">
+        <!-- Quick Actions Row -->
+        <div style="display: flex; gap: 2rem; padding: 2rem; border-bottom: 1px solid #333333;">
+            <!-- Quick Access -->
+            <div style="flex: 2; background: #1a1a1a; border: 1px solid #333333; padding: 1.5rem;">
+                <h4 style="font-family: 'Oswald', sans-serif; color: #ffffff; margin: 0 0 1rem 0; text-transform: uppercase; letter-spacing: 1px;">Accès rapide épreuves (ADMIN)</h4>
+                <select style="width: 100%; padding: 0.75rem; background: #111111; border: 1px solid #333333; color: #cccccc; font-family: 'Roboto', sans-serif;">
+                    <option>Choisir ...</option>
+                    @foreach($events as $event)
+                        <option>{{ $event->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div style="flex: 1; background: #1a1a1a; border: 1px solid #333333; padding: 1.5rem;">
+                <h4 style="font-family: 'Oswald', sans-serif; color: #ffffff; margin: 0 0 1rem 0; text-transform: uppercase; letter-spacing: 1px;">Actions rapides (ADMIN)</h4>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button style="background: #0ea5e9; color: #000000; border: none; padding: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; cursor: pointer;">💰</button>
+                    <button style="background: #22c55e; color: #000000; border: none; padding: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; cursor: pointer;">💰</button>
+                    <button style="background: #ef4444; color: #ffffff; border: none; padding: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; cursor: pointer;">💰</button>
+                    <button style="background: #f59e0b; color: #000000; border: none; padding: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; cursor: pointer;">📊</button>
+                    <button style="background: #8b5cf6; color: #ffffff; border: none; padding: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; cursor: pointer;">✉️</button>
+                </div>
+            </div>
         </div>
 
-        <!-- Liste de courses -->
-        <div style="background: white; border-radius: 5px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-            <div style="background: #636e72; color: white; padding: 10px;">
-                <h4 style="margin: 0;">Épreuves</h4>
+        <!-- Participant Search -->
+        <div style="background: #1a1a1a; border: 1px solid #333333; padding: 1.5rem; margin: 2rem; margin-bottom: 0;">
+            <h4 style="font-family: 'Oswald', sans-serif; color: #ffffff; margin: 0 0 1rem 0; text-transform: uppercase; letter-spacing: 1px;">Recherche rapide d'un participant</h4>
+            <input type="text" placeholder="Entrer son nom et/ou prénom" style="width: 300px; padding: 0.75rem; background: #111111; border: 1px solid #333333; color: #ffffff;">
+        </div>
+
+        <!-- Events Table -->
+        <div style="margin: 2rem; background: #111111; border: 1px solid #333333; overflow: hidden;">
+            <div style="background: #1a1a1a; color: #ffffff; padding: 1rem; border-bottom: 1px solid #333333;">
+                <h4 style="font-family: 'Oswald', sans-serif; margin: 0; text-transform: uppercase; letter-spacing: 1px;">Épreuves</h4>
             </div>
             
             <table style="width: 100%; border-collapse: collapse;">
-                <thead style="background: #f8f9fa;">
+                <thead style="background: #0c0c0c; border-bottom: 1px solid #333333;">
                     <tr>
-                        <th style="padding: 12px; text-align: left; border-bottom: 1px solid #dee2e6;">#</th>
-                        <th style="padding: 12px; text-align: left; border-bottom: 1px solid #dee2e6;">Nom de l'épreuve</th>
-                        <th style="padding: 12px; text-align: center; border-bottom: 1px solid #dee2e6;">Vérifications</th>
-                        <th style="padding: 12px; text-align: center; border-bottom: 1px solid #dee2e6;">Date de départ</th>
-                        <th style="padding: 12px; text-align: center; border-bottom: 1px solid #dee2e6;">Date de fin</th>
-                        <th style="padding: 12px; text-align: center; border-bottom: 1px solid #dee2e6;">Actions</th>
+                        <th style="padding: 1rem; text-align: left; font-family: 'Oswald', sans-serif; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; border-right: 1px solid #333333;">#</th>
+                        <th style="padding: 1rem; text-align: left; font-family: 'Oswald', sans-serif; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; border-right: 1px solid #333333;">Nom de l'épreuve</th>
+                        <th style="padding: 1rem; text-align: center; font-family: 'Oswald', sans-serif; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; border-right: 1px solid #333333;">Vérifications</th>
+                        <th style="padding: 1rem; text-align: center; font-family: 'Oswald', sans-serif; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; border-right: 1px solid #333333;">Date de départ</th>
+                        <th style="padding: 1rem; text-align: center; font-family: 'Oswald', sans-serif; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; border-right: 1px solid #333333;">Date de fin</th>
+                        <th style="padding: 1rem; text-align: center; font-family: 'Oswald', sans-serif; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tbody>
                     @forelse($events as $event)
-                        <tr style="border-bottom: 1px solid #dee2e6;">
-                            <td style="padding: 12px;">{{ $event->id }}</td>
-                            <td style="padding: 12px;">
-                                <strong>{{ $event->name }}</strong><br>
-                                <small style="color: #6c757d;">{{ $event->location }} ({{ $event->department }})</small><br>
+                        <tr style="border-bottom: 1px solid #333333;">
+                            <td style="padding: 1.5rem 1rem; color: #cccccc; border-right: 1px solid #333333;">{{ $event->id }}</td>
+                            <td style="padding: 1.5rem 1rem; border-right: 1px solid #333333;">
+                                <strong style="font-family: 'Oswald', sans-serif; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">{{ $event->name }}</strong><br>
+                                <small style="color: #cccccc;">{{ $event->location }} ({{ $event->department }})</small><br>
                                 @if($event->status == 'upcoming')
-                                    <span style="background: #e74c3c; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px;">Épreuve non ouverte</span>
+                                    <span style="background: #ef4444; color: #ffffff; padding: 0.25rem 0.75rem; font-family: 'Oswald', sans-serif; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-top: 0.5rem; display: inline-block;">Épreuve non ouverte</span>
                                 @elseif($event->status == 'open')
-                                    <span style="background: #28a745; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px;">Inscriptions ouvertes</span>
+                                    <span style="background: #22c55e; color: #000000; padding: 0.25rem 0.75rem; font-family: 'Oswald', sans-serif; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-top: 0.5rem; display: inline-block;">Inscriptions ouvertes</span>
                                 @elseif($event->status == 'closed')
-                                    <span style="background: #ffc107; color: #212529; padding: 2px 6px; border-radius: 3px; font-size: 11px;">Inscriptions fermées</span>
+                                    <span style="background: #f59e0b; color: #000000; padding: 0.25rem 0.75rem; font-family: 'Oswald', sans-serif; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-top: 0.5rem; display: inline-block;">Inscriptions fermées</span>
                                 @endif
                             </td>
-                            <td style="padding: 12px; text-align: center;">
-                                <div style="display: flex; gap: 5px; justify-content: center;">
-                                    <span style="background: #28a745; color: white; padding: 2px 8px; border-radius: 3px; font-size: 11px;">INSCRITS<br>0 0</span>
-                                    <span style="background: #6c757d; color: white; padding: 2px 8px; border-radius: 3px; font-size: 11px;">CERTIFICATS<br>0 0</span>
+                            <td style="padding: 1.5rem 1rem; text-align: center; border-right: 1px solid #333333;">
+                                <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+                                    <div style="text-align: center;">
+                                        <div style="background: #22c55e; color: #000000; padding: 0.5rem; font-family: 'Oswald', sans-serif; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem; font-weight: 600;">INSCRITS</div>
+                                        <div style="color: #22c55e; font-weight: 700;">0 0</div>
+                                    </div>
+                                    <div style="text-align: center;">
+                                        <div style="background: #6b7280; color: #ffffff; padding: 0.5rem; font-family: 'Oswald', sans-serif; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem; font-weight: 600;">CERTIFICATS</div>
+                                        <div style="color: #6b7280; font-weight: 700;">0 0</div>
+                                    </div>
+                                    <div style="text-align: center;">
+                                        <div style="background: #f59e0b; color: #000000; padding: 0.5rem; font-family: 'Oswald', sans-serif; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem; font-weight: 600;">AUTO. PARENTALE</div>
+                                        <div style="color: #f59e0b; font-weight: 700;">0 0</div>
+                                    </div>
                                 </div>
                             </td>
-                            <td style="padding: 12px; text-align: center;">{{ $event->event_date->format('d/m/Y') }}</td>
-                            <td style="padding: 12px; text-align: center;">{{ $event->event_date->format('d/m/Y') }}</td>
-                            <td style="padding: 12px; text-align: center;">
-                                <div style="display: flex; flex-direction: column; gap: 12px; align-items: center;">
-                                    <div style="display: flex; gap: 12px;">
-                                        <button style="background: #17a2b8; color: white; border: none; padding: 4px 8px; border-radius: 3px; font-size: 13px;">🔍</button>
-                                        <button style="background: #28a745; color: white; border: none; padding: 4px 8px; border-radius: 3px; font-size: 13px;">🔧</button>
-                                        <button style="background: #6f42c1; color: white; border: none; padding: 4px 8px; border-radius: 3px; font-size: 13px;">🚹</button>
+                            <td style="padding: 1.5rem 1rem; text-align: center; color: #cccccc; border-right: 1px solid #333333;">{{ $event->event_date->format('d/m/Y') }}</td>
+                            <td style="padding: 1.5rem 1rem; text-align: center; color: #cccccc; border-right: 1px solid #333333;">{{ $event->event_date->format('d/m/Y') }}</td>
+                            <td style="padding: 1.5rem 1rem; text-align: center;">
+                                <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: center;">
+                                    <div style="display: flex; gap: 0.25rem;">
+                                        <button style="background: #17a2b8; color: #ffffff; border: none; padding: 0.5rem; font-size: 0.8rem; cursor: pointer;">🔍</button>
+                                        <button style="background: #22c55e; color: #000000; border: none; padding: 0.5rem; font-size: 0.8rem; cursor: pointer;">🔧</button>
+                                        <button style="background: #8b5cf6; color: #ffffff; border: none; padding: 0.5rem; font-size: 0.8rem; cursor: pointer;">⚙️</button>
                                     </div>
-                                    <div style="display: flex; gap: 12px;">
-                                        <button style="background: #6f42c1; color: white; border: none; padding: 4px 8px; border-radius: 3px; font-size: 13px;">📶</button>
-                                        <button style="background: #6f42c1; color: white; border: none; padding: 4px 8px; border-radius: 3px; font-size: 13px;">📶</button>
-                                        <button style="background: #6f42c1; color: white; border: none; padding: 4px 8px; border-radius: 3px; font-size: 13px;">📶</button>
+                                    <div style="display: flex; gap: 0.25rem;">
+                                        <button style="background: #f59e0b; color: #000000; border: none; padding: 0.5rem; font-size: 0.8rem; cursor: pointer;">📊</button>
+                                        <button style="background: #10b981; color: #000000; border: none; padding: 0.5rem; font-size: 0.8rem; cursor: pointer;">📋</button>
+                                        <button style="background: #6b7280; color: #ffffff; border: none; padding: 0.5rem; font-size: 0.8rem; cursor: pointer;">📝</button>
                                     </div>
                                 </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" style="padding: 20px; text-align: center; color: #6c757d;">
-                                Aucune épreuve créée. <a href="#" style="color: #007bff;">Créer votre première épreuve</a>
+                            <td colspan="6" style="padding: 3rem; text-align: center; color: #cccccc;">
+                                <div style="font-size: 2rem; margin-bottom: 1rem; color: #333333;">■</div>
+                                Aucune épreuve créée. <a href="{{ route('organizer.create') }}" style="color: #0ea5e9; text-decoration: none;">Créer votre première épreuve</a>
                             </td>
                         </tr>
                     @endforelse
@@ -149,4 +171,23 @@
         </div>
     </div>
 </div>
+
+<style>
+input:focus, select:focus {
+    outline: none;
+    border-color: #0ea5e9;
+}
+
+button:hover {
+    transform: translateY(-1px);
+}
+
+tr:hover {
+    background: #1a1a1a;
+}
+
+input::placeholder {
+    color: #666666;
+}
+</style>
 @endsection

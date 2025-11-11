@@ -8,8 +8,16 @@ class EventController extends Controller
 {
     public function index()
     {
-        $events = Event::all();
-        return view('events.index', compact('events'));
+        $events = Event::whereIn('status', ['upcoming', 'open', 'closed'])
+                    ->orderBy('event_date', 'asc')
+                    ->get();
+        
+        $completedEvents = Event::where('status', 'completed')
+                            ->orderBy('event_date', 'desc')
+                            ->limit(6)
+                            ->get();
+        
+        return view('events.index', compact('events', 'completedEvents'));
     }
 
     public function show($slug)
@@ -21,8 +29,8 @@ class EventController extends Controller
     public function results()
     {
         $events = Event::where('status', 'completed')
-                  ->orderBy('event_date', 'desc')
-                  ->get();
+                    ->orderBy('event_date', 'desc')
+                    ->get();
         return view('events.results', compact('events'));
     }       
 }

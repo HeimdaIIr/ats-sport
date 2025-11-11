@@ -4,295 +4,356 @@
 
 @section('content')
     <!-- Hero Slider -->
-    <div id="hero-slider" style="background: linear-gradient(135deg, var(--primary), var(--accent)); padding: 4rem 0; margin: -2rem -2rem 3rem -2rem; border-radius: 0 0 24px 24px; position: relative; overflow: hidden; min-height: 400px;">
+    <div id="hero-slider" style="background: #000000; padding: 0; margin: 0; position: relative; overflow: hidden; height: 500px;">
         
         <!-- Slide 1: Statistiques -->
-        <div class="hero-slide active" data-slide="1" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem; text-align: center; position: absolute; top: 4rem; left: 0; right: 0; transition: all 0.5s ease; opacity: 1; transform: translateX(0);">
-
-            <h1 style="font-size: 3rem; font-weight: 700; color: white; margin-bottom: 1rem; line-height: 1.2;">
-                Trouvez votre prochaine <span style="color: #fbbf24;">aventure</span> sportive
-            </h1>
-            <p style="font-size: 1.25rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
-                Des trails aux courses urbaines, découvrez les événements qui vous correspondent près de chez vous.
-            </p>
-            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1rem 2rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.2);">
-                    <div style="font-size: 2rem; font-weight: 700; color: white;">{{ $events->count() }}</div>
-                    <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">Événements actifs</div>
-                </div>
-                <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1rem 2rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.2);">
-                    <div style="font-size: 2rem; font-weight: 700; color: white;">5000km+</div>
-                    <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">Kilomètres parcourues</div>
-                </div>
-                <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1rem 2rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.2);">
-                    <div style="font-size: 2rem; font-weight: 700; color: white;">70k+</div>
-                    <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">Participants inscrits</div>
+        <div class="hero-slide" data-slide="1" style="max-width: 1400px; margin: 0 auto; padding: 0 2rem; text-align: center; display: block; height: 100%; align-items: center; justify-content: center;">
+            <div>
+                <h1 style="font-family: 'Oswald', sans-serif; font-size: 4rem; font-weight: 700; color: #ffffff; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 3px; line-height: 1;">
+                    DÉPASSEZ VOS <span style="color: #0ea5e9;">LIMITES</span>
+                </h1>
+                <p style="font-size: 1.2rem; color: #cccccc; margin-bottom: 3rem; max-width: 600px; margin-left: auto; margin-right: auto; font-weight: 300;">
+                    Rejoignez la communauté des athlètes qui repoussent leurs limites
+                </p>
+                <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
+                    <div style="background: #111111; border: 2px solid #333333; padding: 2rem; min-width: 150px; transition: all 0.3s ease;">
+                        <div style="font-family: 'Oswald', sans-serif; font-size: 3rem; font-weight: 700; color: #0ea5e9; margin-bottom: 0.5rem;">{{ $events->count() }}</div>
+                        <div style="color: #cccccc; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 500;">ÉVÉNEMENTS ACTIFS</div>
+                    </div>
+                    <div style="background: #111111; border: 2px solid #333333; padding: 2rem; min-width: 150px; transition: all 0.3s ease;">
+                        <div style="font-family: 'Oswald', sans-serif; font-size: 3rem; font-weight: 700; color: #0ea5e9; margin-bottom: 0.5rem;">500+</div>
+                        <div style="color: #cccccc; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 500;">ÉVÉNEMENTS TERMINÉS</div>
+                    </div>
+                    <div style="background: #111111; border: 2px solid #333333; padding: 2rem; min-width: 150px; transition: all 0.3s ease;">
+                        <div style="font-family: 'Oswald', sans-serif; font-size: 3rem; font-weight: 700; color: #0ea5e9; margin-bottom: 0.5rem;">70K+</div>
+                        <div style="color: #cccccc; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 500;">PARTICIPANTS INSCRITS</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Slide 2: Course vedette 01 -->
-        <div class="hero-slide" data-slide="2" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem; text-align: center; position: absolute; top: 4rem; left: 0; right: 0; transition: all 0.5s ease; opacity: 0; transform: translateX(100%);">
-
+        <!-- Slide 2: Course vedette -->
+        <div class="hero-slide" data-slide="2" style="max-width: 1400px; margin: 0 auto; padding: 0 2rem; text-align: center; display: none; height: 100%; align-items: center; justify-content: center;">
             @if($events->first())
-            <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 2rem; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2); max-width: 800px; margin: 0 auto;">
-                <div style="font-size: 1rem; color: #fbbf24; font-weight: 600; text-transform: uppercase; margin-bottom: 1rem;">🏆 Course à l'affiche</div>
-                <h1 style="font-size: 2.5rem; font-weight: 700; color: white; margin-bottom: 1rem; line-height: 1.2;">
-                    {{ $events->first()->name }}
-                </h1>
-                <p style="font-size: 1.25rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 2rem;">
-                    🐘 {{ $events->first()->location }} • 📅 {{ $events->first()->event_date->format('d/m/Y') }}
-                </p>
-                <div style="display: flex; gap: 1rem; justify-content: center; align-items: center; flex-wrap: wrap;">
-                    <button style="background: #fbbf24; color: #1a1a1a; padding: 1rem 2rem; border: none; border-radius: 12px; font-weight: 600; font-size: 1.1rem; cursor: pointer; transition: all 0.2s ease;">
-                        🐘 S'inscrire maintenant
-                    </button>
-                    <button style="background: rgba(255, 255, 255, 0.2); color: white; padding: 1rem 2rem; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s ease;">
-                        🐘 En savoir plus
-                    </button>
+            <div style="max-width: 800px;">
+                <div style="background: #111111; border: 2px solid #0ea5e9; padding: 3rem; position: relative;">
+                    <div style="position: absolute; top: -15px; left: 2rem; background: #0ea5e9; color: #000000; padding: 0.5rem 2rem; font-family: 'Oswald', sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem;">
+                        COURSE VEDETTE
+                    </div>
+                    <h1 style="font-family: 'Oswald', sans-serif; font-size: 3rem; font-weight: 700; color: #ffffff; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 2px; line-height: 1;">
+                        {{ $events->first()->name }}
+                    </h1>
+                    <div style="display: flex; justify-content: center; gap: 3rem; margin-bottom: 2rem; color: #cccccc;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="color: #0ea5e9; font-size: 1.2rem;">●</span>
+                            <span style="font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px;">{{ $events->first()->location }}</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="color: #0ea5e9; font-size: 1.2rem;">●</span>
+                            <span style="font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px;">{{ $events->first()->event_date->format('d/m/Y') }}</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 1.5rem; justify-content: center;">
+                        <button style="background: #0ea5e9; color: #000000; border: none; padding: 1rem 2.5rem; font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 1rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s ease;">
+                            S'INSCRIRE MAINTENANT
+                        </button>
+                        <button style="background: transparent; color: #0ea5e9; border: 2px solid #0ea5e9; padding: 1rem 2.5rem; font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 1rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s ease;">
+                            EN SAVOIR PLUS
+                        </button>
+                    </div>
                 </div>
             </div>
             @endif
         </div>
 
         <!-- Slide 3: Boutique -->
-        <div class="hero-slide" data-slide="3" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem; text-align: center; position: absolute; top: 4rem; left: 0; right: 0; transition: all 0.5s ease; opacity: 0; transform: translateX(100%);">
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; max-width: 1000px; margin: 0 auto;">
+        <div class="hero-slide" data-slide="3" style="max-width: 1400px; margin: 0 auto; padding: 0 2rem; text-align: center; display: none; height: 100%; align-items: center; justify-content: center;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; max-width: 1100px;">
                 <div style="text-align: left;">
-                    <div style="font-size: 1rem; color: #fbbf24; font-weight: 600; text-transform: uppercase; margin-bottom: 1rem;">🛒 Boutique Point Course</div>
-                    <h1 style="font-size: 2.5rem; font-weight: 700; color: white; margin-bottom: 1rem; line-height: 1.2;">
-                        Organisateurs <span style="color: #fbbf24;">rendez vous ici</span>
+                    <div style="background: #0ea5e9; color: #000000; display: inline-block; padding: 0.5rem 2rem; font-family: 'Oswald', sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 2rem; font-size: 0.9rem;">
+                        BOUTIQUE ATS SPORT
+                    </div>
+                    <h1 style="font-family: 'Oswald', sans-serif; font-size: 3rem; font-weight: 700; color: #ffffff; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 2px; line-height: 1;">
+                        DECOUVREZ NOTRE BOUTIQUE <span style="color: #0ea5e9;">POINT COURSE</span>
                     </h1>
-                    <p style="font-size: 1.1rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 2rem;">
-                        Découvrez nos offres et services.
+                    <p style="font-size: 1.1rem; color: #cccccc; margin-bottom: 2rem; line-height: 1.6;">
+                        Organisateurs : rendez vous ici pour découvrir nos services!
                     </p>
-                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                        <button style="background: #fbbf24; color: #1a1a1a; padding: 1rem 2rem; border: none; border-radius: 12px; font-weight: 600; cursor: pointer;">
-                            🐘 Voir la boutique
+                    <div style="display: flex; gap: 1.5rem;">
+                        <button style="background: #0ea5e9; color: #000000; border: none; padding: 1rem 2rem; font-family: 'Oswald', sans-serif; font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;">
+                            VOIR LA BOUTIQUE
                         </button>
-                        <button style="background: rgba(255, 255, 255, 0.2); color: white; padding: 1rem 2rem; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px; font-weight: 600; cursor: pointer;">
-                            🐘 Test WIP
+                        <button style="background: transparent; color: #0ea5e9; border: 2px solid #0ea5e9; padding: 1rem 2rem; font-family: 'Oswald', sans-serif; font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;">
+                            WIP
                         </button>
                     </div>
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                    <div style="background: rgba(255, 255, 255, 0.1); padding: 1.5rem; border-radius: 12px; text-align: center;">
-                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🐘</div>
-                        <div style="color: white; font-weight: 600;">Location</div>
-                        <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem;">wip</div>
+                    <div style="background: #111111; border: 2px solid #333333; padding: 2rem; text-align: center; transition: all 0.3s ease;">
+                        <div style="font-size: 2.5rem; margin-bottom: 1rem; color: #0ea5e9;">■</div>
+                        <div style="color: #ffffff; font-family: 'Oswald', sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">DOSSARDS</div>
+                        <div style="color: #0ea5e9; font-size: 1.2rem; font-weight: 700;">wip</div>
                     </div>
-                    <div style="background: rgba(255, 255, 255, 0.1); padding: 1.5rem; border-radius: 12px; text-align: center;">
-                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🐘</div>
-                        <div style="color: white; font-weight: 600;">Inscription</div>
-                        <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem;">wip</div>
+                    <div style="background: #111111; border: 2px solid #333333; padding: 2rem; text-align: center; transition: all 0.3s ease;">
+                        <div style="font-size: 2.5rem; margin-bottom: 1rem; color: #0ea5e9;">■</div>
+                        <div style="color: #ffffff; font-family: 'Oswald', sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">GESTION D'INSCRIPTIONS</div>
+                        <div style="color: #0ea5e9; font-size: 1.2rem; font-weight: 700;">wip</div>
                     </div>
-                    <div style="background: rgba(255, 255, 255, 0.1); padding: 1.5rem; border-radius: 12px; text-align: center;">
-                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🐘</div>
-                        <div style="color: white; font-weight: 600;">Dossards</div>
-                        <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem;">wip</div>
+                    <div style="background: #111111; border: 2px solid #333333; padding: 2rem; text-align: center; transition: all 0.3s ease;">
+                        <div style="font-size: 2.5rem; margin-bottom: 1rem; color: #0ea5e9;">■</div>
+                        <div style="color: #ffffff; font-family: 'Oswald', sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">LOCATION</div>
+                        <div style="color: #0ea5e9; font-size: 1.2rem; font-weight: 700;">wip</div>
                     </div>
-                    <div style="background: rgba(255, 255, 255, 0.1); padding: 1.5rem; border-radius: 12px; text-align: center;">
-                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🐘</div>
-                        <div style="color: white; font-weight: 600;">Prestation</div>
-                        <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem;">wip</div>
+                    <div style="background: #111111; border: 2px solid #333333; padding: 2rem; text-align: center; transition: all 0.3s ease;">
+                        <div style="font-size: 2.5rem; margin-bottom: 1rem; color: #0ea5e9;">■</div>
+                        <div style="color: #ffffff; font-family: 'Oswald', sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">PRESTATIONS</div>
+                        <div style="color: #0ea5e9; font-size: 1.2rem; font-weight: 700;">wip</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Slide 4: Test WIP -->
-        <div class="hero-slide" data-slide="4" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem; text-align: center; position: absolute; top: 4rem; left: 0; right: 0; transition: all 0.5s ease; opacity: 0; transform: translateX(100%);">
-            <h1 style="font-size: 3rem; font-weight: 700; color: white; margin-bottom: 1rem; line-height: 1.2;">
-                wip wip wip <span style="color: #fbbf24;">wip</span> 🐘
-            </h1>
-            <p style="font-size: 1.25rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 2rem; max-width: 700px; margin-left: auto; margin-right: auto;">
-                Plateforme complète pour gérer vos inscriptions, participants et résultats en toute simplicité.
-            </p>
-            <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem;">
-                <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.2); text-align: center;">
-                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚡</div>
-                    <div style="color: white; font-weight: 600; margin-bottom: 0.5rem;">🐘 wip wip</div>
-                    <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">🐘 wip wip wip</div>
+        <!-- Slide 4: Organisateurs -->
+        <!-- <div class="hero-slide" data-slide="4" style="max-width: 1400px; margin: 0 auto; padding: 0 2rem; text-align: center; display: none; height: 100%; align-items: center; justify-content: center;">
+            <div>
+                <h1 style="font-family: 'Oswald', sans-serif; font-size: 4rem; font-weight: 700; color: #ffffff; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 3px; line-height: 1;">
+                    ORGANISEZ VOTRE <span style="color: #0ea5e9;">ÉVÉNEMENT</span>
+                </h1>
+                <p style="font-size: 1.2rem; color: #cccccc; margin-bottom: 3rem; max-width: 700px; margin-left: auto; margin-right: auto; font-weight: 300;">
+                    Plateforme complète pour gérer vos inscriptions, participants et résultats en toute simplicité.
+                </p>
+                <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem;">
+                    <div style="background: #111111; border: 2px solid #333333; padding: 2rem; text-align: center; min-width: 200px;">
+                        <div style="font-size: 2.5rem; margin-bottom: 1rem; color: #0ea5e9;">■</div>
+                        <div style="color: #ffffff; font-family: 'Oswald', sans-serif; font-weight: 600; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px;">Location</div>
+                        <div style="color: #cccccc; font-size: 0.9rem;">En 10 minutes</div>
+                    </div>
+                    <div style="background: #111111; border: 2px solid #333333; padding: 2rem; text-align: center; min-width: 200px;">
+                        <div style="font-size: 2.5rem; margin-bottom: 1rem; color: #0ea5e9;">■</div>
+                        <div style="color: #ffffff; font-family: 'Oswald', sans-serif; font-weight: 600; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px;">PAIEMENTS SÉCURISÉS</div>
+                        <div style="color: #cccccc; font-size: 0.9rem;">Stripe & PayPal</div>
+                    </div>
+                    <div style="background: #111111; border: 2px solid #333333; padding: 2rem; text-align: center; min-width: 200px;">
+                        <div style="font-size: 2.5rem; margin-bottom: 1rem; color: #0ea5e9;">■</div>
+                        <div style="color: #ffffff; font-family: 'Oswald', sans-serif; font-weight: 600; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px;">Statistiques</div>
+                        <div style="color: #cccccc; font-size: 0.9rem;">Temps réel</div>
+                    </div>
                 </div>
-                <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.2); text-align: center;">
-                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🐘</div>
-                    <div style="color: white; font-weight: 600; margin-bottom: 0.5rem;">🐘</div>
-                    <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">🐘</div>
-                </div>
-                <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.2); text-align: center;">
-                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">📊</div>
-                    <div style="color: white; font-weight: 600; margin-bottom: 0.5rem;">Statistiques</div>
-                    <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">Temps réel</div>
-                </div>
+                <button style="background: #0ea5e9; color: #000000; border: none; padding: 0.5rem 1rem; font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 1.1rem; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 2rem;">
+                    CRÉER MON ÉVÉNEMENT
+                </button>
             </div>
-            <button style="background: #fbbf24; color: #1a1a1a; padding: 1rem 2rem; border: none; border-radius: 12px; font-weight: 600; font-size: 1.1rem; cursor: pointer;">
-                🚀 Créer mon événement
-            </button>
-        </div>
-
+        </div> 
+        -->
         <!-- Navigation dots -->
-        <div style="position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); display: flex; gap: 0.5rem;">
-            <button class="slide-dot active" data-slide="1" style="width: 12px; height: 12px; border-radius: 50%; border: 2px solid white; background: white; cursor: pointer; transition: all 0.3s ease;"></button>
-            <button class="slide-dot" data-slide="2" style="width: 12px; height: 12px; border-radius: 50%; border: 2px solid white; background: transparent; cursor: pointer; transition: all 0.3s ease;"></button>
-            <button class="slide-dot" data-slide="3" style="width: 12px; height: 12px; border-radius: 50%; border: 2px solid white; background: transparent; cursor: pointer; transition: all 0.3s ease;"></button>
-            <button class="slide-dot" data-slide="4" style="width: 12px; height: 12px; border-radius: 50%; border: 2px solid white; background: transparent; cursor: pointer; transition: all 0.3s ease;"></button>
+        <div style="position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%); display: flex; gap: 1rem; z-index: 100;">
+            <button class="slide-dot active" data-slide="1" style="width: 15px; height: 15px; background: #0ea5e9; border: 2px solid #0ea5e9; cursor: pointer; transition: all 0.3s ease;"></button>
+            <button class="slide-dot" data-slide="2" style="width: 15px; height: 15px; background: transparent; border: 2px solid #333333; cursor: pointer; transition: all 0.3s ease;"></button>
+            <button class="slide-dot" data-slide="3" style="width: 15px; height: 15px; background: transparent; border: 2px solid #333333; cursor: pointer; transition: all 0.3s ease;"></button>
         </div>
 
         <!-- Progress bar -->
-        <div style="position: absolute; bottom: 0; left: 0; height: 3px; background: rgba(255, 255, 255, 0.3); width: 100%;">
-            <div id="progress-bar" style="height: 100%; background: #fbbf24; width: 0%; transition: width 0.1s linear;"></div>
+        <div style="position: absolute; bottom: 0; left: 0; height: 3px; background: #333333; width: 100%;">
+            <div id="progress-bar" style="height: 100%; background: #0ea5e9; width: 0%; transition: width 0.1s linear;"></div>
         </div>
     </div>
+    
+    <!-- Script Slider -->
+    <script src="{{ asset('js/slider.js') }}"></script>
 
-    <script>
-        let currentSlide = 1;
-        let slideInterval;
-        let progressInterval;
-        const totalSlides = 4;
-        const slideDuration = 5000;
-
-        function showSlide(slideNumber) {
-            // Hide all slides
-            document.querySelectorAll('.hero-slide').forEach(slide => {
-                slide.style.opacity = '0';
-                slide.style.transform = 'translateX(100%)';
-            });
+<!-- Filtres -->
+<div style="background: #111111; padding: 2rem; border: 1px solid #333333; margin-bottom: 3rem;">
+    <div style="display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; justify-content: space-between;">
+        
+        <!-- Filtres gauche -->
+        <div style="display: flex; gap: 2rem; align-items: center;">
+            <span style="color: #ffffff; font-family: 'Oswald', sans-serif; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">Filtrer :</span>
             
-            // Show current slide with animation
-            setTimeout(() => {
-                const activeSlide = document.querySelector(`[data-slide="${slideNumber}"]`);
-                activeSlide.style.transform = 'translateX(0)';
-                activeSlide.style.opacity = '1';
-            }, 100);
-            
-            // Update dots
-            document.querySelectorAll('.slide-dot').forEach(dot => {
-                dot.style.background = 'transparent';
-                dot.classList.remove('active');
-            });
-            document.querySelector(`[data-slide="${slideNumber}"].slide-dot`).style.background = 'white';
-            document.querySelector(`[data-slide="${slideNumber}"].slide-dot`).classList.add('active');
-            
-            currentSlide = slideNumber;
-        }
-
-        function nextSlide() {
-            const next = currentSlide >= totalSlides ? 1 : currentSlide + 1;
-            showSlide(next);
-        }
-
-        function startSlider() {
-            const progressBar = document.getElementById('progress-bar');
-            progressBar.style.width = '0%';
-            
-            let progress = 0;
-            progressInterval = setInterval(() => {
-                progress += 100 / (slideDuration / 100);
-                progressBar.style.width = progress + '%';
-            }, 100);
-
-<!-- Filters -->
-<div style="background: var(--bg-card); padding: 1.5rem; border-radius: 16px; margin-bottom: 2rem; box-shadow: var(--shadow);">
-    <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-        <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <span style="color: var(--text-secondary); font-weight: 500;">Filtrer :</span>
+            <button class="filter-btn active" style="background: #0ea5e9; color: #000000; border: none; padding: 0.75rem 1.5rem; font-family: 'Oswald', sans-serif; font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s ease;">
+                Tous
+            </button>
+            <button class="filter-btn" style="background: #1a1a1a; color: #cccccc; border: 1px solid #333333; padding: 0.75rem 1.5rem; font-family: 'Oswald', sans-serif; font-weight: 500; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s ease;">
+                Course
+            </button>
+            <button class="filter-btn" style="background: #1a1a1a; color: #cccccc; border: 1px solid #333333; padding: 0.75rem 1.5rem; font-family: 'Oswald', sans-serif; font-weight: 500; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s ease;">
+                VTT
+            </button>
+            <button class="filter-btn" style="background: #1a1a1a; color: #cccccc; border: 1px solid #333333; padding: 0.75rem 1.5rem; font-family: 'Oswald', sans-serif; font-weight: 500; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s ease;">
+                Triathlon
+            </button>
         </div>
-        <button class="filter-btn active" data-filter="all" style="background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 500; cursor: pointer;">
-            Tous
-        </button>
-        <button class="filter-btn" data-filter="course" style="background: var(--bg-secondary); color: var(--text-secondary); border: 1px solid var(--border); padding: 0.5rem 1rem; border-radius: 8px; font-weight: 500; cursor: pointer;">
-            Course
-        </button>
-        <button class="filter-btn" data-filter="vtt" style="background: var(--bg-secondary); color: var(--text-secondary); border: 1px solid var(--border); padding: 0.5rem 1rem; border-radius: 8px; font-weight: 500; cursor: pointer;">
-            VTT
-        </button>
-        <button class="filter-btn" data-filter="triathlon" style="background: var(--bg-secondary); color: var(--text-secondary); border: 1px solid var(--border); padding: 0.5rem 1rem; border-radius: 8px; font-weight: 500; cursor: pointer;">
-            Triathlon
-        </button>
-        <div style="margin-left: auto; display: flex; gap: 1rem;">
-            <input type="text" placeholder="Rechercher par ville..." style="background: var(--bg-secondary); border: 1px solid var(--border); padding: 0.75rem 1rem; border-radius: 8px; color: var(--text-primary); width: 250px;">
-            <button style="background: var(--accent); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 500; cursor: pointer;">
-                🔍 Rechercher
+        
+        <!-- Recherche droite -->
+        <div style="display: flex; gap: 1rem; align-items: center;">
+            <input type="text" placeholder="RECHERCHER PAR VILLE..." style="background: #1a1a1a; border: 1px solid #333333; padding: 1rem 1.5rem; color: #ffffff; width: 300px; font-family: 'Roboto', sans-serif; font-size: 0.9rem; letter-spacing: 0.5px;">
+            <button style="background: #0ea5e9; color: #000000; border: none; padding: 1rem 2rem; font-family: 'Oswald', sans-serif; font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s ease;">
+                RECHERCHER
             </button>
         </div>
     </div>
 </div>
 
-<!-- Events Grid -->
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
-    @forelse($events as $event)
-        <div class="event-card" style="background: var(--bg-card); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s ease; cursor: pointer;" 
-             onclick="window.location.href='{{ route('event.show', $event->slug) }}'">
-            
-            <!-- Event Image -->
-            <div style="height: 200px; background: linear-gradient(135deg, var(--primary), var(--accent)); position: relative; display: flex; align-items: center; justify-content: center;">
-                <div style="font-size: 3rem; color: white; opacity: 0.8;">🏃</div>
-                <div style="position: absolute; top: 1rem; right: 1rem; background: rgba(0, 0, 0, 0.7); color: white; padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.8rem; font-weight: 500;">
-                    {{ $event->event_date->format('d M') }}
-                </div>
-            </div>
-            
-            <!-- Event Content -->
-            <div style="padding: 1.5rem;">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                    <div>
-                        <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem; line-height: 1.3;">
-                            {{ $event->name }}
-                        </h3>
-                        <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-secondary); font-size: 0.9rem;">
-                            <span>📍</span>
-                            <span>{{ $event->location }} ({{ $event->department }})</span>
+<!-- Events Grid - Prochains événements -->
+<div style="max-width: 1900px; margin: 0 auto; padding: 2rem;">
+@if($events->count() > 0)
+    <div style="margin-bottom: 4rem;">
+        <h2 style="font-family: 'Oswald', sans-serif; font-size: 2rem; color: #ffffff; margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 2px; border-bottom: 2px solid #0ea5e9; padding-bottom: 1rem; display: inline-block;">
+            ■ PROCHAINS ÉVÉNEMENTS
+        </h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 2rem;">
+            @foreach($events as $event)
+                <div class="event-card" style="background: #111111; border: 1px solid #333333; border-radius: 0; overflow: hidden; transition: all 0.3s ease; cursor: pointer;" 
+                     onclick="window.location.href='{{ route('event.show', $event->slug) }}'">
+                    
+                    <!-- Event Image -->
+                    <div style="height: 200px; background: #0ea5e9; position: relative; display: flex; align-items: center; justify-content: center;">
+                        <div style="font-size: 3rem; color: #000000;">🏃</div>
+                        
+                        <!-- Status Badge -->
+                        <div style="position: absolute; top: 1rem; left: 1rem;">
+                            @if($event->status == 'open')
+                                <span style="background: #22c55e; color: #000000; padding: 0.5rem 1rem; font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">
+                                    OUVERT
+                                </span>
+                            @elseif($event->status == 'upcoming')
+                                <span style="background: #eab308; color: #000000; padding: 0.5rem 1rem; font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">
+                                    BIENTÔT
+                                </span>
+                            @elseif($event->status == 'closed')
+                                <span style="background: #ef4444; color: #ffffff; padding: 0.5rem 1rem; font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">
+                                    FERMÉ
+                                </span>
+                            @endif
+                        </div>
+                        
+                        <!-- Date Badge -->
+                        <div style="position: absolute; top: 1rem; right: 1rem; background: rgba(0, 0, 0, 0.8); color: white; padding: 0.5rem 1rem; font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 0.9rem; letter-spacing: 1px;">
+                            {{ $event->event_date->format('d M') }}
                         </div>
                     </div>
-                    <div class="status-badge" style="
-                        @if($event->status == 'open') background: var(--success); @endif
-                        @if($event->status == 'upcoming') background: var(--warning); @endif
-                        @if($event->status == 'closed') background: var(--error); @endif
-                        color: white; padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
-                    ">
-                        @if($event->status == 'open') Ouvert @endif
-                        @if($event->status == 'upcoming') Bientôt @endif
-                        @if($event->status == 'closed') Fermé @endif
+                    
+                    <!-- Event Content -->
+                    <div style="padding: 2rem; background: #111111;">
+                        <div style="margin-bottom: 1.5rem;">
+                            <h3 style="font-family: 'Oswald', sans-serif; font-size: 1.4rem; font-weight: 600; color: #ffffff; margin-bottom: 0.5rem; letter-spacing: 1px; text-transform: uppercase;">
+                                {{ $event->name }}
+                            </h3>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; color: #cccccc; font-size: 0.9rem;">
+                                <span style="color: #0ea5e9;">●</span>
+                                <span>{{ $event->location }} ({{ $event->department }})</span>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; gap: 2rem; margin-bottom: 2rem; padding: 1.5rem; background: #1a1a1a; border: 1px solid #333333;">
+                            <div style="text-align: center;">
+                                <div style="font-family: 'Oswald', sans-serif; font-size: 2rem; font-weight: 700; color: #0ea5e9;">{{ $event->event_date->format('d') }}</div>
+                                <div style="font-size: 0.8rem; color: #cccccc; text-transform: uppercase; letter-spacing: 1px;">{{ $event->event_date->format('M') }}</div>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="font-family: 'Oswald', sans-serif; font-weight: 500; color: #ffffff; margin-bottom: 0.25rem; text-transform: uppercase;">{{ $event->event_date->format('l') }}</div>
+                                <div style="font-size: 0.9rem; color: #cccccc;">Inscription avant le {{ $event->registration_deadline->format('d/m/Y') }}</div>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; gap: 0.5rem;">
+                                <span style="background: #1a1a1a; color: #0ea5e9; padding: 0.5rem 1rem; font-family: 'Oswald', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; border: 1px solid #333333;">
+                                    COURSE
+                                </span>
+                            </div>
+                            <button style="background: #0ea5e9; color: #000000; border: none; padding: 1rem 2rem; font-family: 'Oswald', sans-serif; font-weight: 600; transition: all 0.2s ease; text-transform: uppercase; letter-spacing: 1px;">
+                                S'INSCRIRE
+                            </button>
+                        </div>
                     </div>
                 </div>
-                
-                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding: 1rem; background: var(--bg-secondary); border-radius: 8px;">
-                    <div style="text-align: center;">
-                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary);">{{ $event->event_date->format('d') }}</div>
-                        <div style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase;">{{ $event->event_date->format('M') }}</div>
+            @endforeach
+        </div>
+    </div>
+@endif
+
+<!-- Derniers résultats -->
+    @if($completedEvents->count() > 0)
+        <div style="margin-bottom: 3rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2 style="font-family: 'Oswald', sans-serif; font-size: 2rem; color: #ffffff; text-transform: uppercase; letter-spacing: 2px; border-bottom: 2px solid #0ea5e9; padding-bottom: 1rem; display: inline-block;">
+                    ■ DERNIERS RÉSULTATS
+                </h2>
+                <a href="/resultats" style="background: transparent; color: #0ea5e9; border: 1px solid #0ea5e9; padding: 0.75rem 1.5rem; font-family: 'Oswald', sans-serif; font-weight: 600; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s ease;">
+                    VOIR TOUS LES RÉSULTATS
+                </a>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 2rem;">
+                @foreach($completedEvents as $event)
+                    <div class="result-card" style="background: #111111; border: 1px solid #333333; overflow: hidden; transition: all 0.3s ease; cursor: pointer;" onclick="window.location.href='#'">
+                        
+                        <!-- Event Image -->
+                        <div style="height: 200px; background: #6b7280; position: relative; display: flex; align-items: center; justify-content: center;">
+                            <div style="font-size: 3rem; color: #000000;">🏆</div>
+                            
+                            <!-- Completed Badge -->
+                            <div style="position: absolute; top: 1rem; left: 1rem;">
+                                <span style="background: #6b7280; color: #ffffff; padding: 0.5rem 1rem; font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">
+                                    TERMINÉ
+                                </span>
+                            </div>
+                            
+                            <!-- Date Badge -->
+                            <div style="position: absolute; top: 1rem; right: 1rem; background: rgba(0, 0, 0, 0.8); color: white; padding: 0.5rem 1rem; font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 0.9rem; letter-spacing: 1px;">
+                                {{ $event->event_date->format('d M') }}
+                            </div>
+                        </div>
+                        
+                        <!-- Event Content -->
+                        <div style="padding: 2rem; background: #111111;">
+                            <div style="margin-bottom: 1.5rem;">
+                                <h3 style="font-family: 'Oswald', sans-serif; font-size: 1.4rem; font-weight: 600; color: #ffffff; margin-bottom: 0.5rem; letter-spacing: 1px; text-transform: uppercase;">
+                                    {{ $event->name }}
+                                </h3>
+                                <div style="display: flex; align-items: center; gap: 0.5rem; color: #cccccc; font-size: 0.9rem;">
+                                    <span style="color: #0ea5e9;">●</span>
+                                    <span>{{ $event->location }} ({{ $event->department }})</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Stats rapides -->
+                            <div style="display: flex; gap: 1rem; margin-bottom: 2rem; padding: 1.5rem; background: #1a1a1a; border: 1px solid #333333;">
+                                <div style="text-align: center; flex: 1;">
+                                    <div style="font-family: 'Oswald', sans-serif; font-size: 1.5rem; font-weight: 700; color: #0ea5e9;">{{ rand(150, 500) }}</div>
+                                    <div style="font-size: 0.7rem; color: #cccccc; text-transform: uppercase; letter-spacing: 1px;">PARTICIPANTS</div>
+                                </div>
+                                <div style="text-align: center; flex: 1;">
+                                    <div style="font-family: 'Oswald', sans-serif; font-size: 1.5rem; font-weight: 700; color: #22c55e;">{{ rand(140, 490) }}</div>
+                                    <div style="font-size: 0.7rem; color: #cccccc; text-transform: uppercase; letter-spacing: 1px;">CLASSÉS</div>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <span style="background: #1a1a1a; color: #6b7280; padding: 0.5rem 1rem; font-family: 'Oswald', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; border: 1px solid #333333;">
+                                        TERMINÉ
+                                    </span>
+                                </div>
+                                <button style="background: #0ea5e9; color: #000000; border: none; padding: 1rem 2rem; font-family: 'Oswald', sans-serif; font-weight: 600; transition: all 0.2s ease; text-transform: uppercase; letter-spacing: 1px;">
+                                    VOIR RÉSULTATS
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div style="flex: 1;">
-                        <div style="font-weight: 500; color: var(--text-primary);">{{ $event->event_date->format('l') }}</div>
-                        <div style="font-size: 0.9rem; color: var(--text-secondary);">Inscription avant le {{ $event->registration_deadline->format('d/m/Y') }}</div>
-                    </div>
-                </div>
-                
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div style="display: flex; gap: 0.5rem;">
-                        <span style="background: var(--bg-secondary); color: var(--text-secondary); padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.8rem;">
-                            🏃 Course
-                        </span>
-                        @if($event->max_participants)
-                            <span style="background: var(--bg-secondary); color: var(--text-secondary); padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.8rem;">
-                                👥 {{ $event->max_participants }} places
-                            </span>
-                        @endif
-                    </div>
-                    <button style="background: var(--primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 500; transition: all 0.2s ease;">
-                        S'inscrire →
-                    </button>
-                </div>
+                @endforeach
             </div>
         </div>
-    @empty
-        <div style="grid-column: 1 / -1; text-align: center; padding: 4rem; color: var(--text-secondary);">
-            <div style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.5;">🏃</div>
-            <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: var(--text-primary);">Aucun événement disponible</h3>
-            <p>Les prochains événements seront bientôt annoncés !</p>
+    @endif
+
+    @if($events->count() == 0 && $completedEvents->count() == 0)
+        <div style="text-align: center; padding: 4rem; color: #cccccc;">
+            <div style="font-size: 4rem; margin-bottom: 2rem; color: #333333;">■</div>
+            <h3 style="font-family: 'Oswald', sans-serif; font-size: 2rem; margin-bottom: 1rem; color: #ffffff; text-transform: uppercase; letter-spacing: 2px;">AUCUN ÉVÉNEMENT DISPONIBLE</h3>
+            <p style="font-size: 1.1rem;">Les prochains événements seront bientôt annoncés !</p>
         </div>
-    @endforelse
-</div>
+    @endif
 
 <style>
 .event-card:hover {
@@ -313,6 +374,57 @@
     background: var(--primary) !important;
     color: white !important;
 }
+
+.filter-btn:hover:not(.active) {
+    background: #0ea5e9 !important;
+    color: #000000 !important;
+}
+
+.filter-btn.active {
+    background: #0ea5e9 !important;
+    color: #000000 !important;
+}
+
+input::placeholder {
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.8rem;
+}
+
+input:focus {
+    outline: none;
+    border-color: #0ea5e9;
+}
+
+button:hover {
+    transform: translateY(-1px);
+}
+
+.hero-slide div:hover {
+    transform: translateY(-2px);
+}
+
+.slide-dot.active {
+    background: #0ea5e9 !important;
+    border-color: #0ea5e9 !important;
+}
+
+.slide-dot:hover {
+    border-color: #0ea5e9 !important;
+}
+
+.hero-slide {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 500px !important;
+}
+
+.hero-slide[style*="display: none"] {
+    display: none !important;
+}
+
 </style>
 
 <script>
