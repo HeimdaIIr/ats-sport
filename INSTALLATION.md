@@ -1,5 +1,25 @@
 # 🚀 Guide d'Installation Rapide - ATS-Sport + ChronoFront
 
+## 🗄️ Architecture des Bases de Données
+
+**IMPORTANT:** Ce projet utilise **DEUX bases de données séparées** :
+
+1. **Base principale `ats_sport`**
+   - Données du site ATS-Sport (utilisateurs, inscriptions, résultats des compétitions, etc.)
+   - Tables : users, cache, jobs, sessions, etc.
+
+2. **Base ChronoFront `ats_sport_chronofront`**
+   - Données de chronométrage uniquement (événements, courses, participants, temps)
+   - Tables : events, races, entrants, results, categories, waves, screens, classements
+   - Cette séparation permet de gérer 1000+ courses par an sans impacter le site principal
+
+**Pourquoi 2 bases ?** Les données de chronométrage sont volumineuses et fréquemment manipulées. Les séparer garantit :
+- 🔒 Aucun risque de mélange avec les données du site
+- ⚡ Meilleures performances
+- 🧹 Maintenance facilitée (nettoyage, backup séparés)
+
+---
+
 ## ⚡ Installation Automatique (Recommandé)
 
 ### Prérequis
@@ -27,9 +47,11 @@ Avant de commencer, assurez-vous d'avoir installé :
    - ✅ Vérifier les prérequis (PHP, Composer, MySQL)
    - ✅ Installer les dépendances PHP
    - ✅ Créer et configurer le fichier `.env`
-   - ✅ Vous demander les informations de votre base de données
-   - ✅ Créer la base de données automatiquement
-   - ✅ Créer les 8 tables ChronoFront
+   - ✅ Vous demander les informations pour **la base principale** (site)
+   - ✅ Vous demander les informations pour **la base ChronoFront** (chrono)
+   - ✅ Créer automatiquement les 2 bases de données
+   - ✅ Créer les tables du site principal (users, cache, etc.)
+   - ✅ Créer les 8 tables ChronoFront (dans base séparée)
    - ✅ Initialiser les 14 catégories FFA
 
 3. **Démarrer le serveur**
@@ -67,31 +89,51 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-### 4. Configurer la base de données
+### 4. Créer les 2 bases de données
+
+Dans MySQL/phpMyAdmin, exécutez :
+```sql
+-- Base de données principale (site)
+CREATE DATABASE ats_sport CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- Base de données ChronoFront (chronométrage)
+CREATE DATABASE ats_sport_chronofront CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+### 5. Configurer le fichier .env
 
 Éditez le fichier `.env` et configurez vos paramètres MySQL :
+
 ```env
+# Base de données PRINCIPALE (Site ATS-Sport)
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=ats_sport
 DB_USERNAME=root
 DB_PASSWORD=
+
+# Base de données CHRONOFRONT (Chronométrage)
+CHRONOFRONT_DB_HOST=127.0.0.1
+CHRONOFRONT_DB_PORT=3306
+CHRONOFRONT_DB_DATABASE=ats_sport_chronofront
+CHRONOFRONT_DB_USERNAME=root
+CHRONOFRONT_DB_PASSWORD=
 ```
 
-### 5. Créer la base de données
-
-Dans MySQL/phpMyAdmin, exécutez :
-```sql
-CREATE DATABASE ats_sport CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-```
-
-### 6. Exécuter les migrations
+### 6. Exécuter les migrations - Base principale
 ```bash
-php artisan migrate
+php artisan migrate --database=mysql
 ```
 
-Cela créera 8 tables :
+Cela créera les tables du site (users, cache, jobs, etc.).
+
+### 7. Exécuter les migrations - Base ChronoFront
+```bash
+php artisan migrate --database=chronofront
+```
+
+Cela créera les 8 tables ChronoFront :
 - `events` - Événements sportifs
 - `categories` - Catégories FFA
 - `races` - Épreuves/courses
@@ -101,16 +143,16 @@ Cela créera 8 tables :
 - `screens` - Écrans d'affichage
 - `classements` - Classements
 
-### 7. Initialiser les catégories FFA
+### 8. Initialiser les catégories FFA
 ```bash
 php artisan db:seed --class=CategorySeeder
 ```
 
-Cela créera les 14 catégories FFA 2025 :
+Cela créera les 14 catégories FFA 2025 **dans la base ChronoFront** :
 - Hommes : SEM, V1M, V2M, V3M, V4M, ESM, JUM, CAM
 - Femmes : SEF, V1F, V2F, V3F, V4F, ESF, JUF, CAF
 
-### 8. Démarrer le serveur
+### 9. Démarrer le serveur
 ```bash
 php artisan serve
 ```
@@ -199,13 +241,46 @@ Pour la documentation complète de l'API REST (30+ endpoints), consultez :
 
 ### Erreur : "Connection refused" (MySQL)
 - Vérifiez que MySQL/XAMPP/WAMP est démarré
-- Vérifiez les paramètres dans `.env`
+- Vérifiez les paramètres dans `.env` (DB_* et CHRONOFRONT_DB_*)
 
 ### Erreur : "Table doesn't exist"
-- Exécutez les migrations : `php artisan migrate`
+- Pour le site : Exécutez `php artisan migrate --database=mysql`
+- Pour ChronoFront : Exécutez `php artisan migrate --database=chronofront`
 
 ### Erreur : "No categories found"
 - Exécutez le seeder : `php artisan db:seed --class=CategorySeeder`
+
+### Erreur : "Database 'ats_sport_chronofront' doesn't exist"
+- Créez la base manuellement via phpMyAdmin
+- Ou via MySQL CLI : `CREATE DATABASE ats_sport_chronofront CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`
+
+---
+
+## 🔧 Commandes Utiles
+
+### Migrations
+```bash
+# Voir l'état des migrations
+php artisan migrate:status
+
+# Voir l'état pour ChronoFront
+php artisan migrate:status --database=chronofront
+
+# Rollback dernière migration ChronoFront
+php artisan migrate:rollback --database=chronofront
+
+# Réinitialiser toutes les migrations ChronoFront
+php artisan migrate:fresh --database=chronofront
+```
+
+### Base de données
+```bash
+# Afficher les infos de connexion
+php artisan db:show
+
+# Afficher les infos de connexion ChronoFront
+php artisan db:show --database=chronofront
+```
 
 ---
 
@@ -221,6 +296,8 @@ Pour la documentation complète de l'API REST (30+ endpoints), consultez :
 
 Après l'installation, vérifiez que :
 
+- [ ] Le fichier `.env` contient les paramètres pour les 2 bases de données
+- [ ] Les 2 bases de données existent dans MySQL
 - [ ] Le serveur démarre sans erreur
 - [ ] http://localhost:8000 affiche le site ATS-Sport
 - [ ] http://localhost:8000/chronofront affiche le tableau de bord ChronoFront

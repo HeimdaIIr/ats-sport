@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Race extends Model
 {
+    protected $connection = 'chronofront';
+
     protected $fillable = [
         'event_id',
         'name',

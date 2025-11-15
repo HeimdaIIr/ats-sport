@@ -9,6 +9,8 @@ use Carbon\Carbon;
 
 class Entrant extends Model
 {
+    protected $connection = 'chronofront';
+
     protected $fillable = [
         'firstname',
         'lastname',

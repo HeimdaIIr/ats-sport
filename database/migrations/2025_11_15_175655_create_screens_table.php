@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('screens', function (Blueprint $table) {
+        Schema::connection('chronofront')->create('screens', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100);
             $table->foreignId('race_id')->nullable()->constrained()->onDelete('set null');
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('screens');
+        Schema::connection('chronofront')->dropIfExists('screens');
     }
 };
