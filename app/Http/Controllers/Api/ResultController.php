@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Result;
-use App\Models\Entrant;
-use App\Models\Race;
+use App\Models\ChronoFront\Result;
+use App\Models\ChronoFront\Entrant;
+use App\Models\ChronoFront\Race;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
