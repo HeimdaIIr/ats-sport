@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Screen extends Model
 {
+    protected $connection = 'chronofront';
+
     protected $fillable = [
         'name',
         'race_id',

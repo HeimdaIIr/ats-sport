@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Event extends Model
 {
+    protected $connection = 'chronofront';
+
     protected $fillable = [
         'name',
         'date_start',

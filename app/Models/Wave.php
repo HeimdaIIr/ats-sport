@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Wave extends Model
 {
+    protected $connection = 'chronofront';
+
     protected $fillable = [
         'race_id',
         'name',
