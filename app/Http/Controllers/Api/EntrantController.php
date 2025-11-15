@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Entrant;
-use App\Models\Category;
+use App\Models\ChronoFront\Entrant;
+use App\Models\ChronoFront\Category;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;

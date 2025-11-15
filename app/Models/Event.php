@@ -3,34 +3,27 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Event extends Model
 {
-    protected $connection = 'chronofront';
-
     protected $fillable = [
-        'name',
-        'date_start',
-        'date_end',
-        'location',
-        'description',
-        'is_active',
+        'name', 'slug', 'description', 'location',
+        'department', 'event_date', 'registration_deadline',
+        'max_participants', 'status'
     ];
 
     protected $casts = [
-        'date_start' => 'datetime',
-        'date_end' => 'datetime',
-        'is_active' => 'boolean',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
+        'event_date' => 'date',
+        'registration_deadline' => 'date',
     ];
 
-    /**
-     * Get the races for the event
-     */
-    public function races(): HasMany
+    protected static function boot()
     {
-        return $this->hasMany(Race::class);
+        parent::boot();
+
+        static::creating(function ($event) {
+            $event->slug = Str::slug($event->name);
+        });
     }
 }

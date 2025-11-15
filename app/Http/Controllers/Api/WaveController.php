@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Wave;
+use App\Models\ChronoFront\Wave;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 

@@ -1,27 +1,29 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\ChronoFront;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Classement extends Model
+class Screen extends Model
 {
     protected $connection = 'chronofront';
 
     protected $fillable = [
-        'race_id',
         'name',
-        'type',
-        'filters',
+        'race_id',
+        'layout',
+        'settings',
+        'is_active',
     ];
 
     protected $casts = [
-        'filters' => 'array',
+        'settings' => 'array',
+        'is_active' => 'boolean',
     ];
 
     /**
-     * Get the race that owns the classement
+     * Get the race that owns the screen
      */
     public function race(): BelongsTo
     {
