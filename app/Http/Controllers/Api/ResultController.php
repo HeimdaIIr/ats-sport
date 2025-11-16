@@ -6,12 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Models\ChronoFront\Result;
 use App\Models\ChronoFront\Entrant;
 use App\Models\ChronoFront\Race;
+use App\Services\ChronoFront\ResultsService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 class ResultController extends Controller
 {
+    protected ResultsService $resultsService;
+
+    public function __construct(ResultsService $resultsService)
+    {
+        $this->resultsService = $resultsService;
+    }
     /**
      * Display results for a specific race
      */
@@ -263,5 +270,153 @@ class ResultController extends Controller
         }
 
         $result->save();
+    }
+
+    /**
+     * Calculer les résultats d'une course (ChronoFront)
+     * Utilise les détections RFID pour calculer les temps et positions
+     *
+     * POST /api/results/race/{raceId}/calculate
+     */
+    public function calculateResults(Request $request, int $raceId): JsonResponse
+    {
+        $forceRecalculate = $request->input('force', false);
+
+        $stats = $this->resultsService->calculateRaceResults($raceId, $forceRecalculate);
+
+        if (!$stats['success']) {
+            return response()->json([
+                'success' => false,
+                'message' => $stats['message']
+            ], 400);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => "Résultats calculés : {$stats['calculated']} participants",
+            'stats' => $stats
+        ]);
+    }
+
+    /**
+     * Obtenir le classement scratch (général)
+     *
+     * GET /api/results/race/{raceId}/scratch?limit=100
+     */
+    public function scratchRanking(int $raceId, Request $request): JsonResponse
+    {
+        $limit = min($request->input('limit', 100), 1000);
+
+        $results = $this->resultsService->getScratchRanking($raceId, $limit);
+
+        return response()->json([
+            'success' => true,
+            'race_id' => $raceId,
+            'ranking_type' => 'scratch',
+            'count' => $results->count(),
+            'results' => $results->map(function ($result) {
+                return [
+                    'position' => $result->position_scratch,
+                    'bib_number' => $result->entrant->bib_number,
+                    'firstname' => $result->entrant->firstname,
+                    'lastname' => $result->entrant->lastname,
+                    'gender' => $result->entrant->gender,
+                    'category' => $result->entrant->category->name ?? null,
+                    'club' => $result->entrant->club,
+                    'race_time' => $this->resultsService->formatTime($result->race_time),
+                    'race_time_seconds' => $result->race_time,
+                    'finish_time' => $result->finish_time->toDateTimeString(),
+                ];
+            })
+        ]);
+    }
+
+    /**
+     * Obtenir le classement par sexe
+     *
+     * GET /api/results/race/{raceId}/gender/{gender}?limit=100
+     */
+    public function genderRanking(int $raceId, string $gender, Request $request): JsonResponse
+    {
+        if (!in_array($gender, ['M', 'F'])) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Sexe invalide (M ou F attendu)'
+            ], 400);
+        }
+
+        $limit = min($request->input('limit', 100), 1000);
+
+        $results = $this->resultsService->getGenderRanking($raceId, $gender, $limit);
+
+        return response()->json([
+            'success' => true,
+            'race_id' => $raceId,
+            'ranking_type' => 'gender',
+            'gender' => $gender,
+            'count' => $results->count(),
+            'results' => $results->map(function ($result) {
+                return [
+                    'position_gender' => $result->position_gender,
+                    'position_scratch' => $result->position_scratch,
+                    'bib_number' => $result->entrant->bib_number,
+                    'firstname' => $result->entrant->firstname,
+                    'lastname' => $result->entrant->lastname,
+                    'category' => $result->entrant->category->name ?? null,
+                    'club' => $result->entrant->club,
+                    'race_time' => $this->resultsService->formatTime($result->race_time),
+                    'race_time_seconds' => $result->race_time,
+                ];
+            })
+        ]);
+    }
+
+    /**
+     * Obtenir le classement par catégorie
+     *
+     * GET /api/results/race/{raceId}/category/{categoryId}?limit=100
+     */
+    public function categoryRanking(int $raceId, int $categoryId, Request $request): JsonResponse
+    {
+        $limit = min($request->input('limit', 100), 1000);
+
+        $results = $this->resultsService->getCategoryRanking($raceId, $categoryId, $limit);
+
+        return response()->json([
+            'success' => true,
+            'race_id' => $raceId,
+            'ranking_type' => 'category',
+            'category_id' => $categoryId,
+            'count' => $results->count(),
+            'results' => $results->map(function ($result) {
+                return [
+                    'position_category' => $result->position_category,
+                    'position_scratch' => $result->position_scratch,
+                    'bib_number' => $result->entrant->bib_number,
+                    'firstname' => $result->entrant->firstname,
+                    'lastname' => $result->entrant->lastname,
+                    'gender' => $result->entrant->gender,
+                    'club' => $result->entrant->club,
+                    'race_time' => $this->resultsService->formatTime($result->race_time),
+                    'race_time_seconds' => $result->race_time,
+                ];
+            })
+        ]);
+    }
+
+    /**
+     * Obtenir les statistiques d'une course
+     *
+     * GET /api/results/race/{raceId}/statistics
+     */
+    public function statistics(int $raceId): JsonResponse
+    {
+        $stats = $this->resultsService->getRaceStats($raceId);
+
+        return response()->json([
+            'success' => true,
+            'race_id' => $raceId,
+            'statistics' => $stats
+        ]);
     }
 }
