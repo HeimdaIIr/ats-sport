@@ -152,7 +152,7 @@ async function loadEvents() {
         const select = document.getElementById('filterEvent');
         allEvents.forEach(event => {
             const option = new Option(
-                `${event.name} (${new Date(event.event_date).toLocaleDateString('fr-FR')})`,
+                `${event.name} (${new Date(event.date_start).toLocaleDateString('fr-FR')})`,
                 event.id
             );
             select.add(option);

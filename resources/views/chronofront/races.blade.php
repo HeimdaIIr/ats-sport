@@ -145,7 +145,7 @@ async function loadEvents() {
         const select2 = document.getElementById('filterEvent');
 
         allEvents.forEach(event => {
-            const option1 = new Option(`${event.name} (${new Date(event.event_date).toLocaleDateString('fr-FR')})`, event.id);
+            const option1 = new Option(`${event.name} (${new Date(event.date_start).toLocaleDateString('fr-FR')})`, event.id);
             const option2 = option1.cloneNode(true);
             select1.add(option1);
             select2.add(option2);
