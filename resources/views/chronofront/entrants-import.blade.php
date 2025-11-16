@@ -224,9 +224,12 @@ document.addEventListener('DOMContentLoaded', function() {
     loadEvents();
 
     async function loadEvents() {
+        console.log('🟡 entrants-import.blade.php - loadEvents() v2.0 - AXIOS VERSION');
         try {
+            console.log('🟡 Calling axios.get(/events)...');
             const response = await axios.get('/events');
             const events = response.data;
+            console.log('🟡 Events loaded:', events.length, 'événements', events);
 
             if (events.length === 0) {
                 showAlert('Aucun événement trouvé. Créez d\'abord un événement depuis la page Événements.', 'warning');
@@ -237,10 +240,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 option.value = event.id;
                 option.textContent = `${event.name} - ${new Date(event.date_start).toLocaleDateString('fr-FR')}`;
                 eventSelect.appendChild(option);
+                console.log('✅ Option ajoutée:', option.textContent);
             });
+            console.log('✅ Total options ajoutées:', events.length);
         } catch (error) {
             showAlert('Erreur lors du chargement des événements', 'danger');
-            console.error('Error loading events:', error);
+            console.error('❌ Error loading events:', error);
         }
     }
 

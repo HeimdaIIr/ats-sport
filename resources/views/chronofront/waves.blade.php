@@ -144,9 +144,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 async function loadEvents() {
+    console.log('🟢 waves.blade.php - loadEvents() v2.0 - AXIOS VERSION');
     try {
+        console.log('🟢 Calling axios.get(/events)...');
         const response = await axios.get('/events');
         allEvents = response.data;
+        console.log('🟢 Events loaded:', allEvents.length, 'événements', allEvents);
 
         const select = document.getElementById('filterEvent');
         allEvents.forEach(event => {
@@ -155,9 +158,11 @@ async function loadEvents() {
                 event.id
             );
             select.add(option);
+            console.log('✅ Option ajoutée:', option.text);
         });
+        console.log('✅ Total options ajoutées:', allEvents.length);
     } catch (error) {
-        console.error('Error loading events:', error);
+        console.error('❌ Error loading events:', error);
     }
 }
 

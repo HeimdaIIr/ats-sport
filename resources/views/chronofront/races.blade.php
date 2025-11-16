@@ -136,9 +136,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 async function loadEvents() {
+    console.log('🔵 races.blade.php - loadEvents() v2.0 - AXIOS VERSION');
     try {
+        console.log('🔵 Calling axios.get(/events)...');
         const response = await axios.get('/events');
         allEvents = response.data;
+        console.log('🔵 Events loaded:', allEvents.length, 'événements', allEvents);
 
         const select1 = document.getElementById('raceEventId');
         const select2 = document.getElementById('filterEvent');
@@ -148,9 +151,11 @@ async function loadEvents() {
             const option2 = option1.cloneNode(true);
             select1.add(option1);
             select2.add(option2);
+            console.log('✅ Option ajoutée:', option1.text);
         });
+        console.log('✅ Total options ajoutées:', allEvents.length);
     } catch (error) {
-        console.error('Error loading events:', error);
+        console.error('❌ Error loading events:', error);
     }
 }
 
