@@ -226,11 +226,14 @@ document.addEventListener('DOMContentLoaded', function() {
     function loadEvents() {
         fetch('/api/events')
             .then(response => response.json())
-            .then(data => {
-                data.data.forEach(event => {
+            .then(events => {
+                if (events.length === 0) {
+                    showAlert('Aucun événement trouvé. Créez d\'abord un événement depuis la page Événements.', 'warning');
+                }
+                events.forEach(event => {
                     const option = document.createElement('option');
                     option.value = event.id;
-                    option.textContent = `${event.name} - ${new Date(event.event_date).toLocaleDateString('fr-FR')}`;
+                    option.textContent = `${event.name} - ${new Date(event.date_start).toLocaleDateString('fr-FR')}`;
                     eventSelect.appendChild(option);
                 });
             })
