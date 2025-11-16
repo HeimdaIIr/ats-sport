@@ -133,7 +133,7 @@
 </div>
 @endsection
 
-@section('scripts')
+@push('scripts')
 <script>
 function eventsManager() {
     return {
@@ -218,4 +218,4 @@ function eventsManager() {
     }
 }
 </script>
-@endsection
+@endpush
