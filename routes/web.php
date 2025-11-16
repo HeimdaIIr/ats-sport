@@ -24,6 +24,7 @@ Route::prefix('chronofront')->name('chronofront.')->group(function () {
     Route::get('/entrants', [ChronoFrontController::class, 'entrants'])->name('entrants.index');
     Route::get('/entrants/import', [ChronoFrontController::class, 'entrantsImport'])->name('entrants.import');
     Route::get('/waves', [ChronoFrontController::class, 'waves'])->name('waves.index');
+    Route::get('/top-depart', [ChronoFrontController::class, 'topDepart'])->name('top.depart');
     Route::get('/timing', [ChronoFrontController::class, 'timing'])->name('timing.index');
     Route::get('/manual-timing', [ChronoFrontController::class, 'manualTiming'])->name('manual.timing');
     Route::get('/results', [ChronoFrontController::class, 'results'])->name('results.index');

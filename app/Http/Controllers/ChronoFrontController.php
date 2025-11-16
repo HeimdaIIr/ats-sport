@@ -55,6 +55,14 @@ class ChronoFrontController extends Controller
     }
 
     /**
+     * TOP Départ des courses
+     */
+    public function topDepart()
+    {
+        return view('chronofront.top-depart');
+    }
+
+    /**
      * Chronométrage en temps réel
      */
     public function timing()

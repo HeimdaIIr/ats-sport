@@ -88,50 +88,55 @@ class RaceController extends Controller
     }
 
     /**
-     * Start a race
+     * Start a race (TOP départ)
+     * Permet de définir ou modifier l'heure de départ
      */
-    public function start(Race $race): JsonResponse
+    public function start(Request $request, Race $race): JsonResponse
     {
-        if ($race->start_time) {
-            return response()->json([
-                'message' => 'Race already started'
-            ], 400);
-        }
+        $validated = $request->validate([
+            'start_time' => 'nullable|date',
+        ]);
+
+        // Si pas d'heure fournie, utiliser l'heure actuelle
+        $startTime = $validated['start_time'] ?? now();
 
         $race->update([
-            'start_time' => now()
+            'start_time' => $startTime
         ]);
 
         return response()->json([
-            'message' => 'Race started successfully',
-            'race' => $race
+            'message' => $race->wasChanged('start_time')
+                ? 'TOP départ enregistré avec succès'
+                : 'Heure de départ mise à jour',
+            'race' => $race->fresh()
         ]);
     }
 
     /**
-     * End a race
+     * End a race (TOP arrivée)
      */
-    public function end(Race $race): JsonResponse
+    public function end(Request $request, Race $race): JsonResponse
     {
         if (!$race->start_time) {
             return response()->json([
-                'message' => 'Race has not started yet'
+                'message' => 'La course n\'a pas encore été démarrée (TOP départ manquant)'
             ], 400);
         }
 
-        if ($race->end_time) {
-            return response()->json([
-                'message' => 'Race already ended'
-            ], 400);
-        }
+        $validated = $request->validate([
+            'end_time' => 'nullable|date',
+        ]);
+
+        // Si pas d'heure fournie, utiliser l'heure actuelle
+        $endTime = $validated['end_time'] ?? now();
 
         $race->update([
-            'end_time' => now()
+            'end_time' => $endTime
         ]);
 
         return response()->json([
-            'message' => 'Race ended successfully',
-            'race' => $race
+            'message' => 'TOP arrivée enregistré avec succès',
+            'race' => $race->fresh()
         ]);
     }
 }

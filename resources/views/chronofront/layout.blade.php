@@ -178,10 +178,20 @@
                                 <i class="bi bi-grid"></i> Catégories
                             </a>
                         </li>
+
+                        <li class="nav-item mt-3 pt-3 border-top border-secondary">
+                            <small class="text-white-50 px-3 text-uppercase">Chronométrage</small>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('chronofront.top.depart') ? 'active' : '' }}"
+                               href="{{ route('chronofront.top.depart') }}">
+                                <i class="bi bi-flag-fill"></i> TOP Départ
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('chronofront.timing*') ? 'active' : '' }}"
                                href="{{ route('chronofront.timing.index') }}">
-                                <i class="bi bi-stopwatch"></i> Chronométrage
+                                <i class="bi bi-stopwatch"></i> Chrono RFID
                             </a>
                         </li>
                         <li class="nav-item">
