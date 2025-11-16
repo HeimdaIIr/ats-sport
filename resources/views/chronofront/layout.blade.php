@@ -233,6 +233,6 @@
         axios.defaults.baseURL = '/api';
     </script>
 
-    @yield('scripts')
+    @stack('scripts')
 </body>
 </html>
