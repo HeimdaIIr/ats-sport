@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\ResultController;
 use App\Http\Controllers\Api\ImportController;
 use App\Http\Controllers\Api\RfidController;
 use App\Http\Controllers\Api\ManualTimingController;
+use App\Http\Controllers\Api\TimingPointController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +40,10 @@ Route::post('waves/{wave}/end', [WaveController::class, 'end']);
 // Categories Routes
 Route::apiResource('categories', CategoryController::class);
 Route::post('categories/init-ffa', [CategoryController::class, 'initFFA']);
+
+// Timing Points Routes
+Route::apiResource('timing-points', TimingPointController::class);
+Route::get('timing-points/race/{raceId}', [TimingPointController::class, 'byRace']);
 
 // Entrants Routes
 Route::apiResource('entrants', EntrantController::class);

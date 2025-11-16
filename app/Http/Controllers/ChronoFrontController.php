@@ -63,6 +63,14 @@ class ChronoFrontController extends Controller
     }
 
     /**
+     * Saisie manuelle des temps
+     */
+    public function manualTiming()
+    {
+        return view('chronofront.manual-timing');
+    }
+
+    /**
      * Résultats et classements
      */
     public function results()
