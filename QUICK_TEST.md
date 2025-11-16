@@ -1,10 +1,19 @@
 # ChronoFront - Guide de Test Rapide
 
-## ⚠️ PROBLÈME RÉSOLU!
+## ⚠️ PROBLÈMES RÉSOLUS!
 
-**Bug trouvé et corrigé:** L'import CSV ne fonctionnait pas à cause d'erreurs JavaScript dans `entrants-import.blade.php`:
+**Bugs trouvés et corrigés:**
+
+### 1. Import CSV - JavaScript fixes (`entrants-import.blade.php`)
 - ❌ `data.data.forEach` → ✅ `events.forEach`
 - ❌ `event.event_date` → ✅ `event.date_start`
+
+### 2. Dropdowns Événements - Champ date incorrect
+- ❌ `event.event_date` → ✅ `event.date_start`
+- **Fichiers corrigés:**
+  - `races.blade.php` (ligne 148)
+  - `waves.blade.php` (ligne 155)
+- **Impact:** Les événements créés apparaissent maintenant dans tous les dropdowns!
 
 ## 🚀 Setup Rapide (3 minutes)
 
