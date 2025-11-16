@@ -10,6 +10,7 @@ class Category extends Model
     protected $connection = 'chronofront';
 
     protected $fillable = [
+        'code',
         'name',
         'gender',
         'age_min',

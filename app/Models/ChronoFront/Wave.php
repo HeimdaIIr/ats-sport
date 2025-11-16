@@ -13,12 +13,15 @@ class Wave extends Model
     protected $fillable = [
         'race_id',
         'name',
+        'max_capacity',
+        'description',
         'start_time',
         'end_time',
         'is_started',
     ];
 
     protected $casts = [
+        'max_capacity' => 'integer',
         'start_time' => 'datetime',
         'end_time' => 'datetime',
         'is_started' => 'boolean',

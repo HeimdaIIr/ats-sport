@@ -38,6 +38,9 @@ class WaveController extends Controller
         $validated = $request->validate([
             'race_id' => 'required|exists:races,id',
             'name' => 'required|string|max:100',
+            'max_capacity' => 'nullable|integer|min:1',
+            'description' => 'nullable|string',
+            'start_time' => 'nullable|date_format:H:i',
         ]);
 
         $wave = Wave::create($validated);
@@ -61,6 +64,9 @@ class WaveController extends Controller
     {
         $validated = $request->validate([
             'name' => 'sometimes|string|max:100',
+            'max_capacity' => 'nullable|integer|min:1',
+            'description' => 'nullable|string',
+            'start_time' => 'nullable|date_format:H:i',
         ]);
 
         $wave->update($validated);
