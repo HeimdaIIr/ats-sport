@@ -56,6 +56,7 @@ Route::post('import/validate-csv', [ImportController::class, 'validateCsv']);
 Route::get('import/download-template', [ImportController::class, 'downloadTemplate']);
 
 // RFID Routes (SportLab 2.0 Integration)
+Route::post('rfid/detection-simple', [RfidController::class, 'recordDetectionSimple']); // Simplifié: TOP départ + RFID arrivée
 Route::post('rfid/detection', [RfidController::class, 'recordDetection']);
 Route::post('rfid/batch', [RfidController::class, 'recordBatch']);
 Route::post('rfid/stream/{timingPointId}', [RfidController::class, 'stream']);

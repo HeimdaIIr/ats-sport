@@ -23,6 +23,51 @@ class RfidController extends Controller
     }
 
     /**
+     * Enregistrer une détection RFID SIMPLIFIÉE (sans timing points)
+     *
+     * POST /api/rfid/detection-simple
+     * Body: {
+     *   "rfid": "[2000001]:a20251116143025123",
+     *   "race_id": 1
+     * }
+     *
+     * Calcule automatiquement: temps = timestamp RFID - race.start_time (TOP départ)
+     */
+    public function recordDetectionSimple(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'rfid' => 'required|string',
+            'race_id' => 'required|integer|exists:races,id'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Données invalides',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $result = $this->rfidService->recordDetectionSimple(
+            $request->input('rfid'),
+            $request->input('race_id')
+        );
+
+        if (!$result['success']) {
+            return response()->json([
+                'success' => false,
+                'message' => $result['message']
+            ], 400);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Passage enregistré avec succès',
+            'data' => $result['data']
+        ], 201);
+    }
+
+    /**
      * Enregistrer une détection RFID unique
      *
      * POST /api/rfid/detection

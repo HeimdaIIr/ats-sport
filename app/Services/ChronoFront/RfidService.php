@@ -72,6 +72,138 @@ class RfidService
     }
 
     /**
+     * Enregistrer une détection RFID SIMPLIFIÉE (sans timing points)
+     * Utilise le TOP départ (race.start_time) et calcule le temps automatiquement
+     *
+     * @param string $rfidString Format SportLab: [TAG]:aYYYYMMDDHHMMSSmmm
+     * @param int $raceId ID de la course
+     * @return array ['success' => bool, 'message' => string, 'data' => array|null]
+     */
+    public function recordDetectionSimple(string $rfidString, int $raceId): array
+    {
+        // Parser la détection
+        $parsed = $this->parseRfidDetection($rfidString);
+
+        if (!$parsed) {
+            return [
+                'success' => false,
+                'message' => 'Format RFID invalide. Format attendu: [TAG]:aYYYYMMDDHHMMSSmmm',
+                'data' => null
+            ];
+        }
+
+        // Chercher le participant avec ce tag RFID
+        $entrant = Entrant::where('rfid_tag', $parsed['tag'])->first();
+
+        if (!$entrant) {
+            Log::warning("Participant inconnu", ['rfid_tag' => $parsed['tag']]);
+            return [
+                'success' => false,
+                'message' => "Tag RFID inconnu: {$parsed['tag']}. Vérifiez que le participant est bien importé.",
+                'data' => null
+            ];
+        }
+
+        // Vérifier que le participant appartient bien à cette course
+        if ($entrant->race_id !== $raceId) {
+            return [
+                'success' => false,
+                'message' => "Le participant {$entrant->bib_number} n'est pas inscrit à cette course (course {$entrant->race_id} au lieu de {$raceId}).",
+                'data' => null
+            ];
+        }
+
+        // Récupérer la course et vérifier le TOP départ
+        $race = $entrant->race;
+
+        if (!$race->start_time) {
+            return [
+                'success' => false,
+                'message' => "La course '{$race->name}' n'a pas encore été démarrée (TOP départ manquant). Allez sur la page TOP Départ pour enregistrer l'heure de départ.",
+                'data' => null
+            ];
+        }
+
+        // Calculer le temps de course
+        $startTime = Carbon::parse($race->start_time);
+        $finishTime = $parsed['timestamp'];
+        $raceTime = $finishTime->diffInSeconds($startTime);
+
+        // Formater le temps en HH:MM:SS
+        $hours = floor($raceTime / 3600);
+        $minutes = floor(($raceTime % 3600) / 60);
+        $seconds = $raceTime % 60;
+        $timeFormatted = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+
+        // Éviter les doublons (même participant dans les 5 dernières secondes)
+        $existingResult = \App\Models\ChronoFront\Result::where('entrant_id', $entrant->id)
+            ->where('race_id', $raceId)
+            ->where('created_at', '>=', now()->subSeconds(5))
+            ->first();
+
+        if ($existingResult) {
+            Log::info("Passage dupliqué ignoré", [
+                'entrant_id' => $entrant->id,
+                'bib_number' => $entrant->bib_number
+            ]);
+            return [
+                'success' => true,
+                'message' => 'Passage déjà enregistré (doublon)',
+                'data' => [
+                    'entrant' => [
+                        'id' => $entrant->id,
+                        'bib_number' => $entrant->bib_number,
+                        'name' => "{$entrant->firstname} {$entrant->lastname}"
+                    ],
+                    'finish_time' => $timeFormatted,
+                    'finish_timestamp' => $finishTime->toDateTimeString(),
+                    'start_timestamp' => $startTime->toDateTimeString(),
+                    'is_duplicate' => true
+                ]
+            ];
+        }
+
+        // Créer le résultat
+        $result = \App\Models\ChronoFront\Result::create([
+            'race_id' => $raceId,
+            'entrant_id' => $entrant->id,
+            'finish_time' => $raceTime, // Temps en secondes
+            'start_time' => $startTime,
+            'detection_time' => $finishTime,
+            'status' => 'finished'
+        ]);
+
+        Log::info("Passage RFID enregistré", [
+            'result_id' => $result->id,
+            'entrant_id' => $entrant->id,
+            'bib_number' => $entrant->bib_number,
+            'name' => "{$entrant->firstname} {$entrant->lastname}",
+            'finish_time' => $timeFormatted,
+            'rfid_tag' => $parsed['tag']
+        ]);
+
+        return [
+            'success' => true,
+            'message' => 'Passage enregistré avec succès',
+            'data' => [
+                'result_id' => $result->id,
+                'entrant' => [
+                    'id' => $entrant->id,
+                    'bib_number' => $entrant->bib_number,
+                    'name' => "{$entrant->firstname} {$entrant->lastname}",
+                    'gender' => $entrant->gender,
+                    'category' => $entrant->category?->name
+                ],
+                'finish_time' => $timeFormatted,
+                'finish_timestamp' => $finishTime->toDateTimeString(),
+                'start_timestamp' => $startTime->toDateTimeString(),
+                'race_time_seconds' => $raceTime,
+                'is_duplicate' => false
+            ]
+        ];
+    }
+
+    /**
      * Enregistrer une détection RFID dans la base de données
      *
      * @param string $rfidString Format SportLab: [TAG]:aYYYYMMDDHHMMSSmmm
