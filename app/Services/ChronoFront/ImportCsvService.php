@@ -48,12 +48,20 @@ class ImportCsvService
             $csv->setEnclosure('"'); // Guillemets doubles
             $csv->setHeaderOffset(0); // Première ligne = en-têtes
 
-            // 2. Récupérer les en-têtes
-            $headers = $csv->getHeader();
-            $this->validateHeaders($headers);
+            // 2. Récupérer et normaliser les en-têtes en MAJUSCULES
+            $originalHeaders = $csv->getHeader();
+            $this->validateHeaders($originalHeaders);
+
+            // Créer une map de normalisation : header original -> header normalisé
+            $headerMap = [];
+            foreach ($originalHeaders as $header) {
+                $headerMap[$header] = strtoupper(trim($header));
+            }
+
+            $headers = array_values($headerMap);
 
             // 3. Identifier et créer les parcours uniques
-            $racesMap = $this->identifyAndCreateRaces($csv, $event);
+            $racesMap = $this->identifyAndCreateRaces($csv, $event, $headerMap);
             $stats['races_created'] = count($racesMap);
 
             // 4. Importer chaque participant
@@ -61,11 +69,18 @@ class ImportCsvService
                 $stats['total_rows']++;
 
                 try {
+                    // Normaliser les clés de la ligne en MAJUSCULES
+                    $normalizedRow = [];
+                    foreach ($row as $key => $value) {
+                        $normalizedKey = $headerMap[$key] ?? strtoupper($key);
+                        $normalizedRow[$normalizedKey] = $value;
+                    }
+
                     // Valider la ligne
-                    $validated = $this->validateRow($row, $index + 2); // +2 car ligne 1 = headers
+                    $validated = $this->validateRow($normalizedRow, $index + 2); // +2 car ligne 1 = headers
 
                     // Trouver la course et la vague correspondantes
-                    $raceKey = $this->getRaceKey($row);
+                    $raceKey = $this->getRaceKey($normalizedRow);
                     if (!isset($racesMap[$raceKey])) {
                         throw new Exception("Parcours introuvable pour : {$raceKey}");
                     }
@@ -78,9 +93,9 @@ class ImportCsvService
 
                     // Calculer la catégorie FFA (ou utiliser CAT du CSV si présent)
                     $categoryId = null;
-                    if (!empty($row['CAT'])) {
-                        $catModel = Category::where('code', $row['CAT'])
-                            ->orWhere('name', 'like', "%{$row['CAT']}%")
+                    if (!empty($normalizedRow['CAT'])) {
+                        $catModel = Category::where('code', $normalizedRow['CAT'])
+                            ->orWhere('name', 'like', "%{$normalizedRow['CAT']}%")
                             ->first();
                         $categoryId = $catModel?->id;
                     }
@@ -118,7 +133,9 @@ class ImportCsvService
                     $stats['errors']++;
                     $stats['error_details'][] = [
                         'row' => $index + 2,
-                        'bib_number' => $row['DOSSARD'] ?? 'N/A',
+                        'bib_number' => $normalizedRow['DOSSARD'] ?? 'N/A',
+                        'name' => ($normalizedRow['NOM'] ?? '') . ' ' . ($normalizedRow['PRENOM'] ?? ''),
+                        'parcours' => $normalizedRow['PARCOURS'] ?? 'N/A',
                         'error' => $e->getMessage()
                     ];
                 }
@@ -139,11 +156,14 @@ class ImportCsvService
      */
     private function validateHeaders(array $headers): void
     {
-        $required = ['DOSSARD', 'NOM', 'PRENOM', 'SEXE', 'NAISSANCE'];
+        // Normaliser les headers en majuscules pour comparaison
+        $headersUpper = array_map('strtoupper', $headers);
+
+        $required = ['DOSSARD', 'NOM', 'PRENOM', 'SEXE', 'NAISSANCE', 'PARCOURS'];
 
         foreach ($required as $header) {
-            if (!in_array($header, $headers)) {
-                throw new Exception("En-tête obligatoire manquant : {$header}");
+            if (!in_array($header, $headersUpper)) {
+                throw new Exception("En-tête obligatoire manquant : {$header}. Headers trouvés : " . implode(', ', $headers));
             }
         }
     }
@@ -152,7 +172,7 @@ class ImportCsvService
      * Identifier et créer les parcours uniques depuis le CSV
      * Gère aussi la colonne VAGUE pour assigner les vagues automatiquement
      */
-    private function identifyAndCreateRaces(Reader $csv, Event $event): array
+    private function identifyAndCreateRaces(Reader $csv, Event $event, array $headerMap): array
     {
         $racesMap = [];
         $parcours = [];
@@ -160,12 +180,19 @@ class ImportCsvService
 
         // Collecter tous les parcours uniques avec leurs vagues
         foreach ($csv->getRecords() as $row) {
-            $raceKey = $this->getRaceKey($row);
+            // Normaliser les clés en MAJUSCULES
+            $normalizedRow = [];
+            foreach ($row as $key => $value) {
+                $normalizedKey = $headerMap[$key] ?? strtoupper($key);
+                $normalizedRow[$normalizedKey] = $value;
+            }
+
+            $raceKey = $this->getRaceKey($normalizedRow);
             if (!isset($parcours[$raceKey])) {
                 $parcours[$raceKey] = [
-                    'name' => $row['PARCOURS'] ?? 'Parcours',
-                    'id_parcours' => $row['IDPARCOURS'] ?? null,
-                    'wave' => !empty($row['VAGUE']) ? (int) $row['VAGUE'] : null
+                    'name' => $normalizedRow['PARCOURS'] ?? 'Parcours',
+                    'id_parcours' => $normalizedRow['IDPARCOURS'] ?? null,
+                    'wave' => !empty($normalizedRow['VAGUE']) ? (int) $normalizedRow['VAGUE'] : null
                 ];
             }
         }

@@ -51,16 +51,22 @@
         </div>
         <div class="card-body">
             <div class="row mb-3">
-                <div class="col-md-4">
-                    <label class="form-label">Ajouter un lecteur</label>
+                <div class="col-md-6">
+                    <label class="form-label">Ajouter un lecteur SportLab 2.0</label>
                     <div class="input-group">
-                        <span class="input-group-text">Lecteur</span>
-                        <input type="number" x-model="newReaderNumber" class="form-control" placeholder="Numéro (ex: 7)" min="0" max="99">
-                        <button @click="addReader" class="btn btn-success" :disabled="!newReaderNumber">
+                        <span class="input-group-text">Lecteur 1</span>
+                        <input type="number" x-model="newReaderNumber" class="form-control" placeholder="01 à 99" min="1" max="99">
+                        <button @click="addReader" class="btn btn-success btn-lg" :disabled="!newReaderNumber">
                             <i class="bi bi-plus-circle"></i> Ajouter
                         </button>
                     </div>
-                    <small class="text-muted">Exemple: lecteur 107 → entrez 7 (IP: 192.168.10.157)</small>
+                    <div class="alert alert-info mt-2 mb-0">
+                        <small>
+                            <strong>IP = 192.168.10.(150 + numéro)</strong><br>
+                            Lecteur 101 → entrez <strong>1</strong> → IP 192.168.10.151<br>
+                            Lecteur 120 → entrez <strong>20</strong> → IP 192.168.10.170
+                        </small>
+                    </div>
                 </div>
             </div>
 
