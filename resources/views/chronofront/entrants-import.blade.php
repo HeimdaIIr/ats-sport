@@ -390,9 +390,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 progressContainer.classList.add('d-none');
 
                 if (response.ok) {
+                    console.log('✅ Import réussi:', result);
+                    if (result.stats.errors > 0) {
+                        console.warn(`⚠️ ${result.stats.errors} erreurs détectées:`);
+                        console.table(result.stats.error_details || []);
+                    }
                     showStats(result.stats);
                     showAlert(result.message, 'success');
                 } else {
+                    console.error('❌ Import échoué:', result);
                     showAlert(result.message || 'Erreur lors de l\'import', 'danger');
                     importBtn.disabled = false;
                     validateBtn.disabled = false;
@@ -421,14 +427,36 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Show error details if any
         if (stats.errors > 0 && stats.error_details) {
+            console.log('📋 Détails des erreurs:', stats.error_details);
             const errorList = document.getElementById('errorList');
             errorList.innerHTML = '';
-            stats.error_details.forEach(error => {
+            stats.error_details.slice(0, 50).forEach(error => {
                 const li = document.createElement('li');
                 li.className = 'list-group-item list-group-item-danger small';
-                li.textContent = error;
+
+                // Si c'est un objet avec détails
+                if (typeof error === 'object' && error.row) {
+                    li.innerHTML = `
+                        <strong>Ligne ${error.row}</strong> -
+                        Dossard: ${error.bib_number} -
+                        ${error.name || 'N/A'} -
+                        Parcours: ${error.parcours || 'N/A'}<br>
+                        <span class="text-danger">➜ ${error.error}</span>
+                    `;
+                } else {
+                    // Fallback pour erreurs en string
+                    li.textContent = error;
+                }
                 errorList.appendChild(li);
             });
+
+            if (stats.error_details.length > 50) {
+                const moreInfo = document.createElement('li');
+                moreInfo.className = 'list-group-item list-group-item-warning small';
+                moreInfo.textContent = `... et ${stats.error_details.length - 50} autres erreurs (voir console)`;
+                errorList.appendChild(moreInfo);
+            }
+
             document.getElementById('errorDetails').classList.remove('d-none');
         }
 

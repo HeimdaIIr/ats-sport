@@ -304,45 +304,73 @@ class ImportCsvService
      */
     private function validateRow(array $row, int $lineNumber): array
     {
-        // Règles de validation
-        $rules = [
-            'DOSSARD' => 'required|integer|min:1',
-            'NOM' => 'required|string|max:100',
-            'PRENOM' => 'required|string|max:100',
-            'SEXE' => 'required|in:M,F,H', // H accepté (synonyme de M)
-            'NAISSANCE' => 'required'
-        ];
-
-        $validator = Validator::make($row, $rules);
-
-        if ($validator->fails()) {
-            throw new Exception("Ligne {$lineNumber} invalide : " . $validator->errors()->first());
+        // Validation minimale - DOSSARD et NOM/PRENOM
+        if (empty($row['DOSSARD'])) {
+            throw new Exception("Ligne {$lineNumber} : DOSSARD manquant");
+        }
+        if (empty($row['NOM']) && empty($row['PRENOM'])) {
+            throw new Exception("Ligne {$lineNumber} : NOM et PRENOM manquants");
         }
 
-        // Parser la date de naissance (format DD/MM/YYYY)
-        try {
-            $birthDate = Carbon::createFromFormat('d/m/Y', trim($row['NAISSANCE']));
-        } catch (\Exception $e) {
-            throw new Exception("Date de naissance invalide ligne {$lineNumber} : {$row['NAISSANCE']}");
+        // Parser la date de naissance - supporter plusieurs formats
+        $birthDate = null;
+        if (!empty($row['NAISSANCE'])) {
+            $dateString = trim($row['NAISSANCE']);
+            $formats = [
+                'd/m/Y',      // 15/05/1985
+                'd-m-Y',      // 15-05-1985
+                'Y-m-d',      // 1985-05-15
+                'd/m/y',      // 15/05/85
+                'd-m-y',      // 15-05-85
+                'Y/m/d',      // 1985/05/15
+            ];
+
+            foreach ($formats as $format) {
+                try {
+                    $birthDate = Carbon::createFromFormat($format, $dateString);
+                    if ($birthDate) {
+                        break;
+                    }
+                } catch (\Exception $e) {
+                    continue;
+                }
+            }
+
+            // Si aucun format ne marche, essayer le parser automatique
+            if (!$birthDate) {
+                try {
+                    $birthDate = Carbon::parse($dateString);
+                } catch (\Exception $e) {
+                    // Date invalide, on log mais on continue
+                    \Log::warning("Ligne {$lineNumber} : Date invalide '{$dateString}', participant créé sans date");
+                }
+            }
         }
 
-        // Normaliser le sexe (H → M)
-        $gender = strtoupper($row['SEXE']);
-        if ($gender === 'H') {
+        // Normaliser le sexe (H → M, défaut M si vide)
+        $gender = strtoupper(trim($row['SEXE'] ?? 'M'));
+        if ($gender === 'H' || $gender === 'HOMME') {
+            $gender = 'M';
+        }
+        if ($gender === 'FEMME') {
+            $gender = 'F';
+        }
+        // Si toujours invalide, mettre M par défaut
+        if (!in_array($gender, ['M', 'F'])) {
             $gender = 'M';
         }
 
         return [
-            'bib_number' => (int) $row['DOSSARD'],
-            'last_name' => strtoupper(trim($row['NOM'])),
-            'first_name' => ucwords(strtolower(trim($row['PRENOM']))),
+            'bib_number' => (int) trim($row['DOSSARD']),
+            'last_name' => strtoupper(trim($row['NOM'] ?? '')),
+            'first_name' => ucwords(strtolower(trim($row['PRENOM'] ?? ''))),
             'gender' => $gender,
-            'birth_date' => $birthDate->format('Y-m-d'),
-            'club' => $row['CLUB'] ?? null,
-            'license_number' => $row['LICENCE'] ?? null,
-            'email' => $row['Email'] ?? null,
-            'phone' => $row['TEL'] ?? null,
-            'team' => $row['EQUIPE'] ?? null,
+            'birth_date' => $birthDate ? $birthDate->format('Y-m-d') : null,
+            'club' => !empty($row['CLUB']) ? trim($row['CLUB']) : null,
+            'license_number' => !empty($row['LICENCE']) ? trim($row['LICENCE']) : null,
+            'email' => !empty($row['Email']) ? trim($row['Email']) : null,
+            'phone' => !empty($row['TEL']) ? trim($row['TEL']) : null,
+            'team' => !empty($row['EQUIPE']) ? trim($row['EQUIPE']) : null,
         ];
     }
 

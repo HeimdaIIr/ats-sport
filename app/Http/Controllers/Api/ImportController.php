@@ -38,9 +38,17 @@ class ImportController extends Controller
             // Importer le CSV
             $stats = $this->importService->import($filePath, $event);
 
+            $message = "Import terminé : {$stats['imported']} participants importés sur {$stats['total_rows']} lignes";
+            if ($stats['errors'] > 0) {
+                $message .= " ({$stats['errors']} erreurs)";
+            }
+            if ($stats['races_created'] > 0) {
+                $message .= " - {$stats['races_created']} course(s) créée(s)";
+            }
+
             return response()->json([
                 'success' => true,
-                'message' => "Import terminé : {$stats['imported']} participants importés",
+                'message' => $message,
                 'stats' => $stats
             ]);
 
