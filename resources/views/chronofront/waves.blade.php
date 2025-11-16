@@ -145,9 +145,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function loadEvents() {
     try {
-        const response = await fetch('/api/events');
-        const data = await response.json();
-        allEvents = data.data || data;
+        const response = await axios.get('/events');
+        allEvents = response.data;
 
         const select = document.getElementById('filterEvent');
         allEvents.forEach(event => {

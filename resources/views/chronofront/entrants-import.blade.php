@@ -223,24 +223,25 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load events
     loadEvents();
 
-    function loadEvents() {
-        fetch('/api/events')
-            .then(response => response.json())
-            .then(events => {
-                if (events.length === 0) {
-                    showAlert('Aucun événement trouvé. Créez d\'abord un événement depuis la page Événements.', 'warning');
-                }
-                events.forEach(event => {
-                    const option = document.createElement('option');
-                    option.value = event.id;
-                    option.textContent = `${event.name} - ${new Date(event.date_start).toLocaleDateString('fr-FR')}`;
-                    eventSelect.appendChild(option);
-                });
-            })
-            .catch(error => {
-                showAlert('Erreur lors du chargement des événements', 'danger');
-                console.error('Error loading events:', error);
+    async function loadEvents() {
+        try {
+            const response = await axios.get('/events');
+            const events = response.data;
+
+            if (events.length === 0) {
+                showAlert('Aucun événement trouvé. Créez d\'abord un événement depuis la page Événements.', 'warning');
+            }
+
+            events.forEach(event => {
+                const option = document.createElement('option');
+                option.value = event.id;
+                option.textContent = `${event.name} - ${new Date(event.date_start).toLocaleDateString('fr-FR')}`;
+                eventSelect.appendChild(option);
             });
+        } catch (error) {
+            showAlert('Erreur lors du chargement des événements', 'danger');
+            console.error('Error loading events:', error);
+        }
     }
 
     // Event selection handler
