@@ -94,8 +94,7 @@ class ImportCsvService
                     // Calculer la catégorie FFA (ou utiliser CAT du CSV si présent)
                     $categoryId = null;
                     if (!empty($normalizedRow['CAT'])) {
-                        $catModel = Category::where('code', $normalizedRow['CAT'])
-                            ->orWhere('name', 'like', "%{$normalizedRow['CAT']}%")
+                        $catModel = Category::where('name', 'like', "%{$normalizedRow['CAT']}%")
                             ->first();
                         $categoryId = $catModel?->id;
                     }
