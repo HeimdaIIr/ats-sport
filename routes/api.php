@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\WaveController;
 use App\Http\Controllers\Api\EntrantController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ResultController;
+use App\Http\Controllers\Api\ImportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,11 @@ Route::post('categories/init-ffa', [CategoryController::class, 'initFFA']);
 Route::apiResource('entrants', EntrantController::class);
 Route::get('entrants/search', [EntrantController::class, 'search']);
 Route::post('entrants/import', [EntrantController::class, 'import']);
+
+// Import CSV Routes (SportLab format)
+Route::post('events/{event}/import-csv', [ImportController::class, 'importCsv']);
+Route::post('import/validate-csv', [ImportController::class, 'validateCsv']);
+Route::get('import/download-template', [ImportController::class, 'downloadTemplate']);
 
 // Results/Timing Routes
 Route::get('results/race/{raceId}', [ResultController::class, 'byRace']);

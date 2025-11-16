@@ -25,6 +25,11 @@ class Entrant extends Model
         'wave_id',
         'club',
         'team',
+        'license_number',
+        'address',
+        'postal_code',
+        'city',
+        'country',
     ];
 
     protected $casts = [
@@ -61,6 +66,14 @@ class Entrant extends Model
     public function results(): HasMany
     {
         return $this->hasMany(Result::class);
+    }
+
+    /**
+     * Get all race times (detections) for the entrant
+     */
+    public function raceTimes(): HasMany
+    {
+        return $this->hasMany(RaceTime::class);
     }
 
     /**
