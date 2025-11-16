@@ -75,7 +75,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3 mb-3">
-                            <a href="{{ route('chronofront.events') }}" class="btn btn-primary w-100 py-3">
+                            <a href="{{ route('chronofront.events.index') }}" class="btn btn-primary w-100 py-3">
                                 <i class="bi bi-plus-circle"></i><br>
                                 <span class="mt-2">Nouvel événement</span>
                             </a>
@@ -87,13 +87,13 @@
                             </a>
                         </div>
                         <div class="col-md-3 mb-3">
-                            <a href="{{ route('chronofront.timing') }}" class="btn btn-warning w-100 py-3">
+                            <a href="{{ route('chronofront.timing.index') }}" class="btn btn-warning w-100 py-3">
                                 <i class="bi bi-stopwatch"></i><br>
                                 <span class="mt-2">Chronométrer</span>
                             </a>
                         </div>
                         <div class="col-md-3 mb-3">
-                            <a href="{{ route('chronofront.results') }}" class="btn btn-info w-100 py-3 text-white">
+                            <a href="{{ route('chronofront.results.index') }}" class="btn btn-info w-100 py-3 text-white">
                                 <i class="bi bi-trophy"></i><br>
                                 <span class="mt-2">Voir résultats</span>
                             </a>
@@ -110,14 +110,14 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-calendar-event text-primary"></i> Événements récents</span>
-                    <a href="{{ route('chronofront.events') }}" class="btn btn-sm btn-outline-primary">Voir tout</a>
+                    <a href="{{ route('chronofront.events.index') }}" class="btn btn-sm btn-outline-primary">Voir tout</a>
                 </div>
                 <div class="card-body">
                     <template x-if="recentEvents.length === 0">
                         <div class="text-center text-muted py-4">
                             <i class="bi bi-inbox" style="font-size: 3rem;"></i>
                             <p class="mt-2">Aucun événement</p>
-                            <a href="{{ route('chronofront.events') }}" class="btn btn-sm btn-primary">Créer un événement</a>
+                            <a href="{{ route('chronofront.events.index') }}" class="btn btn-sm btn-primary">Créer un événement</a>
                         </div>
                     </template>
 

@@ -149,44 +149,44 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('chronofront.events') ? 'active' : '' }}"
-                               href="{{ route('chronofront.events') }}">
+                            <a class="nav-link {{ request()->routeIs('chronofront.events*') ? 'active' : '' }}"
+                               href="{{ route('chronofront.events.index') }}">
                                 <i class="bi bi-calendar-event"></i> Événements
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('chronofront.races') ? 'active' : '' }}"
-                               href="{{ route('chronofront.races') }}">
+                            <a class="nav-link {{ request()->routeIs('chronofront.races*') ? 'active' : '' }}"
+                               href="{{ route('chronofront.races.index') }}">
                                 <i class="bi bi-trophy"></i> Épreuves
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('chronofront.waves') ? 'active' : '' }}"
-                               href="{{ route('chronofront.waves') }}">
+                            <a class="nav-link {{ request()->routeIs('chronofront.waves*') ? 'active' : '' }}"
+                               href="{{ route('chronofront.waves.index') }}">
                                 <i class="bi bi-flag"></i> Vagues
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('chronofront.entrants*') ? 'active' : '' }}"
-                               href="{{ route('chronofront.entrants') }}">
+                               href="{{ route('chronofront.entrants.index') }}">
                                 <i class="bi bi-people"></i> Participants
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('chronofront.categories') ? 'active' : '' }}"
-                               href="{{ route('chronofront.categories') }}">
+                            <a class="nav-link {{ request()->routeIs('chronofront.categories*') ? 'active' : '' }}"
+                               href="{{ route('chronofront.categories.index') }}">
                                 <i class="bi bi-grid"></i> Catégories
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('chronofront.timing') ? 'active' : '' }}"
-                               href="{{ route('chronofront.timing') }}">
+                            <a class="nav-link {{ request()->routeIs('chronofront.timing*') ? 'active' : '' }}"
+                               href="{{ route('chronofront.timing.index') }}">
                                 <i class="bi bi-stopwatch"></i> Chronométrage
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('chronofront.results') ? 'active' : '' }}"
-                               href="{{ route('chronofront.results') }}">
+                            <a class="nav-link {{ request()->routeIs('chronofront.results*') ? 'active' : '' }}"
+                               href="{{ route('chronofront.results.index') }}">
                                 <i class="bi bi-bar-chart"></i> Résultats
                             </a>
                         </li>

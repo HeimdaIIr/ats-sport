@@ -193,7 +193,7 @@ function eventsManager() {
         },
 
         viewRaces(event) {
-            window.location.href = `{{ route('chronofront.races') }}?event_id=${event.id}`;
+            window.location.href = `{{ route('chronofront.races.index') }}?event_id=${event.id}`;
         },
 
         resetForm() {
