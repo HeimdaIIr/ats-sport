@@ -175,7 +175,7 @@
 </div>
 @endsection
 
-@section('scripts')
+@push('scripts')
 <script>
 function dashboard() {
     return {
@@ -222,4 +222,4 @@ function dashboard() {
     }
 }
 </script>
-@endsection
+@endpush
