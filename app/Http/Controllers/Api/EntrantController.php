@@ -128,48 +128,123 @@ class EntrantController extends Controller
 
     /**
      * Import entrants from CSV file
+     * Automatically creates races from PARCOURS column and assigns waves
      */
     public function import(Request $request): JsonResponse
     {
         $request->validate([
             'file' => 'required|file|mimes:csv,txt',
-            'race_id' => 'required|exists:races,id',
+            'event_id' => 'required|exists:events,id',
         ]);
 
         $file = $request->file('file');
-        $raceId = $request->input('race_id');
+        $eventId = $request->input('event_id');
 
         $csvData = array_map('str_getcsv', file($file->getRealPath()));
         $headers = array_map('strtolower', array_shift($csvData));
 
         $imported = 0;
         $errors = [];
+        $createdRaces = [];
+        $raceWaveMap = []; // Map: parcours_name => wave_number
 
         DB::beginTransaction();
 
         try {
+            // First pass: identify unique PARCOURS and their VAGUE assignments
+            $parcoursData = [];
+            foreach ($csvData as $row) {
+                if (count($row) !== count($headers)) {
+                    continue;
+                }
+                $data = array_combine($headers, $row);
+
+                $parcours = $data['parcours'] ?? null;
+                $vague = $data['vague'] ?? null;
+
+                if ($parcours) {
+                    if (!isset($parcoursData[$parcours])) {
+                        $parcoursData[$parcours] = [
+                            'name' => $parcours,
+                            'wave' => $vague ?: null // null if empty
+                        ];
+                    }
+                }
+            }
+
+            // Sort parcours alphabetically for auto wave assignment
+            ksort($parcoursData);
+
+            // Assign waves: use specified VAGUE or auto-assign by alphabetical order
+            $autoWaveCounter = 1;
+            foreach ($parcoursData as $parcours => &$info) {
+                if ($info['wave']) {
+                    // Use specified wave number
+                    $raceWaveMap[$parcours] = (int) $info['wave'];
+                } else {
+                    // Auto-assign by alphabetical order
+                    $raceWaveMap[$parcours] = $autoWaveCounter;
+                    $autoWaveCounter++;
+                }
+            }
+
+            // Create races for each unique PARCOURS
+            foreach ($parcoursData as $parcours => $info) {
+                $race = \App\Models\ChronoFront\Race::create([
+                    'event_id' => $eventId,
+                    'name' => $parcours,
+                    'distance' => null, // Can be extracted from parcours name if needed
+                    'distance_unit' => 'km',
+                ]);
+
+                $createdRaces[$parcours] = $race->id;
+            }
+
+            // Second pass: create entrants and assign to races
             foreach ($csvData as $index => $row) {
                 if (count($row) !== count($headers)) {
-                    continue; // Skip malformed rows
+                    continue;
                 }
 
                 $data = array_combine($headers, $row);
+
+                $parcours = $data['parcours'] ?? null;
+
+                if (!$parcours || !isset($createdRaces[$parcours])) {
+                    $errors[] = "Ligne " . ($index + 2) . ": PARCOURS manquant ou invalide";
+                    continue;
+                }
+
+                // Get wave number for this parcours
+                $waveNumber = $raceWaveMap[$parcours] ?? 1;
 
                 // Map common CSV column names
                 $entrantData = [
                     'firstname' => $data['prenom'] ?? $data['firstname'] ?? $data['prénom'] ?? '',
                     'lastname' => $data['nom'] ?? $data['lastname'] ?? $data['name'] ?? '',
                     'gender' => strtoupper($data['sexe'] ?? $data['gender'] ?? $data['sex'] ?? 'M'),
-                    'birth_date' => $data['date_naissance'] ?? $data['birth_date'] ?? $data['dob'] ?? null,
+                    'birth_date' => $data['naissance'] ?? $data['date_naissance'] ?? $data['birth_date'] ?? $data['dob'] ?? null,
                     'email' => $data['email'] ?? $data['mail'] ?? null,
                     'phone' => $data['telephone'] ?? $data['phone'] ?? $data['tel'] ?? null,
                     'bib_number' => $data['dossard'] ?? $data['bib'] ?? $data['bib_number'] ?? null,
                     'club' => $data['club'] ?? $data['association'] ?? null,
                     'team' => $data['equipe'] ?? $data['team'] ?? null,
-                    'race_id' => $raceId,
+                    'race_id' => $createdRaces[$parcours],
+                    'wave' => $waveNumber, // Store wave number directly in entrant
                 ];
 
-                // Generate RFID tag from bib number
+                // Handle category: use CAT column if provided, otherwise auto-assign
+                $category = $data['cat'] ?? $data['categorie'] ?? $data['category'] ?? null;
+                if ($category) {
+                    $categoryModel = Category::where('code', $category)
+                        ->orWhere('name', 'like', "%{$category}%")
+                        ->first();
+                    if ($categoryModel) {
+                        $entrantData['category_id'] = $categoryModel->id;
+                    }
+                }
+
+                // Generate RFID tag from bib number: 2000000 + DOSSARD
                 if ($entrantData['bib_number']) {
                     $entrantData['rfid_tag'] = '2' . str_pad($entrantData['bib_number'], 6, '0', STR_PAD_LEFT);
                 }
@@ -187,8 +262,8 @@ class EntrantController extends Controller
 
                 $entrant = Entrant::create($entrantData);
 
-                // Auto-assign category
-                if ($entrant->birth_date && $entrant->gender) {
+                // Auto-assign category if not already set and birth_date is available
+                if (!$entrant->category_id && $entrant->birth_date && $entrant->gender) {
                     $entrant->assignCategory();
                 }
 
@@ -200,6 +275,14 @@ class EntrantController extends Controller
             return response()->json([
                 'message' => "Import réussi",
                 'imported' => $imported,
+                'races_created' => count($createdRaces),
+                'races' => array_map(function($parcours, $raceId) use ($raceWaveMap) {
+                    return [
+                        'name' => $parcours,
+                        'race_id' => $raceId,
+                        'wave' => $raceWaveMap[$parcours]
+                    ];
+                }, array_keys($createdRaces), $createdRaces),
                 'total_rows' => count($csvData),
                 'errors' => $errors
             ]);
@@ -208,7 +291,7 @@ class EntrantController extends Controller
             DB::rollBack();
 
             return response()->json([
-                'message' => 'Import failed',
+                'message' => 'Import échoué',
                 'error' => $e->getMessage()
             ], 500);
         }

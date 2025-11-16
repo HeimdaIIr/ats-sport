@@ -54,13 +54,13 @@
                 <div class="col-md-4">
                     <label class="form-label">Ajouter un lecteur</label>
                     <div class="input-group">
-                        <span class="input-group-text">192.168.10.15</span>
-                        <input type="number" x-model="newReaderNumber" class="form-control" placeholder="Numéro (ex: 6)" min="0" max="9">
+                        <span class="input-group-text">Lecteur</span>
+                        <input type="number" x-model="newReaderNumber" class="form-control" placeholder="Numéro (ex: 7)" min="0" max="99">
                         <button @click="addReader" class="btn btn-success" :disabled="!newReaderNumber">
                             <i class="bi bi-plus-circle"></i> Ajouter
                         </button>
                     </div>
-                    <small class="text-muted">Exemple: pour le lecteur 106, entrez 6</small>
+                    <small class="text-muted">Exemple: lecteur 107 → entrez 7 (IP: 192.168.10.157)</small>
                 </div>
             </div>
 
@@ -358,7 +358,7 @@ function timingInterface() {
         addReader() {
             if (!this.newReaderNumber) return;
 
-            const ip = `192.168.10.15${this.newReaderNumber}`;
+            const ip = `192.168.10.${150 + parseInt(this.newReaderNumber)}`;
 
             // Check if already exists
             if (this.activeReaders.find(r => r.ip === ip)) {

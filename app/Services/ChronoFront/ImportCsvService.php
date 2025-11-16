@@ -64,32 +64,47 @@ class ImportCsvService
                     // Valider la ligne
                     $validated = $this->validateRow($row, $index + 2); // +2 car ligne 1 = headers
 
-                    // Trouver la course correspondante
+                    // Trouver la course et la vague correspondantes
                     $raceKey = $this->getRaceKey($row);
                     if (!isset($racesMap[$raceKey])) {
                         throw new Exception("Parcours introuvable pour : {$raceKey}");
                     }
-                    $race = $racesMap[$raceKey];
+                    $raceData = $racesMap[$raceKey];
+                    $race = $raceData['race'];
+                    $waveNumber = $raceData['wave'];
 
                     // Générer le tag RFID (format 2000XXX)
                     $rfidTag = $this->generateRfidTag($validated['bib_number']);
 
-                    // Calculer la catégorie FFA
-                    $category = $this->calculateCategory(
-                        $validated['birth_date'],
-                        $validated['gender']
-                    );
+                    // Calculer la catégorie FFA (ou utiliser CAT du CSV si présent)
+                    $categoryId = null;
+                    if (!empty($row['CAT'])) {
+                        $catModel = Category::where('code', $row['CAT'])
+                            ->orWhere('name', 'like', "%{$row['CAT']}%")
+                            ->first();
+                        $categoryId = $catModel?->id;
+                    }
 
-                    // Créer le participant
+                    // Sinon calculer automatiquement
+                    if (!$categoryId) {
+                        $category = $this->calculateCategory(
+                            $validated['birth_date'],
+                            $validated['gender']
+                        );
+                        $categoryId = $category?->id;
+                    }
+
+                    // Créer le participant avec numéro de vague
                     Entrant::create([
                         'race_id' => $race->id,
+                        'wave' => $waveNumber, // Numéro de vague
                         'bib_number' => $validated['bib_number'],
                         'rfid_tag' => $rfidTag,
                         'lastname' => $validated['last_name'],
                         'firstname' => $validated['first_name'],
                         'gender' => $validated['gender'],
                         'birth_date' => $validated['birth_date'],
-                        'category_id' => $category?->id,
+                        'category_id' => $categoryId,
                         'club' => $validated['club'] ?? null,
                         'license_number' => $validated['license_number'] ?? null,
                         'email' => $validated['email'] ?? null,
@@ -135,20 +150,41 @@ class ImportCsvService
 
     /**
      * Identifier et créer les parcours uniques depuis le CSV
+     * Gère aussi la colonne VAGUE pour assigner les vagues automatiquement
      */
     private function identifyAndCreateRaces(Reader $csv, Event $event): array
     {
         $racesMap = [];
         $parcours = [];
+        $waveMap = []; // Map: raceKey => wave_number
 
-        // Collecter tous les parcours uniques
+        // Collecter tous les parcours uniques avec leurs vagues
         foreach ($csv->getRecords() as $row) {
             $raceKey = $this->getRaceKey($row);
             if (!isset($parcours[$raceKey])) {
                 $parcours[$raceKey] = [
                     'name' => $row['PARCOURS'] ?? 'Parcours',
-                    'id_parcours' => $row['IDPARCOURS'] ?? null
+                    'id_parcours' => $row['IDPARCOURS'] ?? null,
+                    'wave' => !empty($row['VAGUE']) ? (int) $row['VAGUE'] : null
                 ];
+            }
+        }
+
+        // Trier par ordre alphabétique des noms de parcours pour attribution auto
+        uksort($parcours, function($a, $b) use ($parcours) {
+            return strcmp($parcours[$a]['name'], $parcours[$b]['name']);
+        });
+
+        // Attribuer les numéros de vague
+        $autoWaveCounter = 1;
+        foreach ($parcours as $key => $data) {
+            if ($data['wave']) {
+                // Utiliser la vague spécifiée dans le CSV
+                $waveMap[$key] = $data['wave'];
+            } else {
+                // Attribution automatique par ordre alphabétique
+                $waveMap[$key] = $autoWaveCounter;
+                $autoWaveCounter++;
             }
         }
 
@@ -166,7 +202,10 @@ class ImportCsvService
                 ]
             );
 
-            $racesMap[$key] = $race;
+            $racesMap[$key] = [
+                'race' => $race,
+                'wave' => $waveMap[$key]
+            ];
         }
 
         return $racesMap;
