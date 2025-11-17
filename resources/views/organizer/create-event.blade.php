@@ -125,7 +125,7 @@
                             <div style="background: #0c2e3e; border-left: 4px solid #0ea5e9; padding: 1.5rem; margin-bottom: 1.5rem;">
                                 <h5 style="color: #0ea5e9; margin: 0 0 1rem 0; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px;">■ CONSEILS</h5>
                                 <ul style="color: #cccccc; font-size: 0.9rem; margin: 0; padding-left: 1.5rem; line-height: 1.6;">
-                                    <li>Choisissez un nom accrocheur et mémorable</li>
+                                    <li>Choisissez un nom accrocheur</li>
                                     <li>Ajoutez une description détaillée</li>
                                     <li>L'affiche attire les participants</li>
                                     <li>Vérifiez bien les dates et horaires</li>
@@ -320,7 +320,7 @@
                         
                         <!-- Contact principal -->
                         <div style="background: #1a1a1a; border: 1px solid #333333; padding: 2rem; margin-bottom: 2rem;">
-                            <h4 style="font-family: 'Oswald', sans-serif; color: #ffffff; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px;">■ PERSONNE DE CONTACT</h4>
+                            <h4 style="font-family: 'Oswald', sans-serif; color: #ffffff; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px;">■ CONTACT PRINCIPAL</h4>
                             
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
                                 <div>
@@ -389,14 +389,14 @@
                                 <li>Renseignez une adresse email dédiée à l'événement</li>
                                 <li>Ajoutez un numéro de téléphone accessible</li>
                                 <li>Présentez brièvement votre organisation</li>
-                                <li>Les contacts spécialisés améliorent le professionnalisme</li>
+                                <li>WIP</li>
                             </ul>
                         </div>
                         
                         <div style="background: #2e1a0c; border-left: 4px solid #f59e0b; padding: 1.5rem; margin-bottom: 1.5rem;">
                             <h5 style="color: #f59e0b; margin: 0 0 1rem 0; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px;">■ RÉACTIVITÉ</h5>
                             <ul style="color: #cccccc; font-size: 0.9rem; margin: 0; padding-left: 1.5rem; line-height: 1.6;">
-                                <li>Répondez rapidement aux demandes</li>
+                                <li>Répondez régulièrement aux demandes</li>
                                 <li>Créez une FAQ pour les questions courantes</li>
                                 <li>Prévoyez des créneaux d'accueil téléphonique</li>
                                 <li>Surveillez vos réseaux sociaux</li>
@@ -413,8 +413,8 @@
                         <div style="background: #0c2e1a; border-left: 4px solid #22c55e; padding: 1.5rem;">
                             <h5 style="color: #22c55e; margin: 0 0 1rem 0; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px;">■ COMMUNICATION</h5>
                             <div style="color: #cccccc; font-size: 0.9rem; line-height: 1.6;">
-                                <div style="margin-bottom: 0.5rem;"><strong style="color: #22c55e;">Avant :</strong> Info pratiques, parcours</div>
-                                <div style="margin-bottom: 0.5rem;"><strong style="color: #22c55e;">Pendant :</strong> Urgences, logistique</div>
+                                <div style="margin-bottom: 0.5rem;"><strong style="color: #22c55e;">Avant :</strong> WIP</div>
+                                <div style="margin-bottom: 0.5rem;"><strong style="color: #22c55e;">Pendant :</strong> WIP</div>
                                 <div><strong style="color: #22c55e;">Après :</strong> Résultats, photos</div>
                             </div>
                         </div>
@@ -1380,7 +1380,7 @@
                             <h5 style="color: #a855f7; margin: 0 0 0.75rem 0; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem;">📋 CONDITIONS</h5>
                             <div style="color: #cccccc; font-size: 0.85rem; line-height: 1.5;">
                                 <div style="margin-bottom: 0.25rem;">Lecture obligatoire</div>
-                                <div>Tarification transparente</div>
+                                <div>WIP</div>
                             </div>
                         </div>
                     </div>
