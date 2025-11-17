@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\ChronoFront\Entrant;
 use App\Models\ChronoFront\Category;
+use App\Models\ChronoFront\Race;
+use App\Models\ChronoFront\Wave;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -61,7 +63,7 @@ class EntrantController extends Controller
 
         // Generate RFID tag if bib_number is provided
         if (isset($validated['bib_number']) && !isset($validated['rfid_tag'])) {
-            $validated['rfid_tag'] = '2' . str_pad($validated['bib_number'], 6, '0', STR_PAD_LEFT);
+            $validated['rfid_tag'] = '2000' . $validated['bib_number'];
         }
 
         $entrant = Entrant::create($validated);
@@ -131,21 +133,32 @@ class EntrantController extends Controller
      */
     public function import(Request $request): JsonResponse
     {
-        $request->validate([
+        $validated = $request->validate([
             'file' => 'required|file|mimes:csv,txt',
-            'race_id' => 'required|exists:races,id',
+            'event_id' => 'required|integer',
         ]);
 
+        // Verify event exists in chronofront database
+        $event = \App\Models\ChronoFront\Event::find($validated['event_id']);
+        if (!$event) {
+            return response()->json([
+                'message' => 'Événement non trouvé',
+                'error' => 'L\'événement spécifié n\'existe pas'
+            ], 404);
+        }
+
         $file = $request->file('file');
-        $raceId = $request->input('race_id');
+        $eventId = $request->input('event_id');
 
         $csvData = array_map('str_getcsv', file($file->getRealPath()));
         $headers = array_map('strtolower', array_shift($csvData));
 
         $imported = 0;
         $errors = [];
+        $racesCache = []; // Cache pour éviter de recréer les races
+        $wavesCache = []; // Cache pour éviter de recréer les vagues
 
-        DB::beginTransaction();
+        DB::connection('chronofront')->beginTransaction();
 
         try {
             foreach ($csvData as $index => $row) {
@@ -155,60 +168,142 @@ class EntrantController extends Controller
 
                 $data = array_combine($headers, $row);
 
-                // Map common CSV column names
-                $entrantData = [
-                    'firstname' => $data['prenom'] ?? $data['firstname'] ?? $data['prénom'] ?? '',
-                    'lastname' => $data['nom'] ?? $data['lastname'] ?? $data['name'] ?? '',
-                    'gender' => strtoupper($data['sexe'] ?? $data['gender'] ?? $data['sex'] ?? 'M'),
-                    'birth_date' => $data['date_naissance'] ?? $data['birth_date'] ?? $data['dob'] ?? null,
-                    'email' => $data['email'] ?? $data['mail'] ?? null,
-                    'phone' => $data['telephone'] ?? $data['phone'] ?? $data['tel'] ?? null,
-                    'bib_number' => $data['dossard'] ?? $data['bib'] ?? $data['bib_number'] ?? null,
-                    'club' => $data['club'] ?? $data['association'] ?? null,
-                    'team' => $data['equipe'] ?? $data['team'] ?? null,
-                    'race_id' => $raceId,
-                ];
+                // Map CSV columns
+                $firstname = $data['prenom'] ?? $data['firstname'] ?? '';
+                $lastname = $data['nom'] ?? $data['lastname'] ?? '';
+                $gender = strtoupper($data['sexe'] ?? $data['gender'] ?? 'M');
+                $birthDate = $data['naissance'] ?? $data['birth_date'] ?? null;
+                $parcours = $data['parcours'] ?? $data['race'] ?? null;
+                $vague = $data['vague'] ?? $data['wave'] ?? null;
+                $cat = $data['cat'] ?? $data['category'] ?? null;
+                $club = $data['club'] ?? null;
+                $bibNumber = $data['dossard'] ?? $data['bib'] ?? null;
 
-                // Generate RFID tag from bib number
-                if ($entrantData['bib_number']) {
-                    $entrantData['rfid_tag'] = '2' . str_pad($entrantData['bib_number'], 6, '0', STR_PAD_LEFT);
+                // Skip if missing required fields
+                if (empty($firstname) || empty($lastname) || empty($parcours)) {
+                    $errors[] = "Ligne " . ($index + 2) . ": Données manquantes (nom, prénom ou parcours)";
+                    continue;
                 }
 
-                // Clean data
-                $entrantData['gender'] = in_array($entrantData['gender'], ['M', 'F']) ? $entrantData['gender'] : 'M';
+                // Find or create Race based on PARCOURS
+                $raceKey = strtolower(trim($parcours));
+                if (!isset($racesCache[$raceKey])) {
+                    $race = Race::where('event_id', $eventId)
+                        ->where('name', trim($parcours))
+                        ->first();
 
-                if ($entrantData['birth_date']) {
+                    if (!$race) {
+                        $race = Race::create([
+                            'event_id' => $eventId,
+                            'name' => trim($parcours),
+                            'type' => '1 passage', // Type par défaut
+                        ]);
+                    }
+                    $racesCache[$raceKey] = $race;
+                } else {
+                    $race = $racesCache[$raceKey];
+                }
+
+                // Find or create Wave based on VAGUE
+                $waveId = null;
+                if (!empty($vague)) {
+                    $waveKey = $race->id . '_' . trim($vague);
+                    if (!isset($wavesCache[$waveKey])) {
+                        $wave = Wave::where('race_id', $race->id)
+                            ->where('name', trim($vague))
+                            ->first();
+
+                        if (!$wave) {
+                            $wave = Wave::create([
+                                'race_id' => $race->id,
+                                'name' => trim($vague),
+                            ]);
+                        }
+                        $wavesCache[$waveKey] = $wave;
+                    } else {
+                        $wave = $wavesCache[$waveKey];
+                    }
+                    $waveId = $wave->id;
+                }
+
+                // Parse birth date (format français DD/MM/YYYY)
+                $parsedBirthDate = null;
+                if ($birthDate) {
                     try {
-                        $entrantData['birth_date'] = \Carbon\Carbon::parse($entrantData['birth_date'])->format('Y-m-d');
+                        // Essayer le format français DD/MM/YYYY
+                        if (preg_match('#^(\d{2})/(\d{2})/(\d{4})$#', $birthDate, $matches)) {
+                            $parsedBirthDate = $matches[3] . '-' . $matches[2] . '-' . $matches[1];
+                        } else {
+                            $parsedBirthDate = \Carbon\Carbon::parse($birthDate)->format('Y-m-d');
+                        }
                     } catch (\Exception $e) {
-                        $entrantData['birth_date'] = null;
+                        $parsedBirthDate = null;
                     }
                 }
 
+                // Generate RFID tag from bib number (2000 + dossard)
+                $rfidTag = null;
+                if ($bibNumber) {
+                    $rfidTag = '2000' . $bibNumber;
+                }
+
+                // Clean gender
+                $gender = in_array($gender, ['M', 'F']) ? $gender : 'M';
+
+                // Create entrant
+                $entrantData = [
+                    'firstname' => trim($firstname),
+                    'lastname' => trim($lastname),
+                    'gender' => $gender,
+                    'birth_date' => $parsedBirthDate,
+                    'bib_number' => $bibNumber,
+                    'rfid_tag' => $rfidTag,
+                    'club' => $club,
+                    'race_id' => $race->id,
+                    'wave_id' => $waveId,
+                ];
+
                 $entrant = Entrant::create($entrantData);
 
-                // Auto-assign category
-                if ($entrant->birth_date && $entrant->gender) {
-                    $entrant->assignCategory();
+                // Handle category
+                if (!empty($cat)) {
+                    // Try to find category by code
+                    $category = Category::where('code', strtoupper(trim($cat)))->first();
+                    if ($category) {
+                        $entrant->category_id = $category->id;
+                        $entrant->save();
+                    } else {
+                        // If category code not found, auto-assign
+                        if ($entrant->birth_date && $entrant->gender) {
+                            $entrant->assignCategory();
+                        }
+                    }
+                } else {
+                    // Auto-assign category based on age and gender
+                    if ($entrant->birth_date && $entrant->gender) {
+                        $entrant->assignCategory();
+                    }
                 }
 
                 $imported++;
             }
 
-            DB::commit();
+            DB::connection('chronofront')->commit();
 
             return response()->json([
                 'message' => "Import réussi",
                 'imported' => $imported,
                 'total_rows' => count($csvData),
+                'races_created' => count($racesCache),
+                'waves_created' => count($wavesCache),
                 'errors' => $errors
             ]);
 
         } catch (\Exception $e) {
-            DB::rollBack();
+            DB::connection('chronofront')->rollBack();
 
             return response()->json([
-                'message' => 'Import failed',
+                'message' => 'Import échoué',
                 'error' => $e->getMessage()
             ], 500);
         }

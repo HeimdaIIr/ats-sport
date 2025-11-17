@@ -17,6 +17,7 @@ class CategorySeeder extends Seeder
         $categories = [
             // Catégories Hommes
             [
+                'code' => 'SEM',
                 'name' => 'SEM - Senior Homme',
                 'gender' => 'M',
                 'age_min' => 20,
@@ -24,6 +25,7 @@ class CategorySeeder extends Seeder
                 'color' => '#3B82F6'
             ],
             [
+                'code' => 'V1M',
                 'name' => 'V1M - Vétéran 1 Homme',
                 'gender' => 'M',
                 'age_min' => 40,
@@ -31,6 +33,7 @@ class CategorySeeder extends Seeder
                 'color' => '#10B981'
             ],
             [
+                'code' => 'V2M',
                 'name' => 'V2M - Vétéran 2 Homme',
                 'gender' => 'M',
                 'age_min' => 50,
@@ -38,6 +41,7 @@ class CategorySeeder extends Seeder
                 'color' => '#8B5CF6'
             ],
             [
+                'code' => 'V3M',
                 'name' => 'V3M - Vétéran 3 Homme',
                 'gender' => 'M',
                 'age_min' => 60,
@@ -45,6 +49,7 @@ class CategorySeeder extends Seeder
                 'color' => '#F59E0B'
             ],
             [
+                'code' => 'V4M',
                 'name' => 'V4M - Vétéran 4 Homme',
                 'gender' => 'M',
                 'age_min' => 70,
@@ -52,6 +57,7 @@ class CategorySeeder extends Seeder
                 'color' => '#EF4444'
             ],
             [
+                'code' => 'ESM',
                 'name' => 'ESM - Espoir Homme',
                 'gender' => 'M',
                 'age_min' => 18,
@@ -59,6 +65,7 @@ class CategorySeeder extends Seeder
                 'color' => '#06B6D4'
             ],
             [
+                'code' => 'CAM',
                 'name' => 'CAM - Cadet Homme',
                 'gender' => 'M',
                 'age_min' => 16,
@@ -68,6 +75,7 @@ class CategorySeeder extends Seeder
 
             // Catégories Femmes
             [
+                'code' => 'SEF',
                 'name' => 'SEF - Senior Femme',
                 'gender' => 'F',
                 'age_min' => 20,
@@ -75,6 +83,7 @@ class CategorySeeder extends Seeder
                 'color' => '#EC4899'
             ],
             [
+                'code' => 'V1F',
                 'name' => 'V1F - Vétéran 1 Femme',
                 'gender' => 'F',
                 'age_min' => 40,
@@ -82,6 +91,7 @@ class CategorySeeder extends Seeder
                 'color' => '#F59E0B'
             ],
             [
+                'code' => 'V2F',
                 'name' => 'V2F - Vétéran 2 Femme',
                 'gender' => 'F',
                 'age_min' => 50,
@@ -89,6 +99,7 @@ class CategorySeeder extends Seeder
                 'color' => '#EF4444'
             ],
             [
+                'code' => 'V3F',
                 'name' => 'V3F - Vétéran 3 Femme',
                 'gender' => 'F',
                 'age_min' => 60,
@@ -96,6 +107,7 @@ class CategorySeeder extends Seeder
                 'color' => '#A855F7'
             ],
             [
+                'code' => 'V4F',
                 'name' => 'V4F - Vétéran 4 Femme',
                 'gender' => 'F',
                 'age_min' => 70,
@@ -103,6 +115,7 @@ class CategorySeeder extends Seeder
                 'color' => '#DC2626'
             ],
             [
+                'code' => 'ESF',
                 'name' => 'ESF - Espoir Femme',
                 'gender' => 'F',
                 'age_min' => 18,
@@ -110,6 +123,7 @@ class CategorySeeder extends Seeder
                 'color' => '#06B6D4'
             ],
             [
+                'code' => 'CAF',
                 'name' => 'CAF - Cadet Femme',
                 'gender' => 'F',
                 'age_min' => 16,
