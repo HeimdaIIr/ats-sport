@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test API ChronoFront</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #1e1e1e;
+            color: #d4d4d4;
+        }
+        .section {
+            background: #252526;
+            border: 1px solid #3e3e42;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #4ec9b0;
+            margin-top: 0;
+        }
+        .success {
+            color: #4ec9b0;
+        }
+        .error {
+            color: #f48771;
+        }
+        .warning {
+            color: #dcdcaa;
+        }
+        pre {
+            background: #1e1e1e;
+            border: 1px solid #3e3e42;
+            padding: 10px;
+            overflow-x: auto;
+            border-radius: 4px;
+        }
+        button {
+            background: #0e639c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+        }
+        button:hover {
+            background: #1177bb;
+        }
+        .info {
+            color: #569cd6;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Diagnostic ChronoFront API</h1>
+
+    <div class="section">
+        <h2>1. Test de l'API /api/events</h2>
+        <button onclick="testEventsAPI()">Tester API Events</button>
+        <div id="events-result"></div>
+    </div>
+
+    <div class="section">
+        <h2>2. Test de l'API /api/races</h2>
+        <button onclick="testRacesAPI()">Tester API Races</button>
+        <div id="races-result"></div>
+    </div>
+
+    <div class="section">
+        <h2>3. Simulation du code races.blade.php</h2>
+        <button onclick="simulateRacesPage()">Simuler loadEvents() de races.blade.php</button>
+        <div id="simulate-races"></div>
+    </div>
+
+    <div class="section">
+        <h2>4. Simulation du code waves.blade.php</h2>
+        <button onclick="simulateWavesPage()">Simuler loadEvents() de waves.blade.php</button>
+        <div id="simulate-waves"></div>
+    </div>
+
+    <div class="section">
+        <h2>5. Simulation du code entrants-import.blade.php</h2>
+        <button onclick="simulateImportPage()">Simuler loadEvents() de entrants-import</button>
+        <div id="simulate-import"></div>
+    </div>
+
+    <script>
+        function log(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : type === 'warning' ? 'warning' : 'info';
+            element.innerHTML += `<p class="${className}">${message}</p>`;
+        }
+
+        function logJSON(elementId, label, data) {
+            const element = document.getElementById(elementId);
+            element.innerHTML += `<p class="info"><strong>${label}</strong></p><pre>${JSON.stringify(data, null, 2)}</pre>`;
+        }
+
+        async function testEventsAPI() {
+            const resultDiv = document.getElementById('events-result');
+            resultDiv.innerHTML = '<p class="info">⏳ Chargement...</p>';
+
+            try {
+                const response = await fetch('/api/events');
+                log('events-result', `✅ Status: ${response.status} ${response.statusText}`, 'success');
+
+                const contentType = response.headers.get('content-type');
+                log('events-result', `Content-Type: ${contentType}`, 'info');
+
+                const data = await response.json();
+                logJSON('events-result', 'Réponse complète:', data);
+
+                // Vérifier la structure
+                if (Array.isArray(data)) {
+                    log('events-result', `✅ C'est un Array direct avec ${data.length} événement(s)`, 'success');
+                } else if (data.data && Array.isArray(data.data)) {
+                    log('events-result', `✅ C'est un objet avec data.data (${data.data.length} événements)`, 'success');
+                } else {
+                    log('events-result', `❌ Structure inconnue!`, 'error');
+                }
+
+                // Vérifier les champs
+                const events = Array.isArray(data) ? data : (data.data || []);
+                if (events.length > 0) {
+                    const firstEvent = events[0];
+                    log('events-result', `Premier événement:`, 'info');
+                    logJSON('events-result', '', firstEvent);
+
+                    if (firstEvent.date_start) {
+                        log('events-result', `✅ Champ date_start présent`, 'success');
+                    } else if (firstEvent.event_date) {
+                        log('events-result', `❌ Champ event_date trouvé (MAUVAIS!)`, 'error');
+                    } else {
+                        log('events-result', `❌ Aucun champ de date trouvé!`, 'error');
+                    }
+                }
+
+            } catch (error) {
+                log('events-result', `❌ Erreur: ${error.message}`, 'error');
+                console.error('Full error:', error);
+            }
+        }
+
+        async function testRacesAPI() {
+            const resultDiv = document.getElementById('races-result');
+            resultDiv.innerHTML = '<p class="info">⏳ Chargement...</p>';
+
+            try {
+                const response = await fetch('/api/races');
+                log('races-result', `✅ Status: ${response.status} ${response.statusText}`, 'success');
+
+                const data = await response.json();
+                logJSON('races-result', 'Réponse complète:', data);
+
+                const races = Array.isArray(data) ? data : (data.data || []);
+                log('races-result', `Total: ${races.length} course(s)`, 'info');
+
+            } catch (error) {
+                log('races-result', `❌ Erreur: ${error.message}`, 'error');
+            }
+        }
+
+        async function simulateRacesPage() {
+            const resultDiv = document.getElementById('simulate-races');
+            resultDiv.innerHTML = '<p class="info">🎬 Simulation du code races.blade.php...</p>';
+
+            try {
+                // Code EXACT de races.blade.php ligne 138-156
+                const response = await fetch('/api/events');
+                const data = await response.json();
+                const allEvents = data.data || data;
+
+                log('simulate-races', `Variable allEvents contient ${allEvents.length} événement(s)`, 'info');
+                logJSON('simulate-races', 'allEvents:', allEvents);
+
+                // Simuler le remplissage des dropdowns
+                const dropdownOptions = [];
+                allEvents.forEach(event => {
+                    try {
+                        const optionText = `${event.name} (${new Date(event.date_start).toLocaleDateString('fr-FR')})`;
+                        dropdownOptions.push({ value: event.id, text: optionText });
+                        log('simulate-races', `✅ Option créée: ${optionText}`, 'success');
+                    } catch (e) {
+                        log('simulate-races', `❌ Erreur création option: ${e.message}`, 'error');
+                        logJSON('simulate-races', 'Event problématique:', event);
+                    }
+                });
+
+                log('simulate-races', `<strong>Résultat: ${dropdownOptions.length} option(s) pour les dropdowns</strong>`, dropdownOptions.length > 0 ? 'success' : 'error');
+
+            } catch (error) {
+                log('simulate-races', `❌ Erreur: ${error.message}`, 'error');
+                console.error('Full error:', error);
+            }
+        }
+
+        async function simulateWavesPage() {
+            const resultDiv = document.getElementById('simulate-waves');
+            resultDiv.innerHTML = '<p class="info">🎬 Simulation du code waves.blade.php...</p>';
+
+            try {
+                // Code EXACT de waves.blade.php ligne 146-163
+                const response = await fetch('/api/events');
+                const data = await response.json();
+                const allEvents = data.data || data;
+
+                log('simulate-waves', `Variable allEvents contient ${allEvents.length} événement(s)`, 'info');
+
+                const dropdownOptions = [];
+                allEvents.forEach(event => {
+                    try {
+                        const optionText = `${event.name} (${new Date(event.date_start).toLocaleDateString('fr-FR')})`;
+                        dropdownOptions.push({ value: event.id, text: optionText });
+                        log('simulate-waves', `✅ Option créée: ${optionText}`, 'success');
+                    } catch (e) {
+                        log('simulate-waves', `❌ Erreur création option: ${e.message}`, 'error');
+                    }
+                });
+
+                log('simulate-waves', `<strong>Résultat: ${dropdownOptions.length} option(s) pour le dropdown</strong>`, dropdownOptions.length > 0 ? 'success' : 'error');
+
+            } catch (error) {
+                log('simulate-waves', `❌ Erreur: ${error.message}`, 'error');
+            }
+        }
+
+        async function simulateImportPage() {
+            const resultDiv = document.getElementById('simulate-import');
+            resultDiv.innerHTML = '<p class="info">🎬 Simulation du code entrants-import.blade.php...</p>';
+
+            try {
+                // Code de entrants-import.blade.php
+                const response = await fetch('/api/events');
+                const events = await response.json();
+
+                log('simulate-import', `Variable events contient ${events.length} événement(s)`, 'info');
+
+                if (events.length === 0) {
+                    log('simulate-import', `⚠️ ALERTE: Aucun événement trouvé!`, 'warning');
+                } else {
+                    const dropdownOptions = [];
+                    events.forEach(event => {
+                        try {
+                            const optionText = `${event.name} - ${new Date(event.date_start).toLocaleDateString('fr-FR')}`;
+                            dropdownOptions.push({ value: event.id, text: optionText });
+                            log('simulate-import', `✅ Option créée: ${optionText}`, 'success');
+                        } catch (e) {
+                            log('simulate-import', `❌ Erreur création option: ${e.message}`, 'error');
+                        }
+                    });
+
+                    log('simulate-import', `<strong>Résultat: ${dropdownOptions.length} option(s)</strong>`, dropdownOptions.length > 0 ? 'success' : 'error');
+                }
+
+            } catch (error) {
+                log('simulate-import', `❌ Erreur: ${error.message}`, 'error');
+            }
+        }
+
+        // Auto-test au chargement
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('Page de diagnostic chargée');
+            console.log('Cliquez sur les boutons pour tester les APIs');
+        });
+    </script>
+</body>
+</html>

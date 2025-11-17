@@ -8,8 +8,8 @@ use Illuminate\Support\Str;
 class Event extends Model
 {
     protected $fillable = [
-        'name', 'slug', 'description', 'location', 
-        'department', 'event_date', 'registration_deadline', 
+        'name', 'slug', 'description', 'location',
+        'department', 'event_date', 'registration_deadline',
         'max_participants', 'status'
     ];
 
@@ -21,7 +21,7 @@ class Event extends Model
     protected static function boot()
     {
         parent::boot();
-        
+
         static::creating(function ($event) {
             $event->slug = Str::slug($event->name);
         });
