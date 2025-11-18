@@ -18,6 +18,28 @@
                 ← RETOUR
             </a>
         </div>
+        <!-- Formulaire principal -->
+        <!-- Messages de succès/erreur -->
+        @if(session('success'))
+            <div style="background: #0c2e1a; border-left: 4px solid #22c55e; padding: 1rem 1.5rem; margin-bottom: 2rem;">
+                <p style="color: #22c55e; margin: 0; font-family: 'Oswald', sans-serif;">✓ {{ session('success') }}</p>
+            </div>
+        @endif
+
+        @if($errors->any())
+            <div style="background: #2e0c0c; border-left: 4px solid #ef4444; padding: 1rem 1.5rem; margin-bottom: 2rem;">
+                <p style="color: #ef4444; margin: 0 0 0.5rem 0; font-family: 'Oswald', sans-serif;">⚠ Erreurs détectées :</p>
+                <ul style="color: #ef4444; margin: 0; padding-left: 1.5rem;">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form method="POST" action="{{ route('organizer.store') }}" id="create-event-form">
+            @csrf
+
 
         <!-- Tabs Navigation -->
         <div style="background: #111111; border: 1px solid #333333; overflow: hidden; margin-bottom: 0;">
@@ -58,7 +80,6 @@
                     </h3>
                 </div>
                 
-                <form id="epreuve-form">
                     <div style="display: grid; grid-template-columns: 1fr 300px; gap: 4rem; align-items: start;">
                         
                         <!-- Colonne gauche -->
@@ -138,7 +159,6 @@
                             </div>
                         </div>
                     </div>
-                </form>
             </div>
 
             <!-- Tab 2: Parcours -->
@@ -1333,11 +1353,11 @@
                             </div>
                             
                             <div style="display: flex; gap: 2rem; justify-content: center; align-items: center;">
-                                <button type="button" onclick="saveAsDraft()" id="save-draft-btn" style="background: #f59e0b; color: #000000; border: none; padding: 1.5rem 3rem; font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 1.1rem; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; transition: all 0.2s ease;" disabled>
+                                <button type="submit" name="action" value="draft" id="save-draft-btn" style="background: #f59e0b; color: #000000; border: none; padding: 1.5rem 3rem; font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 1.1rem; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; transition: all 0.2s ease;">
                                     💾 ENREGISTRER BROUILLON
                                 </button>
                                 
-                                <button type="button" onclick="publishEvent()" id="publish-btn" style="background: #22c55e; color: #000000; border: none; padding: 1.5rem 3rem; font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 1.1rem; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; transition: all 0.2s ease;" disabled>
+                                <button type="submit" name="action" value="publish" id="publish-btn" style="background: #22c55e; color: #000000; border: none; padding: 1.5rem 3rem; font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 1.1rem; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; transition: all 0.2s ease;">
                                     🚀 PUBLIER L'ÉVÉNEMENT
                                 </button>
                             </div>
@@ -2194,4 +2214,6 @@ input::placeholder, textarea::placeholder {
     border-color: #0ea5e9;
 }
 </style>
+        </form>
+    </div>
 @endsection

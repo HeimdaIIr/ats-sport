@@ -12,9 +12,16 @@ Route::get('/event/{slug}', [EventController::class, 'show'])->name('event.show'
 Route::get('/resultats', [EventController::class, 'results'])->name('events.results');
 
 // Routes onglet organisateur
-Route::get('/organisateur', [OrganizatorController::class, 'index'])->name('organizer.dashboard');
-Route::get('/organisateur/creer', [OrganizatorController::class, 'create'])->name('organizer.create');
-Route::post('/organisateur/creer', [OrganizatorController::class, 'store'])->name('organizer.store');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/organisateur', [OrganizatorController::class, 'index'])->name('organizer.dashboard');
+    Route::get('/organisateur/creer', [OrganizatorController::class, 'create'])->name('organizer.create');
+    Route::post('/organisateur/creer', [OrganizatorController::class, 'store'])->name('organizer.store');
+    
+    // Routes pour édition et gestion de la vedette (à réorganiser c'est caca la)
+    Route::get('/organisateur/modifier/{id}', [OrganizatorController::class, 'edit'])->name('organizer.edit');
+    Route::put('/organisateur/modifier/{id}', [OrganizatorController::class, 'update'])->name('organizer.update');
+    Route::post('/organisateur/vedette/{id}', [OrganizatorController::class, 'toggleFeatured'])->name('organizer.toggle-featured');
+});
 
 // Routes ChronoFront - Module de Chronométrage
 Route::prefix('chronofront')->name('chronofront.')->group(function () {
@@ -29,6 +36,6 @@ Route::prefix('chronofront')->name('chronofront.')->group(function () {
     Route::get('/categories', [ChronoFrontController::class, 'categories'])->name('categories');
 });
 
-// Routes plugin authentification Laravel
+// Routes plugin authentification Laravel (WIP)
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
