@@ -1604,23 +1604,32 @@ let parcoursCount = 1;
 const tabs = ['epreuve', 'parcours', 'contact', 'reglement', 'inscription', 'autre', 'validation'];
 
 function showTab(index) {
-    // Hide all tabs
+    // Hide all tabs and disable required fields
     document.querySelectorAll('.tab-content').forEach(content => {
         content.style.display = 'none';
+        // Désactiver les champs required dans les onglets cachés
+        content.querySelectorAll('[required]').forEach(field => {
+            field.removeAttribute('required');
+            field.setAttribute('data-was-required', 'true');
+        });
     });
-    
+
     // Reset all tab buttons
     document.querySelectorAll('.tab').forEach(tab => {
         tab.style.background = '#1a1a1a';
         tab.style.color = '#cccccc';
     });
-    
-    // Show current tab
+
+    // Show current tab and re-enable required fields
     const tabToShow = document.getElementById('tab-' + tabs[index]);
     if (tabToShow) {
         tabToShow.style.display = 'block';
+        // Réactiver les champs required dans l'onglet actif
+        tabToShow.querySelectorAll('[data-was-required="true"]').forEach(field => {
+            field.setAttribute('required', 'required');
+        });
     }
-    
+
     // Highlight current tab button
     const tabButton = document.querySelectorAll('.tab')[index];
     if (tabButton) {
@@ -2107,7 +2116,18 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-    
+
+    // Gestionnaire de soumission du formulaire
+    const form = document.getElementById('create-event-form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            // Réactiver tous les champs required avant la soumission
+            document.querySelectorAll('[data-was-required="true"]').forEach(field => {
+                field.setAttribute('required', 'required');
+            });
+        });
+    }
+
     // Initialize first tab
     showTab(0);
 });
