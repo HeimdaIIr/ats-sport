@@ -37,7 +37,7 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('organizer.store') }}" id="create-event-form">
+        <form method="POST" action="{{ route('organizer.store') }}" id="create-event-form" novalidate>
             @csrf
 
 
@@ -1604,14 +1604,9 @@ let parcoursCount = 1;
 const tabs = ['epreuve', 'parcours', 'contact', 'reglement', 'inscription', 'autre', 'validation'];
 
 function showTab(index) {
-    // Hide all tabs and disable required fields
+    // Hide all tabs
     document.querySelectorAll('.tab-content').forEach(content => {
         content.style.display = 'none';
-        // Désactiver les champs required dans les onglets cachés
-        content.querySelectorAll('[required]').forEach(field => {
-            field.removeAttribute('required');
-            field.setAttribute('data-was-required', 'true');
-        });
     });
 
     // Reset all tab buttons
@@ -1620,14 +1615,10 @@ function showTab(index) {
         tab.style.color = '#cccccc';
     });
 
-    // Show current tab and re-enable required fields
+    // Show current tab
     const tabToShow = document.getElementById('tab-' + tabs[index]);
     if (tabToShow) {
         tabToShow.style.display = 'block';
-        // Réactiver les champs required dans l'onglet actif
-        tabToShow.querySelectorAll('[data-was-required="true"]').forEach(field => {
-            field.setAttribute('required', 'required');
-        });
     }
 
     // Highlight current tab button
@@ -2113,17 +2104,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     iframeDetails.style.display = 'none';
                 }
-            });
-        });
-    }
-
-    // Gestionnaire de soumission du formulaire
-    const form = document.getElementById('create-event-form');
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            // Réactiver tous les champs required avant la soumission
-            document.querySelectorAll('[data-was-required="true"]').forEach(field => {
-                field.setAttribute('required', 'required');
             });
         });
     }
