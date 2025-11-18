@@ -137,7 +137,7 @@ $envContent = Get-Content .env -Raw
 # Mettre à jour la connexion principale
 $envContent = $envContent -replace 'DB_CONNECTION=.*', 'DB_CONNECTION=mysql'
 $envContent = $envContent -replace 'DB_HOST=.*', 'DB_HOST=127.0.0.1'
-$envContent = $envContent -replace 'DB_PORT=.*', 'DB_PORT=3306'
+$envContent = $envContent -replace 'DB_PORT=.*', 'DB_PORT=3012'
 $envContent = $envContent -replace 'DB_DATABASE=.*', "DB_DATABASE=$dbName"
 $envContent = $envContent -replace 'DB_USERNAME=.*', "DB_USERNAME=$dbUser"
 $envContent = $envContent -replace 'DB_PASSWORD=.*', "DB_PASSWORD=$dbPassPlain"
@@ -148,7 +148,7 @@ if ($envContent -notmatch "CHRONOFRONT_DB_") {
 
 # Configuration Base de Données ChronoFront (Chronométrage)
 CHRONOFRONT_DB_HOST=127.0.0.1
-CHRONOFRONT_DB_PORT=3306
+CHRONOFRONT_DB_PORT=3012
 CHRONOFRONT_DB_DATABASE=$chronoDbName
 CHRONOFRONT_DB_USERNAME=$chronoDbUser
 CHRONOFRONT_DB_PASSWORD=$chronoDbPassPlain

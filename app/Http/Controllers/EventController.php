@@ -17,7 +17,13 @@ class EventController extends Controller
                             ->limit(6)
                             ->get();
         
-        return view('events.index', compact('events', 'completedEvents'));
+        // Récupérer la course vedette
+        $featuredEvent = Event::where('is_featured', true)
+                            ->whereIn('status', ['upcoming', 'open', 'closed'])
+                            ->where('event_date', '>=', now())
+                            ->first();
+
+        return view('events.index', compact('events', 'completedEvents', 'featuredEvent'));
     }
 
     public function show($slug)
