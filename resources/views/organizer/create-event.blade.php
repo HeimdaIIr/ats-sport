@@ -1165,15 +1165,15 @@
                 
                 partnerDiv.innerHTML = `
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                        <h5 style="font-family: 'Oswald', sans-serif; color: #0ea5e9; margin: 0; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem;">■ PARTENAIRE ${partnerCount}</h5>
+                        <h5 style="font-family: 'Oswald', sans-serif; color: #0ea5e9; margin: 0; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem;">■ PARTENAIRE @${partnerCount}</h5>
                         <button type="button" onclick="removePartner(this)" style="background: #ef4444; color: white; border: none; padding: 0.5rem 1rem; font-family: 'Oswald', sans-serif; font-size: 0.8rem; cursor: pointer; text-transform: uppercase;">SUPPRIMER</button>
                     </div>
-                    
+
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
                         <input type="text" name="partner_name[]" style="width: 100%; padding: 0.75rem; background: #1a1a1a; border: 1px solid #333333; color: #ffffff;" placeholder="Nom du partenaire">
                         <input type="url" name="partner_website[]" style="width: 100%; padding: 0.75rem; background: #1a1a1a; border: 1px solid #333333; color: #ffffff;" placeholder="Site web">
                     </div>
-                    
+
                     <div style="border: 2px dashed #333333; padding: 1.5rem; text-align: center; background: #1a1a1a;">
                         <div style="font-size: 1.5rem; color: #0ea5e9; margin-bottom: 0.5rem;">🏢</div>
                         <p style="color: #cccccc; margin: 0; font-size: 0.9rem;">Logo du partenaire</p>
@@ -1437,14 +1437,14 @@
                 const location = document.querySelector('input[name="location"]');
                 const department = document.querySelector('input[name="department"]');
                 if (location && location.value) {
-                    const locationText = location.value + (department && department.value ? ` (${department.value})` : '');
+                    const locationText = location.value + (department && department.value ? ` (@${department.value})` : '');
                     document.getElementById('summary-event-location').textContent = locationText;
                 }
-                
+
                 // Parcours
                 const parcours = document.querySelectorAll('#tab-parcours .parcours-item');
                 const parcoursCount = parcours.length;
-                document.getElementById('summary-parcours-count').textContent = `${parcoursCount} parcours configuré${parcoursCount > 1 ? 's' : ''}`;
+                document.getElementById('summary-parcours-count').textContent = `@${parcoursCount} parcours configuré@${parcoursCount > 1 ? 's' : ''}`;
                 
                 // Détail des parcours
                 const parcoursList = document.getElementById('summary-parcours-list');
@@ -1454,14 +1454,14 @@
                     const nameInput = parcours.querySelector('input[name="parcours_name[]"]');
                     const distanceInput = parcours.querySelector('input[name="parcours_distance[]"]');
                     
-                    const name = nameInput && nameInput.value ? nameInput.value : `Parcours ${index + 1}`;
+                    const name = nameInput && nameInput.value ? nameInput.value : `Parcours @${index + 1}`;
                     const distance = distanceInput && distanceInput.value ? distanceInput.value + ' km' : '';
-                    
+
                     const parcoursDiv = document.createElement('div');
                     parcoursDiv.style.cssText = 'background: #111111; padding: 1rem; border-left: 3px solid #0ea5e9; display: flex; justify-content: space-between; align-items: center;';
                     parcoursDiv.innerHTML = `
-                        <span style="color: #ffffff; font-weight: 600;">${name}</span>
-                        <span style="color: #0ea5e9; font-size: 0.9rem;">${distance}</span>
+                        <span style="color: #ffffff; font-weight: 600;">@${name}</span>
+                        <span style="color: #0ea5e9; font-size: 0.9rem;">@${distance}</span>
                     `;
                     parcoursList.appendChild(parcoursDiv);
                 });
@@ -1678,15 +1678,15 @@ function syncParcoursToInscription() {
         const nameInput = parcours.querySelector('input[name="parcours_name[]"]');
         const distanceInput = parcours.querySelector('input[name="parcours_distance[]"]');
         
-        const parcoursName = nameInput && nameInput.value ? nameInput.value : `Parcours ${index + 1}`;
+        const parcoursName = nameInput && nameInput.value ? nameInput.value : `Parcours @${index + 1}`;
         const parcoursDistance = distanceInput && distanceInput.value ? distanceInput.value : '';
         
         const pricingDiv = document.createElement('div');
         pricingDiv.style.cssText = 'background: #111111; border: 1px solid #333333; padding: 2rem; margin-bottom: 1.5rem;';
         
         pricingDiv.innerHTML = `
-            <h5 style="font-family: 'Oswald', sans-serif; color: #0ea5e9; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px;">■ ${parcoursName.toUpperCase()}${parcoursDistance ? ` (${parcoursDistance}km)` : ''}</h5>
-            
+            <h5 style="font-family: 'Oswald', sans-serif; color: #0ea5e9; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px;">■ @${parcoursName.toUpperCase()}@${parcoursDistance ? ` (@${parcoursDistance}km)` : ''}</h5>
+
             <div style="display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: end;">
                 <div>
                     <label style="display: block; margin-bottom: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">Prix de base (€)</label>
@@ -1714,7 +1714,7 @@ function initParcoursFunctionality() {
             
             newParcours.innerHTML = `
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                    <h5 style="font-family: 'Oswald', sans-serif; color: #0ea5e9; margin: 0; text-transform: uppercase; letter-spacing: 1px;">■ PARCOURS ${parcoursCount}</h5>
+                    <h5 style="font-family: 'Oswald', sans-serif; color: #0ea5e9; margin: 0; text-transform: uppercase; letter-spacing: 1px;">■ PARCOURS @${parcoursCount}</h5>
                     <button type="button" class="remove-parcours" style="background: #ef4444; color: white; border: none; padding: 0.5rem 1rem; font-family: 'Oswald', sans-serif; font-size: 0.8rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;" onclick="removeParcours(this)">SUPPRIMER</button>
                 </div>
                 
@@ -1765,7 +1765,7 @@ function showPdfPreview(file) {
     
     if (filename && filesize && preview) {
         filename.textContent = file.name;
-        filesize.textContent = `Taille: ${(file.size / 1024 / 1024).toFixed(2)} Mo`;
+        filesize.textContent = `Taille: @${(file.size / 1024 / 1024).toFixed(2)} Mo`;
         preview.style.display = 'block';
     }
 }
@@ -1900,28 +1900,28 @@ function addPricingPeriodElement(number, data = null) {
     
     periodDiv.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <h4 style="font-family: 'Oswald', sans-serif; color: #0ea5e9; margin: 0; text-transform: uppercase; letter-spacing: 1px;">■ PÉRIODE ${number}</h4>
+            <h4 style="font-family: 'Oswald', sans-serif; color: #0ea5e9; margin: 0; text-transform: uppercase; letter-spacing: 1px;">■ PÉRIODE @${number}</h4>
             <button type="button" class="remove-period" style="background: #ef4444; color: white; border: none; padding: 0.5rem 1rem; font-family: 'Oswald', sans-serif; font-size: 0.8rem; cursor: pointer; text-transform: uppercase;" onclick="removePricingPeriod(this)">SUPPRIMER</button>
         </div>
-        
+
         <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
             <div>
                 <label style="display: block; margin-bottom: 0.5rem; color: #ffffff; font-family: 'Oswald', sans-serif; text-transform: uppercase; font-size: 0.9rem;">Date de début *</label>
-                <input type="datetime-local" class="start-date" value="${data?.start_date || ''}" style="width: 100%; padding: 0.75rem; background: #111111; border: 1px solid #333333; color: #ffffff;">
+                <input type="datetime-local" class="start-date" value="@${data?.start_date || ''}" style="width: 100%; padding: 0.75rem; background: #111111; border: 1px solid #333333; color: #ffffff;">
             </div>
             <div>
                 <label style="display: block; margin-bottom: 0.5rem; color: #ffffff; font-family: 'Oswald', sans-serif; text-transform: uppercase; font-size: 0.9rem;">Date de fin *</label>
-                <input type="datetime-local" class="end-date" value="${data?.end_date || ''}" style="width: 100%; padding: 0.75rem; background: #111111; border: 1px solid #333333; color: #ffffff;">
+                <input type="datetime-local" class="end-date" value="@${data?.end_date || ''}" style="width: 100%; padding: 0.75rem; background: #111111; border: 1px solid #333333; color: #ffffff;">
             </div>
             <div>
                 <label style="display: block; margin-bottom: 0.5rem; color: #ffffff; font-family: 'Oswald', sans-serif; text-transform: uppercase; font-size: 0.9rem;">Prix (€) *</label>
-                <input type="number" step="0.01" class="period-price" value="${data?.price || ''}" style="width: 100%; padding: 0.75rem; background: #111111; border: 1px solid #333333; color: #ffffff;" placeholder="25.00">
+                <input type="number" step="0.01" class="period-price" value="@${data?.price || ''}" style="width: 100%; padding: 0.75rem; background: #111111; border: 1px solid #333333; color: #ffffff;" placeholder="25.00">
             </div>
         </div>
-        
+
         <div>
             <label style="display: block; margin-bottom: 0.5rem; color: #ffffff; font-family: 'Oswald', sans-serif; text-transform: uppercase; font-size: 0.9rem;">Description (optionnel)</label>
-            <input type="text" class="period-description" value="${data?.description || ''}" style="width: 100%; padding: 0.75rem; background: #111111; border: 1px solid #333333; color: #ffffff;" placeholder="Ex: Tarif early bird">
+            <input type="text" class="period-description" value="@${data?.description || ''}" style="width: 100%; padding: 0.75rem; background: #111111; border: 1px solid #333333; color: #ffffff;" placeholder="Ex: Tarif early bird">
         </div>
     `;
     
@@ -2012,7 +2012,7 @@ function savePricing() {
     periods.forEach((period) => {
         const startDate = new Date(period.start_date).toLocaleDateString('fr-FR');
         const endDate = new Date(period.end_date).toLocaleDateString('fr-FR');
-        displayHtml += `<div style="margin-bottom: 0.25rem;">• ${startDate} → ${endDate} : ${period.price}€${period.description ? ' (' + period.description + ')' : ''}</div>`;
+        displayHtml += `<div style="margin-bottom: 0.25rem;">• @${startDate} → @${endDate} : @${period.price}€@${period.description ? ' (' + period.description + ')' : ''}</div>`;
     });
     
     pricingList.innerHTML = displayHtml;
@@ -2127,27 +2127,27 @@ function addCustomQuestion() {
             <input type="text" placeholder="TITRE DE LA QUESTION" style="background: #1a1a1a; border: 1px solid #333333; padding: 1rem; color: #0ea5e9; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; width: 300px;">
             <div style="display: flex; gap: 1rem; align-items: center;">
                 <label style="display: flex; align-items: center; gap: 0.5rem; color: #cccccc;">
-                    <input type="radio" name="custom_${questionCount}_enabled" value="yes" style="width: 18px; height: 18px; accent-color: #0ea5e9;">
+                    <input type="radio" name="custom_@${questionCount}_enabled" value="yes" style="width: 18px; height: 18px; accent-color: #0ea5e9;">
                     <span style="font-weight: 600;">OUI</span>
                 </label>
                 <label style="display: flex; align-items: center; gap: 0.5rem; color: #cccccc;">
-                    <input type="radio" name="custom_${questionCount}_enabled" value="no" checked style="width: 18px; height: 18px; accent-color: #0ea5e9;">
+                    <input type="radio" name="custom_@${questionCount}_enabled" value="no" checked style="width: 18px; height: 18px; accent-color: #0ea5e9;">
                     <span style="font-weight: 600;">NON</span>
                 </label>
                 <button type="button" onclick="removeQuestion(this)" style="background: #ef4444; color: white; border: none; padding: 0.5rem 1rem; font-family: 'Oswald', sans-serif; font-size: 0.8rem; cursor: pointer; text-transform: uppercase;">SUPPRIMER</button>
             </div>
         </div>
-        
+
         <div class="question-details" style="display: none;">
             <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
                 <div>
                     <label style="display: block; margin-bottom: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">Prix (€)</label>
-                    <input type="number" name="custom_${questionCount}_price" step="0.01" style="width: 100%; padding: 1rem; background: #1a1a1a; border: 1px solid #333333; color: #ffffff; transition: all 0.2s ease;" placeholder="0.00">
+                    <input type="number" name="custom_@${questionCount}_price" step="0.01" style="width: 100%; padding: 1rem; background: #1a1a1a; border: 1px solid #333333; color: #ffffff; transition: all 0.2s ease;" placeholder="0.00">
                     <small style="color: #cccccc; font-size: 0.9rem; display: block; margin-top: 0.5rem;">Laisser 0 si gratuit</small>
                 </div>
                 <div>
                     <label style="display: block; margin-bottom: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">Description / Options</label>
-                    <textarea name="custom_${questionCount}_description" rows="3" style="width: 100%; padding: 1rem; background: #1a1a1a; border: 1px solid #333333; color: #ffffff; resize: vertical; transition: all 0.2s ease;" placeholder="Décrivez l'option ou listez les choix disponibles..."></textarea>
+                    <textarea name="custom_@${questionCount}_description" rows="3" style="width: 100%; padding: 1rem; background: #1a1a1a; border: 1px solid #333333; color: #ffffff; resize: vertical; transition: all 0.2s ease;" placeholder="Décrivez l'option ou listez les choix disponibles..."></textarea>
                 </div>
             </div>
         </div>
