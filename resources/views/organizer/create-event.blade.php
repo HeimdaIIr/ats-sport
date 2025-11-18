@@ -86,34 +86,45 @@
                         <div>
                             <div style="margin-bottom: 2rem;">
                                 <label style="display: block; margin-bottom: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">Nom de l'épreuve *</label>
-                                <input type="text" name="name" required style="width: 100%; padding: 1.25rem; background: #1a1a1a; border: 1px solid #333333; color: #ffffff; font-size: 1rem; transition: all 0.2s ease;">
+                                <input type="text" name="name" value="{{ old('name') }}" required style="width: 100%; padding: 1.25rem; background: #1a1a1a; border: 1px solid #333333; color: #ffffff; font-size: 1rem; transition: all 0.2s ease;">
                                 <small style="color: #cccccc; font-size: 0.9rem; margin-top: 0.5rem; display: block;">Le nom qui apparaîtra sur le site</small>
                             </div>
 
                             <div style="margin-bottom: 2rem;">
                                 <label style="display: block; margin-bottom: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">Description de l'épreuve</label>
-                                <textarea name="description" rows="6" style="width: 100%; padding: 1.25rem; background: #1a1a1a; border: 1px solid #333333; color: #ffffff; font-size: 1rem; resize: vertical; transition: all 0.2s ease;" placeholder="Décrivez votre épreuve, l'ambiance, les parcours..."></textarea>
+                                <textarea name="description" rows="6" style="width: 100%; padding: 1.25rem; background: #1a1a1a; border: 1px solid #333333; color: #ffffff; font-size: 1rem; resize: vertical; transition: all 0.2s ease;" placeholder="Décrivez votre épreuve, l'ambiance, les parcours...">{{ old('description') }}</textarea>
                             </div>
 
                             <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-bottom: 2rem;">
                                 <div>
                                     <label style="display: block; margin-bottom: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">Lieu *</label>
-                                    <input type="text" name="location" required style="width: 100%; padding: 1.25rem; background: #1a1a1a; border: 1px solid #333333; color: #ffffff; font-size: 1rem; transition: all 0.2s ease;" placeholder="Ville">
+                                    <input type="text" name="location" value="{{ old('location') }}" required style="width: 100%; padding: 1.25rem; background: #1a1a1a; border: 1px solid #333333; color: #ffffff; font-size: 1rem; transition: all 0.2s ease;" placeholder="Ville">
                                 </div>
                                 <div>
                                     <label style="display: block; margin-bottom: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">Département *</label>
-                                    <input type="text" name="department" required maxlength="3" style="width: 100%; padding: 1.25rem; background: #1a1a1a; border: 1px solid #333333; color: #ffffff; font-size: 1rem; transition: all 0.2s ease;" placeholder="34">
+                                    <input type="text" name="department" value="{{ old('department') }}" required maxlength="3" style="width: 100%; padding: 1.25rem; background: #1a1a1a; border: 1px solid #333333; color: #ffffff; font-size: 1rem; transition: all 0.2s ease;" placeholder="34">
                                 </div>
                             </div>
 
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
                                 <div>
                                     <label style="display: block; margin-bottom: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">Date de l'épreuve *</label>
-                                    <input type="date" name="event_date" required style="width: 100%; padding: 1.25rem; background: #1a1a1a; border: 1px solid #333333; color: #ffffff; font-size: 1rem; transition: all 0.2s ease;">
+                                    <input type="date" name="event_date" value="{{ old('event_date') }}" required style="width: 100%; padding: 1.25rem; background: #1a1a1a; border: 1px solid #333333; color: #ffffff; font-size: 1rem; transition: all 0.2s ease;">
                                 </div>
                                 <div>
+                                    <label style="display: block; margin-bottom: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">Date limite d'inscription *</label>
+                                    <input type="date" name="registration_deadline" value="{{ old('registration_deadline') }}" required style="width: 100%; padding: 1.25rem; background: #1a1a1a; border: 1px solid #333333; color: #ffffff; font-size: 1rem; transition: all 0.2s ease;">
+                                </div>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                                <div>
                                     <label style="display: block; margin-bottom: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">Heure de départ</label>
-                                    <input type="time" name="start_time" style="width: 100%; padding: 1.25rem; background: #1a1a1a; border: 1px solid #333333; color: #ffffff; font-size: 1rem; transition: all 0.2s ease;" value="09:00">
+                                    <input type="time" name="start_time" value="{{ old('start_time', '09:00') }}" style="width: 100%; padding: 1.25rem; background: #1a1a1a; border: 1px solid #333333; color: #ffffff; font-size: 1rem; transition: all 0.2s ease;">
+                                </div>
+                                <div>
+                                    <label style="display: block; margin-bottom: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">Nombre max de participants</label>
+                                    <input type="number" name="max_participants" value="{{ old('max_participants') }}" min="1" style="width: 100%; padding: 1.25rem; background: #1a1a1a; border: 1px solid #333333; color: #ffffff; font-size: 1rem; transition: all 0.2s ease;" placeholder="Ex: 500">
                                 </div>
                             </div>
 
@@ -121,11 +132,11 @@
                                 <label style="display: block; margin-bottom: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">Type d'épreuve *</label>
                                 <select name="event_type" required style="width: 100%; padding: 1.25rem; background: #1a1a1a; border: 1px solid #333333; color: #ffffff; font-size: 1rem; transition: all 0.2s ease;">
                                     <option value="">Choisir le type...</option>
-                                    <option value="course">Course à pied / Trail</option>
-                                    <option value="vtt">VTT / Cyclisme</option>
-                                    <option value="triathlon">Triathlon</option>
-                                    <option value="marche">Marche / Randonnée</option>
-                                    <option value="autre">Autre</option>
+                                    <option value="course" {{ old('event_type') == 'course' ? 'selected' : '' }}>Course à pied / Trail</option>
+                                    <option value="vtt" {{ old('event_type') == 'vtt' ? 'selected' : '' }}>VTT / Cyclisme</option>
+                                    <option value="triathlon" {{ old('event_type') == 'triathlon' ? 'selected' : '' }}>Triathlon</option>
+                                    <option value="marche" {{ old('event_type') == 'marche' ? 'selected' : '' }}>Marche / Randonnée</option>
+                                    <option value="autre" {{ old('event_type') == 'autre' ? 'selected' : '' }}>Autre</option>
                                 </select>
                             </div>
                         </div>
@@ -306,34 +317,34 @@
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
                                 <div>
                                     <label style="display: block; margin-bottom: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">Nom de l'organisateur *</label>
-                                    <input type="text" name="organizer_name" required style="width: 100%; padding: 1.25rem; background: #111111; border: 1px solid #333333; color: #ffffff; transition: all 0.2s ease;" placeholder="Nom du club ou organisation">
+                                    <input type="text" name="organizer_name" value="{{ old('organizer_name') }}" required style="width: 100%; padding: 1.25rem; background: #111111; border: 1px solid #333333; color: #ffffff; transition: all 0.2s ease;" placeholder="Nom du club ou organisation">
                                 </div>
                                 <div>
                                     <label style="display: block; margin-bottom: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">Type d'organisation</label>
                                     <select name="organizer_type" style="width: 100%; padding: 1.25rem; background: #111111; border: 1px solid #333333; color: #ffffff; transition: all 0.2s ease;">
                                         <option value="">Sélectionner...</option>
-                                        <option value="club">Club sportif</option>
-                                        <option value="association">Association</option>
-                                        <option value="entreprise">Entreprise</option>
-                                        <option value="collectivite">Collectivité</option>
-                                        <option value="autre">Autre</option>
+                                        <option value="club" {{ old('organizer_type') == 'club' ? 'selected' : '' }}>Club sportif</option>
+                                        <option value="association" {{ old('organizer_type') == 'association' ? 'selected' : '' }}>Association</option>
+                                        <option value="entreprise" {{ old('organizer_type') == 'entreprise' ? 'selected' : '' }}>Entreprise</option>
+                                        <option value="collectivite" {{ old('organizer_type') == 'collectivite' ? 'selected' : '' }}>Collectivité</option>
+                                        <option value="autre" {{ old('organizer_type') == 'autre' ? 'selected' : '' }}>Autre</option>
                                     </select>
                                 </div>
                             </div>
-                            
+
                             <div style="margin-bottom: 2rem;">
                                 <label style="display: block; margin-bottom: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">Description de l'organisateur</label>
-                                <textarea name="organizer_description" rows="3" style="width: 100%; padding: 1.25rem; background: #111111; border: 1px solid #333333; color: #ffffff; resize: vertical; transition: all 0.2s ease;" placeholder="Présentez votre organisation, son histoire, ses valeurs..."></textarea>
+                                <textarea name="organizer_description" rows="3" style="width: 100%; padding: 1.25rem; background: #111111; border: 1px solid #333333; color: #ffffff; resize: vertical; transition: all 0.2s ease;" placeholder="Présentez votre organisation, son histoire, ses valeurs...">{{ old('organizer_description') }}</textarea>
                             </div>
 
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
                                 <div>
                                     <label style="display: block; margin-bottom: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">Site web</label>
-                                    <input type="url" name="organizer_website" style="width: 100%; padding: 1.25rem; background: #111111; border: 1px solid #333333; color: #ffffff; transition: all 0.2s ease;" placeholder="https://votre-site.com">
+                                    <input type="url" name="organizer_website" value="{{ old('organizer_website') }}" style="width: 100%; padding: 1.25rem; background: #111111; border: 1px solid #333333; color: #ffffff; transition: all 0.2s ease;" placeholder="https://votre-site.com">
                                 </div>
                                 <div>
                                     <label style="display: block; margin-bottom: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">Facebook / Instagram</label>
-                                    <input type="text" name="organizer_social" style="width: 100%; padding: 1.25rem; background: #111111; border: 1px solid #333333; color: #ffffff; transition: all 0.2s ease;" placeholder="@votre_page">
+                                    <input type="text" name="organizer_social" value="{{ old('organizer_social') }}" style="width: 100%; padding: 1.25rem; background: #111111; border: 1px solid #333333; color: #ffffff; transition: all 0.2s ease;" placeholder="@votre_page">
                                 </div>
                             </div>
                         </div>
@@ -345,28 +356,28 @@
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
                                 <div>
                                     <label style="display: block; margin-bottom: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">Nom *</label>
-                                    <input type="text" name="contact_name" required style="width: 100%; padding: 1.25rem; background: #111111; border: 1px solid #333333; color: #ffffff; transition: all 0.2s ease;" placeholder="Prénom NOM">
+                                    <input type="text" name="contact_name" value="{{ old('contact_name') }}" required style="width: 100%; padding: 1.25rem; background: #111111; border: 1px solid #333333; color: #ffffff; transition: all 0.2s ease;" placeholder="Prénom NOM">
                                 </div>
                                 <div>
                                     <label style="display: block; margin-bottom: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">Fonction</label>
-                                    <input type="text" name="contact_role" style="width: 100%; padding: 1.25rem; background: #111111; border: 1px solid #333333; color: #ffffff; transition: all 0.2s ease;" placeholder="Président, Organisateur, etc.">
+                                    <input type="text" name="contact_role" value="{{ old('contact_role') }}" style="width: 100%; padding: 1.25rem; background: #111111; border: 1px solid #333333; color: #ffffff; transition: all 0.2s ease;" placeholder="Président, Organisateur, etc.">
                                 </div>
                             </div>
 
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
                                 <div>
                                     <label style="display: block; margin-bottom: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">Email *</label>
-                                    <input type="email" name="contact_email" required style="width: 100%; padding: 1.25rem; background: #111111; border: 1px solid #333333; color: #ffffff; transition: all 0.2s ease;" placeholder="contact@exemple.com">
+                                    <input type="email" name="contact_email" value="{{ old('contact_email') }}" required style="width: 100%; padding: 1.25rem; background: #111111; border: 1px solid #333333; color: #ffffff; transition: all 0.2s ease;" placeholder="contact@exemple.com">
                                 </div>
                                 <div>
                                     <label style="display: block; margin-bottom: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">Téléphone</label>
-                                    <input type="tel" name="contact_phone" style="width: 100%; padding: 1.25rem; background: #111111; border: 1px solid #333333; color: #ffffff; transition: all 0.2s ease;" placeholder="06 12 34 56 78">
+                                    <input type="tel" name="contact_phone" value="{{ old('contact_phone') }}" style="width: 100%; padding: 1.25rem; background: #111111; border: 1px solid #333333; color: #ffffff; transition: all 0.2s ease;" placeholder="06 12 34 56 78">
                                 </div>
                             </div>
 
                             <div>
                                 <label style="display: block; margin-bottom: 0.75rem; font-family: 'Oswald', sans-serif; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">Adresse postale</label>
-                                <textarea name="contact_address" rows="3" style="width: 100%; padding: 1.25rem; background: #111111; border: 1px solid #333333; color: #ffffff; resize: vertical; transition: all 0.2s ease;" placeholder="Adresse complète de l'organisateur"></textarea>
+                                <textarea name="contact_address" rows="3" style="width: 100%; padding: 1.25rem; background: #111111; border: 1px solid #333333; color: #ffffff; resize: vertical; transition: all 0.2s ease;" placeholder="Adresse complète de l'organisateur">{{ old('contact_address') }}</textarea>
                             </div>
                         </div>
 
