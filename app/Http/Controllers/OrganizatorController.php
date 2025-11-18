@@ -75,6 +75,27 @@ class OrganizatorController extends Controller
     {
         $event = Event::findOrFail($id);
 
+        // Validation des données
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'location' => 'required|string|max:100',
+            'department' => 'required|string|max:3',
+            'event_date' => 'required|date',
+            'registration_deadline' => 'required|date|before_or_equal:event_date',
+            'max_participants' => 'nullable|integer|min:1',
+            'status' => 'nullable|in:upcoming,open,closed,completed',
+        ], [
+            'name.required' => 'Le nom de l\'épreuve est obligatoire',
+            'location.required' => 'Le lieu est obligatoire',
+            'department.required' => 'Le département est obligatoire',
+            'department.max' => 'Le département ne peut pas dépasser 3 caractères',
+            'event_date.required' => 'La date de l\'épreuve est obligatoire',
+            'registration_deadline.required' => 'La date limite d\'inscription est obligatoire',
+            'registration_deadline.before_or_equal' => 'La date limite d\'inscription doit être avant ou égale à la date de l\'épreuve',
+            'status.in' => 'Le statut sélectionné n\'est pas valide',
+        ]);
+
         // Si l'événement est marqué comme vedette, retirer le statut vedette des autres
         if ($request->has('is_featured') && $request->is_featured) {
             Event::where('id', '!=', $id)
@@ -82,20 +103,21 @@ class OrganizatorController extends Controller
                  ->update(['is_featured' => false]);
         }
 
+        // Mettre à jour l'événement
         $event->update([
-            'name' => $request->name,
-            'slug' => Str::slug($request->name),
-            'description' => $request->description,
-            'location' => $request->location,
-            'department' => $request->department,
-            'event_date' => $request->event_date,
-            'registration_deadline' => $request->registration_deadline,
-            'max_participants' => $request->max_participants,
-            'status' => $request->status ?? $event->status,
+            'name' => $validated['name'],
+            'slug' => Str::slug($validated['name']),
+            'description' => $validated['description'] ?? null,
+            'location' => $validated['location'],
+            'department' => $validated['department'],
+            'event_date' => $validated['event_date'],
+            'registration_deadline' => $validated['registration_deadline'],
+            'max_participants' => $validated['max_participants'] ?? null,
+            'status' => $validated['status'] ?? $event->status,
             'is_featured' => $request->has('is_featured') ? true : false
         ]);
 
-        return redirect()->route('organizer.dashboard')->with('success', 'Événement modifié avec succès!');
+        return redirect()->route('organizer.dashboard')->with('success', 'Épreuve "' . $event->name . '" modifiée avec succès!');
     }
 
     public function toggleFeatured($id)
