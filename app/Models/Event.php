@@ -10,12 +10,13 @@ class Event extends Model
     protected $fillable = [
         'name', 'slug', 'description', 'location',
         'department', 'event_date', 'registration_deadline',
-        'max_participants', 'status'
+        'max_participants', 'status', 'is_featured'
     ];
 
     protected $casts = [
         'event_date' => 'date',
         'registration_deadline' => 'date',
+        'is_featured' => 'boolean'
     ];
 
     protected static function boot()
