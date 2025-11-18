@@ -93,19 +93,19 @@
                             <!-- 2nd place -->
                             <div style="flex: 1;">
                                 <div style="background: #666666; color: #000000; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 1.2rem;">2</div>
-                                <div style="font-family: 'Oswald', sans-serif; font-size: 0.9rem; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem;">V. KOSLOV</div>
+                                <div style="font-family: 'Oswald', sans-serif; font-size: 0.9rem; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem;">Y. TATARD</div>
                                 <div style="font-size: 0.8rem; color: #cccccc; font-family: 'Oswald', sans-serif;">1H23'45</div>
                             </div>
                             <!-- 1st place -->
                             <div style="flex: 1;">
                                 <div style="background: #0ea5e9; color: #000000; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 1.3rem;">1</div>
-                                <div style="font-family: 'Oswald', sans-serif; font-size: 0.9rem; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem;">R. REIGNS</div>
+                                <div style="font-family: 'Oswald', sans-serif; font-size: 0.9rem; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem;">Y. SCOTTE</div>
                                 <div style="font-size: 0.8rem; color: #cccccc; font-family: 'Oswald', sans-serif;">1H18'32</div>
                             </div>
                             <!-- 3rd place -->
                             <div style="flex: 1;">
                                 <div style="background: #cd7f32; color: #000000; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 1.2rem;">3</div>
-                                <div style="font-family: 'Oswald', sans-serif; font-size: 0.9rem; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem;">R. MYSTERIO</div>
+                                <div style="font-family: 'Oswald', sans-serif; font-size: 0.9rem; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem;">K. MBAPPE</div>
                                 <div style="font-size: 0.8rem; color: #cccccc; font-family: 'Oswald', sans-serif;">1H25'12</div>
                             </div>
                         </div>

@@ -1,21 +1,19 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Événements sportifs'); ?>
 
-@section('title', 'Événements sportifs')
-
-@section('content')
-@php
+<?php $__env->startSection('content'); ?>
+<?php
     echo "Events count: " . $events->count() . "<br>";
     echo "Completed Events count: " . $completedEvents->count() . "<br>";
     echo "Featured Event isset: " . (isset($featuredEvent) ? 'OUI' : 'NON') . "<br>";
     if(isset($featuredEvent)) {
         echo "Featured Event name: " . ($featuredEvent ? $featuredEvent->name : 'null') . "<br>";
     }
-@endphp
+?>
     <!-- Hero Slider -->
     <div id="hero-slider" style="background: #000000; padding: 0; margin: 0; position: relative; overflow: hidden; height: 500px;">
         
         <!-- Slide 1: Statistiques -->
-        <div class="hero-slide" data-slide="1" style="max-width: 1400px; margin: 0 auto; padding: 0 2rem; text-align: center; display: block; height: 100%; align-items: center; justify-content: center;  background-image: url('{{ asset('image/hero/slide1.jpg') }}');">
+        <div class="hero-slide" data-slide="1" style="max-width: 1400px; margin: 0 auto; padding: 0 2rem; text-align: center; display: block; height: 100%; align-items: center; justify-content: center;  background-image: url('<?php echo e(asset('image/hero/slide1.jpg')); ?>');">
             <div>
                 <h1 style="font-family: 'Oswald', sans-serif; font-size: 4rem; font-weight: 700; color: #ffffff; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 3px; line-height: 1;">
                     DÉPASSEZ VOS <span style="color: #0ea5e9;">LIMITES</span>
@@ -25,7 +23,7 @@
                 </p>
                 <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
                     <div style="background: #111111; border: 2px solid #333333; padding: 2rem; min-width: 150px; transition: all 0.3s ease;">
-                        <div style="font-family: 'Oswald', sans-serif; font-size: 3rem; font-weight: 700; color: #0ea5e9; margin-bottom: 0.5rem;">{{ $events->count() }}</div>
+                        <div style="font-family: 'Oswald', sans-serif; font-size: 3rem; font-weight: 700; color: #0ea5e9; margin-bottom: 0.5rem;"><?php echo e($events->count()); ?></div>
                         <div style="color: #cccccc; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 500;">ÉVÉNEMENTS ACTIFS</div>
                     </div>
                     <div style="background: #111111; border: 2px solid #333333; padding: 2rem; min-width: 150px; transition: all 0.3s ease;">
@@ -41,28 +39,29 @@
         </div>
 
         <!-- Slide 2: Course vedette -->
-        <div class="hero-slide" data-slide="2" style="max-width: 1400px; margin: 0 auto; padding: 0 2rem; text-align: center; display: none; height: 100%; align-items: center; justify-content: center; background-image: url('{{ asset('image/hero/slide2.jpeg') }}'); background-size: cover; background-position: center; position: relative;">
+        <div class="hero-slide" data-slide="2" style="max-width: 1400px; margin: 0 auto; padding: 0 2rem; text-align: center; display: none; height: 100%; align-items: center; justify-content: center; background-image: url('<?php echo e(asset('image/hero/slide2.jpeg')); ?>'); background-size: cover; background-position: center; position: relative;">
             
             <!-- Overlay sombre pour lisibilité -->
             <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); z-index: 1;"></div>
             
-            @if($featuredEvent)
+            <?php if($featuredEvent): ?>
             <div style="max-width: 800px; position: relative; z-index: 2;">
                 <div style="background: rgba(17, 17, 17, 0.9); border: 2px solid #0ea5e9; padding: 3rem; position: relative;">
                     <div style="position: absolute; top: -15px; left: 2rem; background: #0ea5e9; color: #000000; padding: 0.5rem 2rem; font-family: 'Oswald', sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem;">
                         COURSE VEDETTE
                     </div>
                     <h1 style="font-family: 'Oswald', sans-serif; font-size: 3rem; font-weight: 700; color: #ffffff; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 2px; line-height: 1;">
-                        {{ $featuredEvent->name }}
+                        <?php echo e($featuredEvent->name); ?>
+
                     </h1>
                     <div style="display: flex; justify-content: center; gap: 3rem; margin-bottom: 2rem; color: #cccccc;">
                         <div style="display: flex; align-items: center; gap: 0.5rem;">
                             <span style="color: #0ea5e9; font-size: 1.2rem;">●</span>
-                            <span style="font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px;">{{ $featuredEvent->location }}</span>
+                            <span style="font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px;"><?php echo e($featuredEvent->location); ?></span>
                         </div>
                         <div style="display: flex; align-items: center; gap: 0.5rem;">
                             <span style="color: #0ea5e9; font-size: 1.2rem;">●</span>
-                            <span style="font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px;">{{ $featuredEvent->event_date->format('d/m/Y') }}</span>
+                            <span style="font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px;"><?php echo e($featuredEvent->event_date->format('d/m/Y')); ?></span>
                         </div>
                     </div>
                     <div style="display: flex; gap: 1.5rem; justify-content: center;">
@@ -75,11 +74,11 @@
                     </div>
                 </div>
             </div>
-            @else
+            <?php else: ?>
             <div style="position: relative; z-index: 2;">
                 <p style="color: #cccccc; font-size: 1.2rem; font-family: 'Oswald', sans-serif;">Aucune course vedette sélectionnée</p>
             </div>
-            @endif
+            <?php endif; ?>
         </div>
 
         <!-- Slide 3: Boutique -->
@@ -175,7 +174,7 @@
     </div>
     
     <!-- Script Slider -->
-    <script src="{{ asset('js/slider.js') }}"></script>
+    <script src="<?php echo e(asset('js/slider.js')); ?>"></script>
 
 <!-- Filtres -->
 <div style="background: #111111; padding: 2rem; border: 1px solid #333333; margin-bottom: 3rem;">
@@ -211,16 +210,16 @@
 
 <!-- Events Grid - Prochains événements -->
 <div style="max-width: 1900px; margin: 0 auto; padding: 2rem;">
-@if($events->count() > 0)
+<?php if($events->count() > 0): ?>
     <div style="margin-bottom: 4rem;">
         <h2 style="font-family: 'Oswald', sans-serif; font-size: 2rem; color: #ffffff; margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 2px; border-bottom: 2px solid #0ea5e9; padding-bottom: 1rem; display: inline-block;">
             ■ PROCHAINS ÉVÉNEMENTS
         </h2>
         
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 2rem;">
-            @foreach($events as $event)
+            <?php $__currentLoopData = $events; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $event): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="event-card" style="background: #111111; border: 1px solid #333333; border-radius: 0; overflow: hidden; transition: all 0.3s ease; cursor: pointer;" 
-                     onclick="window.location.href='{{ route('event.show', $event->slug) }}'">
+                     onclick="window.location.href='<?php echo e(route('event.show', $event->slug)); ?>'">
                     
                     <!-- Event Image -->
                     <div style="height: 200px; background: #0ea5e9; position: relative; display: flex; align-items: center; justify-content: center;">
@@ -228,24 +227,25 @@
                         
                         <!-- Status Badge -->
                         <div style="position: absolute; top: 1rem; left: 1rem;">
-                            @if($event->status == 'open')
+                            <?php if($event->status == 'open'): ?>
                                 <span style="background: #22c55e; color: #000000; padding: 0.5rem 1rem; font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">
                                     OUVERT
                                 </span>
-                            @elseif($event->status == 'upcoming')
+                            <?php elseif($event->status == 'upcoming'): ?>
                                 <span style="background: #eab308; color: #000000; padding: 0.5rem 1rem; font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">
                                     BIENTÔT
                                 </span>
-                            @elseif($event->status == 'closed')
+                            <?php elseif($event->status == 'closed'): ?>
                                 <span style="background: #ef4444; color: #ffffff; padding: 0.5rem 1rem; font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">
                                     FERMÉ
                                 </span>
-                            @endif
+                            <?php endif; ?>
                         </div>
                         
                         <!-- Date Badge -->
                         <div style="position: absolute; top: 1rem; right: 1rem; background: rgba(0, 0, 0, 0.8); color: white; padding: 0.5rem 1rem; font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 0.9rem; letter-spacing: 1px;">
-                            {{ $event->event_date->format('d M') }}
+                            <?php echo e($event->event_date->format('d M')); ?>
+
                         </div>
                     </div>
                     
@@ -253,22 +253,23 @@
                     <div style="padding: 2rem; background: #111111;">
                         <div style="margin-bottom: 1.5rem;">
                             <h3 style="font-family: 'Oswald', sans-serif; font-size: 1.4rem; font-weight: 600; color: #ffffff; margin-bottom: 0.5rem; letter-spacing: 1px; text-transform: uppercase;">
-                                {{ $event->name }}
+                                <?php echo e($event->name); ?>
+
                             </h3>
                             <div style="display: flex; align-items: center; gap: 0.5rem; color: #cccccc; font-size: 0.9rem;">
                                 <span style="color: #0ea5e9;">●</span>
-                                <span>{{ $event->location }} ({{ $event->department }})</span>
+                                <span><?php echo e($event->location); ?> (<?php echo e($event->department); ?>)</span>
                             </div>
                         </div>
                         
                         <div style="display: flex; align-items: center; gap: 2rem; margin-bottom: 2rem; padding: 1.5rem; background: #1a1a1a; border: 1px solid #333333;">
                             <div style="text-align: center;">
-                                <div style="font-family: 'Oswald', sans-serif; font-size: 2rem; font-weight: 700; color: #0ea5e9;">{{ $event->event_date->format('d') }}</div>
-                                <div style="font-size: 0.8rem; color: #cccccc; text-transform: uppercase; letter-spacing: 1px;">{{ $event->event_date->format('M') }}</div>
+                                <div style="font-family: 'Oswald', sans-serif; font-size: 2rem; font-weight: 700; color: #0ea5e9;"><?php echo e($event->event_date->format('d')); ?></div>
+                                <div style="font-size: 0.8rem; color: #cccccc; text-transform: uppercase; letter-spacing: 1px;"><?php echo e($event->event_date->format('M')); ?></div>
                             </div>
                             <div style="flex: 1;">
-                                <div style="font-family: 'Oswald', sans-serif; font-weight: 500; color: #ffffff; margin-bottom: 0.25rem; text-transform: uppercase;">{{ $event->event_date->format('l') }}</div>
-                                <div style="font-size: 0.9rem; color: #cccccc;">Inscription avant le {{ $event->registration_deadline->format('d/m/Y') }}</div>
+                                <div style="font-family: 'Oswald', sans-serif; font-weight: 500; color: #ffffff; margin-bottom: 0.25rem; text-transform: uppercase;"><?php echo e($event->event_date->format('l')); ?></div>
+                                <div style="font-size: 0.9rem; color: #cccccc;">Inscription avant le <?php echo e($event->registration_deadline->format('d/m/Y')); ?></div>
                             </div>
                         </div>
                         
@@ -284,13 +285,13 @@
                         </div>
                     </div>
                 </div>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
     </div>
-@endif
+<?php endif; ?>
 
 <!-- Derniers résultats -->
-    @if($completedEvents->count() > 0)
+    <?php if($completedEvents->count() > 0): ?>
         <div style="margin-bottom: 3rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                 <h2 style="font-family: 'Oswald', sans-serif; font-size: 2rem; color: #ffffff; text-transform: uppercase; letter-spacing: 2px; border-bottom: 2px solid #0ea5e9; padding-bottom: 1rem; display: inline-block;">
@@ -302,7 +303,7 @@
             </div>
             
             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 2rem;">
-                @foreach($completedEvents as $event)
+                <?php $__currentLoopData = $completedEvents; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $event): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="result-card" style="background: #111111; border: 1px solid #333333; overflow: hidden; transition: all 0.3s ease; cursor: pointer;" onclick="window.location.href='#'">
                         
                         <!-- Event Image -->
@@ -318,7 +319,8 @@
                             
                             <!-- Date Badge -->
                             <div style="position: absolute; top: 1rem; right: 1rem; background: rgba(0, 0, 0, 0.8); color: white; padding: 0.5rem 1rem; font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 0.9rem; letter-spacing: 1px;">
-                                {{ $event->event_date->format('d M') }}
+                                <?php echo e($event->event_date->format('d M')); ?>
+
                             </div>
                         </div>
                         
@@ -326,22 +328,23 @@
                         <div style="padding: 2rem; background: #111111;">
                             <div style="margin-bottom: 1.5rem;">
                                 <h3 style="font-family: 'Oswald', sans-serif; font-size: 1.4rem; font-weight: 600; color: #ffffff; margin-bottom: 0.5rem; letter-spacing: 1px; text-transform: uppercase;">
-                                    {{ $event->name }}
+                                    <?php echo e($event->name); ?>
+
                                 </h3>
                                 <div style="display: flex; align-items: center; gap: 0.5rem; color: #cccccc; font-size: 0.9rem;">
                                     <span style="color: #0ea5e9;">●</span>
-                                    <span>{{ $event->location }} ({{ $event->department }})</span>
+                                    <span><?php echo e($event->location); ?> (<?php echo e($event->department); ?>)</span>
                                 </div>
                             </div>
                             
                             <!-- Stats rapides -->
                             <div style="display: flex; gap: 1rem; margin-bottom: 2rem; padding: 1.5rem; background: #1a1a1a; border: 1px solid #333333;">
                                 <div style="text-align: center; flex: 1;">
-                                    <div style="font-family: 'Oswald', sans-serif; font-size: 1.5rem; font-weight: 700; color: #0ea5e9;">{{ rand(150, 500) }}</div>
+                                    <div style="font-family: 'Oswald', sans-serif; font-size: 1.5rem; font-weight: 700; color: #0ea5e9;"><?php echo e(rand(150, 500)); ?></div>
                                     <div style="font-size: 0.7rem; color: #cccccc; text-transform: uppercase; letter-spacing: 1px;">PARTICIPANTS</div>
                                 </div>
                                 <div style="text-align: center; flex: 1;">
-                                    <div style="font-family: 'Oswald', sans-serif; font-size: 1.5rem; font-weight: 700; color: #22c55e;">{{ rand(140, 490) }}</div>
+                                    <div style="font-family: 'Oswald', sans-serif; font-size: 1.5rem; font-weight: 700; color: #22c55e;"><?php echo e(rand(140, 490)); ?></div>
                                     <div style="font-size: 0.7rem; color: #cccccc; text-transform: uppercase; letter-spacing: 1px;">CLASSÉS</div>
                                 </div>
                             </div>
@@ -358,18 +361,18 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
         </div>
-    @endif
+    <?php endif; ?>
 
-    @if($events->count() == 0 && $completedEvents->count() == 0)
+    <?php if($events->count() == 0 && $completedEvents->count() == 0): ?>
         <div style="text-align: center; padding: 4rem; color: #cccccc;">
             <div style="font-size: 4rem; margin-bottom: 2rem; color: #333333;">■</div>
             <h3 style="font-family: 'Oswald', sans-serif; font-size: 2rem; margin-bottom: 1rem; color: #ffffff; text-transform: uppercase; letter-spacing: 2px;">AUCUN ÉVÉNEMENT DISPONIBLE</h3>
             <p style="font-size: 1.1rem;">Les prochains événements seront bientôt annoncés !</p>
         </div>
-    @endif
+    <?php endif; ?>
 
 <style>
 .event-card:hover {
@@ -451,4 +454,5 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
     });
 });
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\DEV\ats-sport\resources\views/events/index.blade.php ENDPATH**/ ?>
