@@ -22,3 +22,5 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+echo "ChronoFront_2025.rar" >> .gitignore
+git add .gitignore
