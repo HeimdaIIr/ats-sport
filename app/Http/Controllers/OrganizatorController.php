@@ -37,13 +37,13 @@ class OrganizatorController extends Controller
             'department.required' => 'Le département est obligatoire',
             'department.max' => 'Le département ne peut pas dépasser 3 caractères',
             'event_date.required' => 'La date de l\'épreuve est obligatoire',
-            'event_date.after_or_equal' => 'La date de l\'épreuve doit être aujourd\'hui ou dans le futur',
+            'event_date.after_or_equal' => 'La date de l\'épreuve ne peut être antèrieur à ce jour',
             'registration_deadline.required' => 'La date limite d\'inscription est obligatoire',
-            'registration_deadline.before_or_equal' => 'La date limite d\'inscription doit être avant ou égale à la date de l\'épreuve',
+            'registration_deadline.before_or_equal' => 'La date limite d\'inscription doit être antèrieur ou égale à la date de l\'épreuve',
             'status.in' => 'Le statut sélectionné n\'est pas valide',
         ]);
 
-        // Si l'événement est marqué comme vedette, retirer le statut vedette des autres
+        // Si l'événement est marqué comme vedette, retire le statut vedette des autres
         if ($request->has('is_featured') && $request->is_featured) {
             Event::where('is_featured', true)->update(['is_featured' => false]);
         }
