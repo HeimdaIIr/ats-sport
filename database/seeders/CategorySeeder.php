@@ -319,8 +319,14 @@ class CategorySeeder extends Seeder
             ],
         ];
 
+        // Désactive les contraintes de clé étrangère
+        \DB::connection('chronofront')->statement('SET FOREIGN_KEY_CHECKS=0;');
+
         // Supprime toutes les catégories existantes
         Category::truncate();
+
+        // Réactive les contraintes de clé étrangère
+        \DB::connection('chronofront')->statement('SET FOREIGN_KEY_CHECKS=1;');
 
         // Crée les nouvelles catégories
         foreach ($categories as $category) {
