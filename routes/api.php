@@ -35,8 +35,8 @@ Route::post('waves/{wave}/end', [WaveController::class, 'end']);
 Route::apiResource('waves', WaveController::class);
 
 // Categories Routes
-Route::apiResource('categories', CategoryController::class);
 Route::post('categories/init-ffa', [CategoryController::class, 'initFFA']);
+Route::apiResource('categories', CategoryController::class);
 
 // Entrants Routes
 Route::get('entrants/search', [EntrantController::class, 'search']);
