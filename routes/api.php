@@ -23,25 +23,25 @@ use App\Http\Controllers\Api\RaspberryController;
 Route::apiResource('events', EventController::class);
 
 // Races Routes
-Route::apiResource('races', RaceController::class);
 Route::get('races/event/{eventId}', [RaceController::class, 'byEvent']);
 Route::post('races/{race}/start', [RaceController::class, 'start']);
 Route::post('races/{race}/end', [RaceController::class, 'end']);
+Route::apiResource('races', RaceController::class);
 
 // Waves Routes
-Route::apiResource('waves', WaveController::class);
 Route::get('waves/race/{raceId}', [WaveController::class, 'byRace']);
 Route::post('waves/{wave}/start', [WaveController::class, 'start']);
 Route::post('waves/{wave}/end', [WaveController::class, 'end']);
+Route::apiResource('waves', WaveController::class);
 
 // Categories Routes
 Route::apiResource('categories', CategoryController::class);
 Route::post('categories/init-ffa', [CategoryController::class, 'initFFA']);
 
 // Entrants Routes
-Route::apiResource('entrants', EntrantController::class);
 Route::get('entrants/search', [EntrantController::class, 'search']);
 Route::post('entrants/import', [EntrantController::class, 'import']);
+Route::apiResource('entrants', EntrantController::class);
 
 // Results/Timing Routes
 Route::get('results/race/{raceId}', [ResultController::class, 'byRace']);
