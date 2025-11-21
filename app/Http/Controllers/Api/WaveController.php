@@ -14,7 +14,7 @@ class WaveController extends Controller
      */
     public function index(): JsonResponse
     {
-        $waves = Wave::with(['race', 'entrants'])->get();
+        $waves = Wave::with(['race.event', 'entrants'])->get();
         return response()->json($waves);
     }
 
@@ -24,7 +24,7 @@ class WaveController extends Controller
     public function byRace(int $raceId): JsonResponse
     {
         $waves = Wave::where('race_id', $raceId)
-            ->with('entrants')
+            ->with(['race.event', 'entrants'])
             ->get();
 
         return response()->json($waves);
