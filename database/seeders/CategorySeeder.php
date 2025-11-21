@@ -10,135 +10,326 @@ class CategorySeeder extends Seeder
     /**
      * Run the database seeds.
      *
-     * Catégories FFA (Fédération Française d'Athlétisme) 2025
+     * Catégories FFA (Fédération Française d'Athlétisme) 2025 - Officielles
+     * Source: https://www.athle.fr/contenu/25
+     *
+     * Total: 36 catégories (18 catégories × 2 sexes)
      */
     public function run(): void
     {
         $categories = [
-            // Catégories Hommes
+            // ========================================
+            // CATÉGORIES HOMMES (M)
+            // ========================================
+
+            // JEUNES
             [
-                'code' => 'SEM',
-                'name' => 'SEM - Senior Homme',
+                'name' => 'BB-M',
                 'gender' => 'M',
-                'age_min' => 20,
-                'age_max' => 39,
-                'color' => '#3B82F6'
+                'age_min' => 0,
+                'age_max' => 6,
+                'color' => '#A78BFA'  // Purple
             ],
             [
-                'code' => 'V1M',
-                'name' => 'V1M - Vétéran 1 Homme',
+                'name' => 'EA-M',
                 'gender' => 'M',
-                'age_min' => 40,
-                'age_max' => 49,
-                'color' => '#10B981'
+                'age_min' => 7,
+                'age_max' => 9,
+                'color' => '#60A5FA'  // Blue
             ],
             [
-                'code' => 'V2M',
-                'name' => 'V2M - Vétéran 2 Homme',
+                'name' => 'PO-M',
                 'gender' => 'M',
-                'age_min' => 50,
-                'age_max' => 59,
-                'color' => '#8B5CF6'
+                'age_min' => 10,
+                'age_max' => 11,
+                'color' => '#34D399'  // Green
             ],
             [
-                'code' => 'V3M',
-                'name' => 'V3M - Vétéran 3 Homme',
+                'name' => 'BE-M',
                 'gender' => 'M',
-                'age_min' => 60,
-                'age_max' => 69,
-                'color' => '#F59E0B'
+                'age_min' => 12,
+                'age_max' => 13,
+                'color' => '#FBBF24'  // Yellow
             ],
             [
-                'code' => 'V4M',
-                'name' => 'V4M - Vétéran 4 Homme',
+                'name' => 'MI-M',
                 'gender' => 'M',
-                'age_min' => 70,
-                'age_max' => 120,
-                'color' => '#EF4444'
+                'age_min' => 14,
+                'age_max' => 15,
+                'color' => '#FB923C'  // Orange
             ],
             [
-                'code' => 'ESM',
-                'name' => 'ESM - Espoir Homme',
-                'gender' => 'M',
-                'age_min' => 18,
-                'age_max' => 19,
-                'color' => '#06B6D4'
-            ],
-            [
-                'code' => 'CAM',
-                'name' => 'CAM - Cadet Homme',
+                'name' => 'CA-M',
                 'gender' => 'M',
                 'age_min' => 16,
                 'age_max' => 17,
-                'color' => '#14B8A6'
+                'color' => '#14B8A6'  // Teal
+            ],
+            [
+                'name' => 'JU-M',
+                'gender' => 'M',
+                'age_min' => 18,
+                'age_max' => 19,
+                'color' => '#06B6D4'  // Cyan
             ],
 
-            // Catégories Femmes
+            // ADULTES
             [
-                'code' => 'SEF',
-                'name' => 'SEF - Senior Femme',
-                'gender' => 'F',
+                'name' => 'ES-M',
+                'gender' => 'M',
                 'age_min' => 20,
+                'age_max' => 22,
+                'color' => '#3B82F6'  // Blue
+            ],
+            [
+                'name' => 'SE-M',
+                'gender' => 'M',
+                'age_min' => 23,
+                'age_max' => 34,
+                'color' => '#2563EB'  // Dark Blue
+            ],
+
+            // MASTERS
+            [
+                'name' => 'M0-M',
+                'gender' => 'M',
+                'age_min' => 35,
                 'age_max' => 39,
-                'color' => '#EC4899'
+                'color' => '#10B981'  // Emerald
             ],
             [
-                'code' => 'V1F',
-                'name' => 'V1F - Vétéran 1 Femme',
-                'gender' => 'F',
+                'name' => 'M1-M',
+                'gender' => 'M',
                 'age_min' => 40,
+                'age_max' => 44,
+                'color' => '#059669'  // Dark Emerald
+            ],
+            [
+                'name' => 'M2-M',
+                'gender' => 'M',
+                'age_min' => 45,
                 'age_max' => 49,
-                'color' => '#F59E0B'
+                'color' => '#8B5CF6'  // Violet
             ],
             [
-                'code' => 'V2F',
-                'name' => 'V2F - Vétéran 2 Femme',
-                'gender' => 'F',
+                'name' => 'M3-M',
+                'gender' => 'M',
                 'age_min' => 50,
+                'age_max' => 54,
+                'color' => '#7C3AED'  // Dark Violet
+            ],
+            [
+                'name' => 'M4-M',
+                'gender' => 'M',
+                'age_min' => 55,
                 'age_max' => 59,
-                'color' => '#EF4444'
+                'color' => '#F59E0B'  // Amber
             ],
             [
-                'code' => 'V3F',
-                'name' => 'V3F - Vétéran 3 Femme',
-                'gender' => 'F',
+                'name' => 'M5-M',
+                'gender' => 'M',
                 'age_min' => 60,
+                'age_max' => 64,
+                'color' => '#D97706'  // Dark Amber
+            ],
+            [
+                'name' => 'M6-M',
+                'gender' => 'M',
+                'age_min' => 65,
                 'age_max' => 69,
-                'color' => '#A855F7'
+                'color' => '#EF4444'  // Red
             ],
             [
-                'code' => 'V4F',
-                'name' => 'V4F - Vétéran 4 Femme',
-                'gender' => 'F',
+                'name' => 'M7-M',
+                'gender' => 'M',
                 'age_min' => 70,
-                'age_max' => 120,
-                'color' => '#DC2626'
+                'age_max' => 74,
+                'color' => '#DC2626'  // Dark Red
             ],
             [
-                'code' => 'ESF',
-                'name' => 'ESF - Espoir Femme',
+                'name' => 'M8-M',
+                'gender' => 'M',
+                'age_min' => 75,
+                'age_max' => 79,
+                'color' => '#991B1B'  // Darker Red
+            ],
+            [
+                'name' => 'M9-M',
+                'gender' => 'M',
+                'age_min' => 80,
+                'age_max' => 84,
+                'color' => '#7F1D1D'  // Very Dark Red
+            ],
+            [
+                'name' => 'M10-M',
+                'gender' => 'M',
+                'age_min' => 85,
+                'age_max' => 150,
+                'color' => '#450A0A'  // Extremely Dark Red
+            ],
+
+            // ========================================
+            // CATÉGORIES FEMMES (F)
+            // ========================================
+
+            // JEUNES
+            [
+                'name' => 'BB-F',
                 'gender' => 'F',
-                'age_min' => 18,
-                'age_max' => 19,
-                'color' => '#06B6D4'
+                'age_min' => 0,
+                'age_max' => 6,
+                'color' => '#DDD6FE'  // Light Purple
             ],
             [
-                'code' => 'CAF',
-                'name' => 'CAF - Cadet Femme',
+                'name' => 'EA-F',
+                'gender' => 'F',
+                'age_min' => 7,
+                'age_max' => 9,
+                'color' => '#BFDBFE'  // Light Blue
+            ],
+            [
+                'name' => 'PO-F',
+                'gender' => 'F',
+                'age_min' => 10,
+                'age_max' => 11,
+                'color' => '#A7F3D0'  // Light Green
+            ],
+            [
+                'name' => 'BE-F',
+                'gender' => 'F',
+                'age_min' => 12,
+                'age_max' => 13,
+                'color' => '#FDE68A'  // Light Yellow
+            ],
+            [
+                'name' => 'MI-F',
+                'gender' => 'F',
+                'age_min' => 14,
+                'age_max' => 15,
+                'color' => '#FED7AA'  // Light Orange
+            ],
+            [
+                'name' => 'CA-F',
                 'gender' => 'F',
                 'age_min' => 16,
                 'age_max' => 17,
-                'color' => '#14B8A6'
+                'color' => '#5EEAD4'  // Light Teal
+            ],
+            [
+                'name' => 'JU-F',
+                'gender' => 'F',
+                'age_min' => 18,
+                'age_max' => 19,
+                'color' => '#67E8F9'  // Light Cyan
+            ],
+
+            // ADULTES
+            [
+                'name' => 'ES-F',
+                'gender' => 'F',
+                'age_min' => 20,
+                'age_max' => 22,
+                'color' => '#EC4899'  // Pink
+            ],
+            [
+                'name' => 'SE-F',
+                'gender' => 'F',
+                'age_min' => 23,
+                'age_max' => 34,
+                'color' => '#DB2777'  // Dark Pink
+            ],
+
+            // MASTERS
+            [
+                'name' => 'M0-F',
+                'gender' => 'F',
+                'age_min' => 35,
+                'age_max' => 39,
+                'color' => '#F472B6'  // Rose
+            ],
+            [
+                'name' => 'M1-F',
+                'gender' => 'F',
+                'age_min' => 40,
+                'age_max' => 44,
+                'color' => '#EC4899'  // Pink
+            ],
+            [
+                'name' => 'M2-F',
+                'gender' => 'F',
+                'age_min' => 45,
+                'age_max' => 49,
+                'color' => '#C084FC'  // Light Violet
+            ],
+            [
+                'name' => 'M3-F',
+                'gender' => 'F',
+                'age_min' => 50,
+                'age_max' => 54,
+                'color' => '#A855F7'  // Violet
+            ],
+            [
+                'name' => 'M4-F',
+                'gender' => 'F',
+                'age_min' => 55,
+                'age_max' => 59,
+                'color' => '#FCD34D'  // Light Amber
+            ],
+            [
+                'name' => 'M5-F',
+                'gender' => 'F',
+                'age_min' => 60,
+                'age_max' => 64,
+                'color' => '#FBBF24'  // Amber
+            ],
+            [
+                'name' => 'M6-F',
+                'gender' => 'F',
+                'age_min' => 65,
+                'age_max' => 69,
+                'color' => '#FCA5A5'  // Light Red
+            ],
+            [
+                'name' => 'M7-F',
+                'gender' => 'F',
+                'age_min' => 70,
+                'age_max' => 74,
+                'color' => '#F87171'  // Red
+            ],
+            [
+                'name' => 'M8-F',
+                'gender' => 'F',
+                'age_min' => 75,
+                'age_max' => 79,
+                'color' => '#EF4444'  // Dark Red
+            ],
+            [
+                'name' => 'M9-F',
+                'gender' => 'F',
+                'age_min' => 80,
+                'age_max' => 84,
+                'color' => '#DC2626'  // Darker Red
+            ],
+            [
+                'name' => 'M10-F',
+                'gender' => 'F',
+                'age_min' => 85,
+                'age_max' => 150,
+                'color' => '#991B1B'  // Very Dark Red
             ],
         ];
 
+        // Supprime toutes les catégories existantes
+        Category::truncate();
+
+        // Crée les nouvelles catégories
         foreach ($categories as $category) {
-            Category::updateOrCreate(
-                ['name' => $category['name']],
-                $category
-            );
+            Category::create($category);
         }
 
-        $this->command->info('✅ 14 catégories FFA créées avec succès!');
+        $this->command->info('✅ 36 catégories FFA officielles 2025 créées avec succès!');
+        $this->command->info('📊 Jeunes: 14 catégories (BB, EA, PO, BE, MI, CA, JU)');
+        $this->command->info('🏃 Adultes: 4 catégories (ES, SE)');
+        $this->command->info('🎖️  Masters: 18 catégories (M0 à M10)');
     }
 }

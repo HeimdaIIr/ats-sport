@@ -12,7 +12,7 @@
         <div class="col-auto">
             <button class="btn btn-warning me-2" @click="initFFA" :disabled="loading || initializing">
                 <i class="bi bi-magic"></i>
-                <span x-show="!initializing">Initialiser FFA (14 catégories)</span>
+                <span x-show="!initializing">Initialiser FFA 2025 (36 catégories)</span>
                 <span x-show="initializing">
                     <span class="spinner-border spinner-border-sm me-2"></span>
                     Initialisation...
@@ -43,10 +43,13 @@
                     <i class="bi bi-info-circle-fill text-info" style="font-size: 2rem;"></i>
                 </div>
                 <div class="col">
-                    <h6 class="mb-1">Catégories FFA (Fédération Française d'Athlétisme)</h6>
+                    <h6 class="mb-1">Catégories FFA (Fédération Française d'Athlétisme) 2025</h6>
                     <p class="mb-0 text-muted small">
                         Les catégories sont automatiquement attribuées aux participants en fonction de leur âge et sexe lors de l'import CSV.
-                        Utilisez "Initialiser FFA" pour créer les 14 catégories standards (EA-M/F, JU-M/F, ES-M/F, SE-M/F, MA0-M/F, MA1-M/F, MA2-M/F).
+                        Utilisez "Initialiser FFA 2025" pour créer les 36 catégories officielles :
+                        <strong>Jeunes</strong> (BB, EA, PO, BE, MI, CA, JU),
+                        <strong>Adultes</strong> (ES, SE),
+                        <strong>Masters</strong> (M0 à M10) - pour hommes et femmes.
                     </p>
                 </div>
             </div>
@@ -296,7 +299,7 @@ function categoriesManager() {
         },
 
         async initFFA() {
-            if (!confirm('Initialiser les 14 catégories FFA ?\n\nCela ajoutera les catégories standards si elles n\'existent pas déjà.')) return;
+            if (!confirm('Initialiser les 36 catégories FFA officielles 2025 ?\n\nATTENTION : Cela supprimera toutes les catégories existantes et les remplacera par les catégories officielles FFA (BB à M10 pour H/F).')) return;
 
             this.initializing = true;
             this.errorMessage = null;

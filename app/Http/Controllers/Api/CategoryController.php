@@ -27,7 +27,7 @@ class CategoryController extends Controller
         Artisan::call('db:seed', ['--class' => 'CategorySeeder']);
 
         return response()->json([
-            'message' => '14 catégories FFA initialisées avec succès',
+            'message' => '36 catégories FFA officielles 2025 initialisées avec succès',
             'categories' => Category::all()
         ]);
     }

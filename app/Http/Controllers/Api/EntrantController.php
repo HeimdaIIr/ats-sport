@@ -267,13 +267,13 @@ class EntrantController extends Controller
 
                 // Handle category
                 if (!empty($cat)) {
-                    // Try to find category by code
-                    $category = Category::where('code', strtoupper(trim($cat)))->first();
+                    // Try to find category by name (e.g., SE-M, M0-F, etc.)
+                    $category = Category::where('name', strtoupper(trim($cat)))->first();
                     if ($category) {
                         $entrant->category_id = $category->id;
                         $entrant->save();
                     } else {
-                        // If category code not found, auto-assign
+                        // If category name not found, auto-assign based on age and gender
                         if ($entrant->birth_date && $entrant->gender) {
                             $entrant->assignCategory();
                         }
