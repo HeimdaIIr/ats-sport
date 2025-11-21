@@ -228,7 +228,7 @@ function importCSV() {
 
         async loadEvents() {
             try {
-                const response = await axios.get('/api/events');
+                const response = await axios.get('/events');
                 this.events = response.data;
             } catch (error) {
                 this.errorMessage = 'Erreur lors du chargement des événements';
@@ -262,7 +262,7 @@ function importCSV() {
                 formData.append('file', this.selectedFile);
                 formData.append('event_id', this.selectedEventId);
 
-                const response = await axios.post('/api/entrants/import', formData, {
+                const response = await axios.post('/entrants/import', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }

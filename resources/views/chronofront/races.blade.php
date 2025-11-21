@@ -229,7 +229,7 @@ function racesManager() {
 
         async loadEvents() {
             try {
-                const response = await axios.get('/api/events');
+                const response = await axios.get('/events');
                 this.events = response.data;
             } catch (error) {
                 console.error('Erreur lors du chargement des événements', error);
@@ -299,10 +299,10 @@ function racesManager() {
             this.saving = true;
             try {
                 if (this.editingRace) {
-                    await axios.put(`/api/races/${this.editingRace.id}`, this.form);
+                    await axios.put(`/races/${this.editingRace.id}`, this.form);
                     this.successMessage = 'Épreuve modifiée avec succès';
                 } else {
-                    await axios.post('/api/races', this.form);
+                    await axios.post('/races', this.form);
                     this.successMessage = 'Épreuve créée avec succès';
                 }
                 this.closeModal();
@@ -318,7 +318,7 @@ function racesManager() {
             if (!confirm(`Démarrer l'épreuve "${race.name}" ?`)) return;
 
             try {
-                await axios.post(`/api/races/${race.id}/start`);
+                await axios.post(`/races/${race.id}/start`);
                 this.successMessage = `Épreuve "${race.name}" démarrée`;
                 this.loadRaces();
             } catch (error) {
@@ -330,7 +330,7 @@ function racesManager() {
             if (!confirm(`Terminer l'épreuve "${race.name}" ?`)) return;
 
             try {
-                await axios.post(`/api/races/${race.id}/end`);
+                await axios.post(`/races/${race.id}/end`);
                 this.successMessage = `Épreuve "${race.name}" terminée`;
                 this.loadRaces();
             } catch (error) {
@@ -342,7 +342,7 @@ function racesManager() {
             if (!confirm(`Êtes-vous sûr de vouloir supprimer l'épreuve "${race.name}" ?`)) return;
 
             try {
-                await axios.delete(`/api/races/${race.id}`);
+                await axios.delete(`/races/${race.id}`);
                 this.successMessage = `Épreuve "${race.name}" supprimée`;
                 this.loadRaces();
             } catch (error) {

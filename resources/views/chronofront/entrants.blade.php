@@ -315,7 +315,7 @@ function entrantsManager() {
 
         async loadEvents() {
             try {
-                const response = await axios.get('/api/events');
+                const response = await axios.get('/events');
                 this.events = response.data;
             } catch (error) {
                 console.error('Erreur lors du chargement des événements', error);
@@ -324,7 +324,7 @@ function entrantsManager() {
 
         async loadRaces() {
             try {
-                const response = await axios.get('/api/races');
+                const response = await axios.get('/races');
                 this.races = response.data;
                 this.filteredRaces = response.data;
             } catch (error) {
@@ -335,7 +335,7 @@ function entrantsManager() {
         async loadRacesByEvent() {
             if (this.selectedEventFilter) {
                 try {
-                    const response = await axios.get(`/api/races/event/${this.selectedEventFilter}`);
+                    const response = await axios.get(`/races/event/${this.selectedEventFilter}`);
                     this.filteredRaces = response.data;
                 } catch (error) {
                     console.error('Erreur', error);
@@ -349,7 +349,7 @@ function entrantsManager() {
 
         async loadWaves() {
             try {
-                const response = await axios.get('/api/waves');
+                const response = await axios.get('/waves');
                 this.waves = response.data;
             } catch (error) {
                 console.error('Erreur lors du chargement des vagues', error);
@@ -359,7 +359,7 @@ function entrantsManager() {
         async loadEntrants() {
             this.loading = true;
             try {
-                let url = '/api/entrants';
+                let url = '/entrants';
                 const params = new URLSearchParams();
                 if (this.selectedRaceFilter) {
                     params.append('race_id', this.selectedRaceFilter);
@@ -437,10 +437,10 @@ function entrantsManager() {
             this.saving = true;
             try {
                 if (this.editingEntrant) {
-                    await axios.put(`/api/entrants/${this.editingEntrant.id}`, this.form);
+                    await axios.put(`/entrants/${this.editingEntrant.id}`, this.form);
                     this.successMessage = 'Participant modifié avec succès';
                 } else {
-                    await axios.post('/api/entrants', this.form);
+                    await axios.post('/entrants', this.form);
                     this.successMessage = 'Participant créé avec succès';
                 }
                 this.closeModal();
@@ -456,7 +456,7 @@ function entrantsManager() {
             if (!confirm(`Êtes-vous sûr de vouloir supprimer ${entrant.firstname} ${entrant.lastname} ?`)) return;
 
             try {
-                await axios.delete(`/api/entrants/${entrant.id}`);
+                await axios.delete(`/entrants/${entrant.id}`);
                 this.successMessage = 'Participant supprimé';
                 this.loadEntrants();
             } catch (error) {
