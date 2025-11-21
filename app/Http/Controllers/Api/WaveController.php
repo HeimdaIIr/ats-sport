@@ -152,4 +152,28 @@ class WaveController extends Controller
             'wave' => $wave
         ]);
     }
+
+    /**
+     * Assign all entrants of a race to this wave
+     */
+    public function assignAllEntrants(Wave $wave): JsonResponse
+    {
+        // Compter les participants déjà assignés à d'autres vagues de cette épreuve
+        $alreadyAssignedCount = \App\Models\ChronoFront\Entrant::where('race_id', $wave->race_id)
+            ->whereNotNull('wave_id')
+            ->where('wave_id', '!=', $wave->id)
+            ->count();
+
+        // Assigner tous les participants de cette épreuve sans vague à cette vague
+        $updated = \App\Models\ChronoFront\Entrant::where('race_id', $wave->race_id)
+            ->whereNull('wave_id')
+            ->update(['wave_id' => $wave->id]);
+
+        return response()->json([
+            'message' => "Assignation terminée : {$updated} participant(s) assigné(s) à la vague {$wave->name}",
+            'assigned_count' => $updated,
+            'already_assigned_elsewhere' => $alreadyAssignedCount,
+            'wave' => $wave->load('entrants')
+        ]);
+    }
 }

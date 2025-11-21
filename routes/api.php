@@ -32,6 +32,7 @@ Route::apiResource('races', RaceController::class);
 Route::get('waves/race/{raceId}', [WaveController::class, 'byRace']);
 Route::post('waves/{wave}/start', [WaveController::class, 'start']);
 Route::post('waves/{wave}/end', [WaveController::class, 'end']);
+Route::post('waves/{wave}/assign-all', [WaveController::class, 'assignAllEntrants']);
 Route::apiResource('waves', WaveController::class);
 
 // Categories Routes

@@ -113,7 +113,7 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <div class="btn-group btn-group-sm">
+                                    <div class="btn-group btn-group-sm mb-1">
                                         <button
                                             class="btn btn-success"
                                             @click="startWave(wave)"
@@ -135,6 +135,15 @@
                                         </button>
                                         <button class="btn btn-outline-danger" @click="deleteWave(wave)" title="Supprimer">
                                             <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <button
+                                            class="btn btn-warning btn-sm w-100"
+                                            @click="assignAllEntrants(wave)"
+                                            title="Assigner tous les participants de ce parcours à cette vague"
+                                        >
+                                            <i class="bi bi-people-fill"></i> Assigner participants
                                         </button>
                                     </div>
                                 </td>
@@ -395,6 +404,25 @@ function wavesManager() {
                 this.loadWaves();
             } catch (error) {
                 alert('Erreur lors de la suppression : ' + (error.response?.data?.message || error.message));
+            }
+        },
+
+        async assignAllEntrants(wave) {
+            const raceName = wave.race?.name || 'ce parcours';
+            if (!confirm(`Assigner TOUS les participants de l'épreuve "${raceName}" (qui n'ont pas encore de vague) à la vague "${wave.name}" ?\n\nCette action ne peut pas être annulée.`)) return;
+
+            try {
+                const response = await axios.post(`/waves/${wave.id}/assign-all`);
+                this.successMessage = response.data.message;
+
+                // Afficher info sur participants déjà assignés ailleurs
+                if (response.data.already_assigned_elsewhere > 0) {
+                    this.successMessage += `\n\nNote : ${response.data.already_assigned_elsewhere} participant(s) étaient déjà assignés à d'autres vagues.`;
+                }
+
+                this.loadWaves();
+            } catch (error) {
+                alert('Erreur lors de l\'assignation : ' + (error.response?.data?.message || error.message));
             }
         },
 
