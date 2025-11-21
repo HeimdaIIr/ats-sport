@@ -239,7 +239,7 @@ function racesManager() {
         async loadRaces() {
             this.loading = true;
             try {
-                let url = '/api/races';
+                let url = '/races';
                 if (this.selectedEventFilter) {
                     url += `/event/${this.selectedEventFilter}`;
                 }
