@@ -36,7 +36,7 @@ class WaveController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'race_id' => 'required|exists:races,id',
+            'race_id' => 'required|exists:chronofront.races,id',
             'wave_number' => 'required|integer|min:1',
             'name' => 'required|string|max:100',
         ]);
