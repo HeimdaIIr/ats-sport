@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\WaveController;
 use App\Http\Controllers\Api\EntrantController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ResultController;
+use App\Http\Controllers\Api\RaspberryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +50,10 @@ Route::post('results/race/{raceId}/recalculate', [ResultController::class, 'reca
 Route::get('results/race/{raceId}/export', [ResultController::class, 'export']);
 Route::put('results/{result}', [ResultController::class, 'update']);
 Route::delete('results/{result}', [ResultController::class, 'destroy']);
+
+// RFID Raspberry Reader Routes
+Route::put('raspberry', [RaspberryController::class, 'store']);
+Route::post('raspberry', [RaspberryController::class, 'store']);
 
 // Health check
 Route::get('health', function () {

@@ -13,7 +13,10 @@ class Result extends Model
         'race_id',
         'entrant_id',
         'wave_id',
+        'reader_id',
         'rfid_tag',
+        'serial',
+        'reader_location',
         'raw_time',
         'calculated_time',
         'lap_number',
@@ -58,6 +61,14 @@ class Result extends Model
     public function wave(): BelongsTo
     {
         return $this->belongsTo(Wave::class);
+    }
+
+    /**
+     * Get the reader that detected this result
+     */
+    public function reader(): BelongsTo
+    {
+        return $this->belongsTo(Reader::class);
     }
 
     /**
