@@ -207,17 +207,45 @@ class EntrantController extends Controller
                 // Find or create Wave based on VAGUE
                 $waveId = null;
                 if (!empty($vague)) {
-                    $waveKey = $race->id . '_' . trim($vague);
+                    $vagueValue = trim($vague);
+                    $waveKey = $race->id . '_' . $vagueValue;
+
+                    // Extraire le numéro de vague
+                    // Si c'est juste un nombre (1, 2, 3...), on l'utilise directement
+                    // Sinon on essaie d'extraire un nombre de "Vague 1", "Wave 2", etc.
+                    $waveNumber = null;
+                    if (is_numeric($vagueValue)) {
+                        $waveNumber = (int)$vagueValue;
+                    } elseif (preg_match('/(\d+)/', $vagueValue, $matches)) {
+                        $waveNumber = (int)$matches[1];
+                    }
+
                     if (!isset($wavesCache[$waveKey])) {
-                        $wave = Wave::where('race_id', $race->id)
-                            ->where('name', trim($vague))
-                            ->first();
+                        // Chercher la vague par numéro d'abord, sinon par nom
+                        if ($waveNumber) {
+                            $wave = Wave::where('race_id', $race->id)
+                                ->where('wave_number', $waveNumber)
+                                ->first();
+                        }
+
+                        if (!isset($wave)) {
+                            $wave = Wave::where('race_id', $race->id)
+                                ->where('name', $vagueValue)
+                                ->first();
+                        }
 
                         if (!$wave) {
-                            $wave = Wave::create([
+                            // Créer la vague avec numéro si disponible
+                            $waveData = [
                                 'race_id' => $race->id,
-                                'name' => trim($vague),
-                            ]);
+                                'name' => $vagueValue,
+                            ];
+
+                            if ($waveNumber) {
+                                $waveData['wave_number'] = $waveNumber;
+                            }
+
+                            $wave = Wave::create($waveData);
                         }
                         $wavesCache[$waveKey] = $wave;
                     } else {

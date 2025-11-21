@@ -37,8 +37,20 @@ class WaveController extends Controller
     {
         $validated = $request->validate([
             'race_id' => 'required|exists:races,id',
+            'wave_number' => 'required|integer|min:1',
             'name' => 'required|string|max:100',
         ]);
+
+        // Vérifie que le numéro de vague n'existe pas déjà pour cette épreuve
+        $exists = Wave::where('race_id', $validated['race_id'])
+            ->where('wave_number', $validated['wave_number'])
+            ->exists();
+
+        if ($exists) {
+            return response()->json([
+                'message' => 'Ce numéro de vague existe déjà pour cette épreuve'
+            ], 422);
+        }
 
         $wave = Wave::create($validated);
 
@@ -60,8 +72,23 @@ class WaveController extends Controller
     public function update(Request $request, Wave $wave): JsonResponse
     {
         $validated = $request->validate([
+            'wave_number' => 'sometimes|integer|min:1',
             'name' => 'sometimes|string|max:100',
         ]);
+
+        // Si le numéro de vague est modifié, vérifier qu'il n'existe pas déjà
+        if (isset($validated['wave_number']) && $validated['wave_number'] != $wave->wave_number) {
+            $exists = Wave::where('race_id', $wave->race_id)
+                ->where('wave_number', $validated['wave_number'])
+                ->where('id', '!=', $wave->id)
+                ->exists();
+
+            if ($exists) {
+                return response()->json([
+                    'message' => 'Ce numéro de vague existe déjà pour cette épreuve'
+                ], 422);
+            }
+        }
 
         $wave->update($validated);
 

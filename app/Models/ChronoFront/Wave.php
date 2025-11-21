@@ -12,6 +12,7 @@ class Wave extends Model
 
     protected $fillable = [
         'race_id',
+        'wave_number',
         'name',
         'start_time',
         'end_time',

@@ -66,8 +66,9 @@
                 <table class="table table-hover align-middle">
                     <thead class="table-light">
                         <tr>
+                            <th>N° Vague</th>
                             <th>Nom</th>
-                            <th>Épreuve</th>
+                            <th>Épreuve (Parcours)</th>
                             <th>Événement</th>
                             <th>Heure de départ</th>
                             <th>Heure de fin</th>
@@ -79,6 +80,9 @@
                     <tbody>
                         <template x-for="wave in waves" :key="wave.id">
                             <tr>
+                                <td>
+                                    <span class="badge bg-dark fs-6" x-text="'#' + (wave.wave_number || '-')"></span>
+                                </td>
                                 <td>
                                     <strong x-text="wave.name"></strong>
                                 </td>
@@ -164,18 +168,28 @@
                             </div>
 
                             <div class="col-12">
-                                <label class="form-label">Épreuve <span class="text-danger">*</span></label>
+                                <label class="form-label">Épreuve (Parcours) <span class="text-danger">*</span></label>
                                 <select class="form-select" x-model="form.race_id" required>
                                     <option value="">-- Sélectionnez --</option>
                                     <template x-for="race in formFilteredRaces" :key="race.id">
                                         <option :value="race.id" x-text="race.name"></option>
                                     </template>
                                 </select>
+                                <div class="form-text">
+                                    <i class="bi bi-info-circle"></i> Tous les participants de cette vague seront classés dans cette épreuve
+                                </div>
                             </div>
 
-                            <div class="col-12">
+                            <div class="col-6">
+                                <label class="form-label">Numéro de vague <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" x-model="form.wave_number" required min="1" placeholder="1, 2, 3...">
+                                <div class="form-text">Ex: 1, 2, 3...</div>
+                            </div>
+
+                            <div class="col-6">
                                 <label class="form-label">Nom de la vague <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" x-model="form.name" required placeholder="Ex: Vague 1, Elite, Débutants...">
+                                <input type="text" class="form-control" x-model="form.name" required placeholder="Ex: Elite, Débutants...">
+                                <div class="form-text">Description libre</div>
                             </div>
                         </div>
                     </div>
@@ -213,6 +227,7 @@ function wavesManager() {
         form: {
             event_id: '',
             race_id: '',
+            wave_number: '',
             name: ''
         },
 
@@ -289,6 +304,7 @@ function wavesManager() {
             this.form = {
                 event_id: this.selectedEventFilter || '',
                 race_id: this.selectedRaceFilter || '',
+                wave_number: '',
                 name: ''
             };
             if (this.form.event_id) {
@@ -304,6 +320,7 @@ function wavesManager() {
             this.form = {
                 event_id: wave.race?.event_id || '',
                 race_id: wave.race_id,
+                wave_number: wave.wave_number || '',
                 name: wave.name
             };
             if (this.form.event_id) {
@@ -324,12 +341,14 @@ function wavesManager() {
             try {
                 if (this.editingWave) {
                     await axios.put(`/waves/${this.editingWave.id}`, {
+                        wave_number: parseInt(this.form.wave_number),
                         name: this.form.name
                     });
                     this.successMessage = 'Vague modifiée avec succès';
                 } else {
                     await axios.post('/waves', {
                         race_id: this.form.race_id,
+                        wave_number: parseInt(this.form.wave_number),
                         name: this.form.name
                     });
                     this.successMessage = 'Vague créée avec succès';
