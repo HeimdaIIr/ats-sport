@@ -368,7 +368,16 @@ function entrantsManager() {
                     url += '?' + params.toString();
                 }
                 const response = await axios.get(url);
-                this.entrants = response.data;
+
+                // Si un événement est sélectionné (mais pas d'épreuve spécifique),
+                // filtrer par les races de cet événement
+                if (this.selectedEventFilter && !this.selectedRaceFilter) {
+                    const raceIds = this.filteredRaces.map(r => r.id);
+                    this.entrants = response.data.filter(e => raceIds.includes(e.race_id));
+                } else {
+                    this.entrants = response.data;
+                }
+
                 this.filterEntrants();
             } catch (error) {
                 console.error('Erreur lors du chargement des participants', error);
