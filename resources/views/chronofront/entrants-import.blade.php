@@ -200,10 +200,16 @@
                         <i class="bi bi-magic"></i> <strong>Automatique :</strong>
                         <ul class="mb-0 mt-2">
                             <li>Création des épreuves si elles n'existent pas</li>
+                            <li><strong>Attribution automatique des participants aux parcours</strong> selon la colonne <code>parcours</code></li>
                             <li>Création des vagues si elles n'existent pas</li>
                             <li>Génération tags RFID (2000 + dossard)</li>
                             <li>Attribution catégories FFA selon âge/sexe</li>
                         </ul>
+                    </div>
+
+                    <div class="alert alert-info mt-3">
+                        <i class="bi bi-pencil-square"></i> <strong>Modification manuelle :</strong>
+                        <p class="mb-0">Après l'import, vous pouvez modifier le parcours d'un participant dans la page <strong>"Gestion des Participants"</strong> en cas de changement de dernière minute demandé par le coureur.</p>
                     </div>
                 </div>
             </div>

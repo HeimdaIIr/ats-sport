@@ -19,6 +19,13 @@
         </div>
     </div>
 
+    <!-- Info Alert -->
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <i class="bi bi-info-circle-fill"></i>
+        <strong>Attribution des parcours :</strong> Les participants importés via CSV sont automatiquement affectés à leur parcours. Vous pouvez modifier le parcours d'un participant en cliquant sur <i class="bi bi-pencil"></i> (utile pour les changements de dernière minute).
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
     <!-- Alert Messages -->
     <div x-show="successMessage" x-transition class="alert alert-success alert-dismissible fade show" role="alert">
         <i class="bi bi-check-circle-fill"></i> <span x-text="successMessage"></span>
@@ -118,6 +125,7 @@
                                     <span class="badge bg-info" x-text="entrant.category?.code || 'N/A'"></span>
                                 </td>
                                 <td>
+                                    <span x-show="entrant.race?.display_order" class="badge bg-dark me-1" x-text="'#' + entrant.race?.display_order"></span>
                                     <span class="badge bg-secondary" x-text="entrant.race?.name || 'N/A'"></span>
                                 </td>
                                 <td>
@@ -207,13 +215,22 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">Épreuve</label>
+                                <label class="form-label">
+                                    Épreuve / Parcours
+                                    <span class="text-muted small">(modifiable)</span>
+                                </label>
                                 <select class="form-select" x-model="form.race_id">
                                     <option value="">-- Sélectionnez --</option>
-                                    <template x-for="race in races" :key="race.id">
-                                        <option :value="race.id" x-text="race.name"></option>
+                                    <template x-for="race in sortedRaces" :key="race.id">
+                                        <option :value="race.id">
+                                            <span x-show="race.display_order" x-text="'#' + race.display_order + ' - '"></span>
+                                            <span x-text="race.name"></span>
+                                        </option>
                                     </template>
                                 </select>
+                                <div class="form-text">
+                                    <i class="bi bi-info-circle"></i> Vous pouvez changer le parcours d'un participant ici
+                                </div>
                             </div>
 
                             <div class="col-md-6">
@@ -304,6 +321,19 @@ function entrantsManager() {
 
         get totalPages() {
             return Math.ceil(this.filteredEntrants.length / this.perPage);
+        },
+
+        get sortedRaces() {
+            return [...this.races].sort((a, b) => {
+                if (a.display_order && b.display_order) {
+                    return a.display_order - b.display_order;
+                } else if (a.display_order) {
+                    return -1;
+                } else if (b.display_order) {
+                    return 1;
+                }
+                return 0;
+            });
         },
 
         init() {
