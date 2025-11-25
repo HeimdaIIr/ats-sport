@@ -31,8 +31,8 @@ class ResultController extends Controller
     public function addTime(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'race_id' => 'required|exists:races,id',
-            'entrant_id' => 'sometimes|exists:entrants,id',
+            'race_id' => 'required|exists:chronofront.races,id',
+            'entrant_id' => 'sometimes|exists:chronofront.entrants,id',
             'bib_number' => 'sometimes|string',
             'rfid_tag' => 'sometimes|string',
             'raw_time' => 'nullable|date',

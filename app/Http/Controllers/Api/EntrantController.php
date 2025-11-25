@@ -55,8 +55,8 @@ class EntrantController extends Controller
             'email' => 'nullable|email|max:200',
             'phone' => 'nullable|string|max:50',
             'bib_number' => 'nullable|string|max:20',
-            'race_id' => 'nullable|exists:races,id',
-            'wave_id' => 'nullable|exists:waves,id',
+            'race_id' => 'nullable|exists:chronofront.races,id',
+            'wave_id' => 'nullable|exists:chronofront.waves,id',
             'club' => 'nullable|string|max:200',
             'team' => 'nullable|string|max:200',
         ]);
@@ -100,9 +100,9 @@ class EntrantController extends Controller
             'phone' => 'nullable|string|max:50',
             'bib_number' => 'nullable|string|max:20',
             'rfid_tag' => 'nullable|string|max:50',
-            'category_id' => 'nullable|exists:categories,id',
-            'race_id' => 'nullable|exists:races,id',
-            'wave_id' => 'nullable|exists:waves,id',
+            'category_id' => 'nullable|exists:chronofront.categories,id',
+            'race_id' => 'nullable|exists:chronofront.races,id',
+            'wave_id' => 'nullable|exists:chronofront.waves,id',
             'club' => 'nullable|string|max:200',
             'team' => 'nullable|string|max:200',
         ]);

@@ -36,7 +36,7 @@ class RaceController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'event_id' => 'required|exists:events,id',
+            'event_id' => 'required|exists:chronofront.events,id',
             'name' => 'required|string|max:200',
             'type' => 'required|in:1_passage,n_laps,infinite_loop',
             'distance' => 'required|numeric|min:0',
