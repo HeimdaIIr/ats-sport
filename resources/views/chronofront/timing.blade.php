@@ -55,10 +55,52 @@
                         <select class="form-select" x-model="selectedRace" @change="onRaceChange">
                             <option value="">-- Sélectionnez --</option>
                             <template x-for="race in filteredRaces" :key="race.id">
-                                <option :value="race.id" x-text="race.name"></option>
+                                <option :value="race.id">
+                                    <span x-show="race.display_order" x-text="'#' + race.display_order + ' - '"></span>
+                                    <span x-text="race.name"></span>
+                                </option>
                             </template>
                         </select>
                     </div>
+                </div>
+            </div>
+
+            <!-- TOP Départ Button -->
+            <div x-show="selectedRace" class="card shadow-sm mb-3 border-success">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="bi bi-flag-fill"></i> Départ Épreuve</h5>
+                </div>
+                <div class="card-body text-center">
+                    <template x-for="race in filteredRaces" :key="race.id">
+                        <div x-show="race.id == selectedRace">
+                            <div class="mb-3">
+                                <h6 class="mb-1">Parcours sélectionné :</h6>
+                                <h5 class="text-primary">
+                                    <span x-show="race.display_order" class="badge bg-dark me-2" x-text="'#' + race.display_order"></span>
+                                    <strong x-text="race.name"></strong>
+                                </h5>
+                                <div x-show="race.start_time" class="alert alert-info mt-2 mb-0">
+                                    <i class="bi bi-clock-history"></i> Départ donné le : <strong x-text="formatTime(race.start_time)"></strong>
+                                </div>
+                            </div>
+                            <button
+                                class="btn btn-lg w-100"
+                                :class="race.start_time ? 'btn-secondary' : 'btn-success'"
+                                @click="topDepart(race)"
+                                :disabled="race.start_time || startingRace"
+                            >
+                                <i class="bi bi-flag-fill" style="font-size: 1.5rem;"></i>
+                                <div class="mt-2" style="font-size: 1.2rem;">
+                                    <span x-show="!race.start_time && !startingRace">🚀 TOP DÉPART 🚀</span>
+                                    <span x-show="race.start_time">✓ Départ déjà donné</span>
+                                    <span x-show="startingRace">
+                                        <span class="spinner-border spinner-border-sm me-2"></span>
+                                        Enregistrement...
+                                    </span>
+                                </div>
+                            </button>
+                        </div>
+                    </template>
                 </div>
             </div>
 
@@ -257,6 +299,7 @@ function timingManager() {
         bibNumber: '',
         loading: false,
         saving: false,
+        startingRace: false,
         recalculating: false,
         successMessage: null,
         errorMessage: null,
@@ -291,6 +334,19 @@ function timingManager() {
             } else {
                 this.filteredRaces = this.races;
             }
+
+            // Trier par display_order
+            this.filteredRaces.sort((a, b) => {
+                if (a.display_order && b.display_order) {
+                    return a.display_order - b.display_order;
+                } else if (a.display_order) {
+                    return -1;
+                } else if (b.display_order) {
+                    return 1;
+                }
+                return 0;
+            });
+
             this.selectedRace = '';
             this.results = [];
             this.waves = [];
@@ -401,6 +457,31 @@ function timingManager() {
                 this.errorMessage = 'Erreur lors du recalcul des positions';
             } finally {
                 this.recalculating = false;
+            }
+        },
+
+        async topDepart(race) {
+            if (!confirm(`Donner le TOP DÉPART pour l'épreuve "${race.name}" ?\n\nL'heure actuelle sera enregistrée comme heure de départ.`)) return;
+
+            this.startingRace = true;
+            this.errorMessage = null;
+
+            try {
+                await axios.post(`/races/${race.id}/start`);
+                race.start_time = new Date().toISOString();
+                this.successMessage = `🚀 TOP DÉPART donné pour "${race.name}" !`;
+
+                // Reload races to get updated start times
+                await this.loadRaces();
+                await this.onEventChange();
+
+                setTimeout(() => {
+                    this.successMessage = null;
+                }, 5000);
+            } catch (error) {
+                this.errorMessage = error.response?.data?.message || 'Erreur lors du TOP DÉPART';
+            } finally {
+                this.startingRace = false;
             }
         },
 

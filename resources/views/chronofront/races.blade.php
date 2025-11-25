@@ -61,6 +61,7 @@
                 <table class="table table-hover align-middle">
                     <thead class="table-light">
                         <tr>
+                            <th style="width: 100px;">Ordre</th>
                             <th>Nom</th>
                             <th>Événement</th>
                             <th>Type</th>
@@ -73,6 +74,17 @@
                     <tbody>
                         <template x-for="race in filteredRaces" :key="race.id">
                             <tr>
+                                <td>
+                                    <input
+                                        type="number"
+                                        class="form-control form-control-sm"
+                                        :value="race.display_order || ''"
+                                        @change="updateRaceOrder(race, $event.target.value)"
+                                        placeholder="-"
+                                        min="1"
+                                        style="width: 70px;"
+                                    >
+                                </td>
                                 <td>
                                     <strong x-text="race.name"></strong>
                                 </td>
@@ -347,6 +359,27 @@ function racesManager() {
                 this.loadRaces();
             } catch (error) {
                 alert('Erreur lors de la suppression : ' + (error.response?.data?.message || error.message));
+            }
+        },
+
+        async updateRaceOrder(race, newOrder) {
+            if (!newOrder || newOrder < 1) return;
+
+            try {
+                await axios.post('/races/update-order', {
+                    orders: [
+                        { id: race.id, display_order: parseInt(newOrder) }
+                    ]
+                });
+
+                race.display_order = parseInt(newOrder);
+                this.successMessage = `Ordre du parcours "${race.name}" mis à jour`;
+
+                setTimeout(() => {
+                    this.successMessage = null;
+                }, 2000);
+            } catch (error) {
+                alert('Erreur lors de la mise à jour de l\'ordre : ' + (error.response?.data?.message || error.message));
             }
         }
     }

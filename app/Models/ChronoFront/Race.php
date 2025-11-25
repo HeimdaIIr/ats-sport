@@ -12,6 +12,7 @@ class Race extends Model
 
     protected $fillable = [
         'event_id',
+        'display_order',
         'name',
         'type',
         'distance',
@@ -23,6 +24,7 @@ class Race extends Model
     ];
 
     protected $casts = [
+        'display_order' => 'integer',
         'distance' => 'decimal:2',
         'laps' => 'integer',
         'best_time' => 'boolean',

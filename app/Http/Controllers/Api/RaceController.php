@@ -134,4 +134,26 @@ class RaceController extends Controller
             'race' => $race
         ]);
     }
+
+    /**
+     * Update display order for races
+     */
+    public function updateOrder(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'orders' => 'required|array',
+            'orders.*.id' => 'required|exists:chronofront.races,id',
+            'orders.*.display_order' => 'required|integer|min:1',
+        ]);
+
+        foreach ($validated['orders'] as $orderData) {
+            Race::where('id', $orderData['id'])->update([
+                'display_order' => $orderData['display_order']
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Ordre des parcours mis à jour avec succès'
+        ]);
+    }
 }

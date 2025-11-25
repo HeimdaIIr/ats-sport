@@ -26,6 +26,7 @@ Route::apiResource('events', EventController::class);
 Route::get('races/event/{eventId}', [RaceController::class, 'byEvent']);
 Route::post('races/{race}/start', [RaceController::class, 'start']);
 Route::post('races/{race}/end', [RaceController::class, 'end']);
+Route::post('races/update-order', [RaceController::class, 'updateOrder']);
 Route::apiResource('races', RaceController::class);
 
 // Waves Routes
